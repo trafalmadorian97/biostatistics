@@ -1,0 +1,10 @@
+[project]
+name = "biostatistics"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "invoke>=2.2.0",
+    "osfclient>=0.0.5",
+]
