@@ -1,7 +1,7 @@
 from src.data_preprocessing_scripts.file_path_constants import (
     GWAS_1_EXTRACTED_PATH,
-    QC_FILE_PATH,
     GWAS_1_QC_APPLIED_FILE_PATH,
+    QC_FILE_PATH,
 )
 from src.data_processing.apply_quality_control import apply_decodeme_qc
 

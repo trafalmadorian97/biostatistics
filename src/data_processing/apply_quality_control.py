@@ -1,5 +1,6 @@
-import polars as pl
 from pathlib import Path
+
+import polars as pl
 
 from src.data_processing.decode_me_constants import DECODE_ME_SNP_COL
 
