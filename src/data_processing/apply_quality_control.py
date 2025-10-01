@@ -11,4 +11,4 @@ def apply_decodeme_qc(regenie_file: Path, qced_file: Path, out_path: Path):
     qced_df = pl.scan_csv(qced_file, separator=" ")
     filtered = regenie_df.join(qced_df, on=[DECODE_ME_SNP_COL])
     print(f"rows after filtering{filtered.select(pl.len()).collect().item()}")
-    filtered.sink_csv(out_path,separator=" ")
+    filtered.sink_csv(out_path, separator=" ")
