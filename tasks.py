@@ -1,8 +1,8 @@
 import gzip
 import shutil
+from pathlib import Path
 
 from invoke import task
-from pathlib import Path
 
 DECODE_ME_PROJECT_ID = "rgqs3"
 DECODE_ME_RAW_DATA_PATH = Path("data/DecodeME/raw")
@@ -27,7 +27,28 @@ def format(c):
     c.run("uv run ruff format", pty=True)
 
 
-@task(pre=[format, test])
+@task
+def formatcheck(c):
+    """
+    Check for format errors
+    """
+    print("Checking format with black...")
+    c.run("uv run ruff format --check .")
+
+
+@task
+def lintfix(c):
+    print("linting and applying lint auto-fixes using ruff...")
+    c.run(" uv run ruff check --fix --unsafe-fixes")
+
+
+@task
+def lintcheck(c):
+    print("linting using ruff...")
+    c.run("uv run ruff check")
+
+
+@task(pre=[lintfix, format, test])
 def green(c):
     pass
 

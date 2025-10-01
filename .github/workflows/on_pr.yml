@@ -1,0 +1,37 @@
+name: on_pr
+
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-linters:
+    timeout-minutes: 5
+    name: Run PR Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+         enable-cache: true #note: by default, uv only caches packages that require compilation.  Docs claim this is most efficient: https://docs.astral.sh/uv/concepts/cache/#caching-in-continuous-integration
+         prune-cache: true
+         version: "0.8.11"
+      - name: Set up Python
+        run: uv python install
+      - name: Sync the uv environment
+        run: uv sync
+      - name: Check formatting with ruff
+        run: uv run invoke formatcheck
+      - name: Lint using ruff
+        run: uv run invoke lintcheck
+      - name: Run tests
+        run: uv run invoke test # run unit and integration tests

@@ -1,10 +1,9 @@
+from pathlib import Path
+
 from src.data_preprocessing_scripts.file_path_constants import (
     GWAS_1_QC_APPLIED_FILE_PATH,
 )
 from src.plotting.manhattan import plot_decode_me_manhattan_geneview
-
-from pathlib import Path
-
 from src.plotting.save_fig import write_plots_to_dir
 
 DECODE_ME_OUTPUT_DIR = Path("output/DecodeME")

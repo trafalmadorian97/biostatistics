@@ -1,18 +1,15 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import math
 from pathlib import Path
 
-import pandas as pd
-import plotly
 import geneview as gv
+import matplotlib.pyplot as plt
+import pandas as pd
 from matplotlib.figure import Figure
 
 from src.data_processing.decode_me_constants import (
-    DECODE_ME_mLOGP_COL,
-    DECODE_ME_SNP_COL,
     DECODE_ME_CHROM_COL,
     DECODE_ME_POS_COL,
+    DECODE_ME_SNP_COL,
+    DECODE_ME_mLOGP_COL,
 )
 
 
