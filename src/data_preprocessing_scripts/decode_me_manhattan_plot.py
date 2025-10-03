@@ -1,5 +1,4 @@
 from src.data_preprocessing_scripts.file_path_constants import (
-    DECODE_ME_PLOT_OUTPUT_DIR,
     GWAS_1_QC_APPLIED_FILE_PATH,
 )
 from src.plotting.manhattan import plot_decode_me_manhattan_geneview
