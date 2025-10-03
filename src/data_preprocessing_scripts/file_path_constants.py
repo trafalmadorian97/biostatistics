@@ -1,8 +1,6 @@
 from pathlib import Path
 
-EXTRACTED_DIR = Path(
-    "data/DecodeME/extracted/osfstorage/DecodeME Summary Statistics"
-)
+EXTRACTED_DIR = Path("data/DecodeME/extracted/osfstorage/DecodeME Summary Statistics")
 
 GWAS_1_EXTRACTED_PATH = Path(
     "data/DecodeME/extracted/osfstorage/DecodeME Summary Statistics/gwas_1.regenie"
@@ -17,7 +15,7 @@ GWAS_1_QC_APPLIED_FILE_PATH = Path(
     "data/DecodeME/qc_applied/osfstorage/DecodeME Summary Statistics/gwas_1.regenie"
 )
 QC_APPLIED_DIR = Path(
-   "data/DecodeME/qc_applied/osfstorage/DecodeME Summary Statistics/"
+    "data/DecodeME/qc_applied/osfstorage/DecodeME Summary Statistics/"
 )
 
 
