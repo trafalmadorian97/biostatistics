@@ -3,23 +3,18 @@ from src.data_preprocessing_scripts.file_path_constants import (
     GWAS_1_QC_APPLIED_FILE_PATH_PARQUET,
 )
 from src.data_processing.using_gwaslab.gwaslab_basic import (
-    load_sumstats,
-    plot_manhattan_and_qq,
+    apply_gwaslab_to_gwas,
 )
-from src.plotting.save_fig import write_plots_to_dir
+
+GWAS_1_SUBDIR = "gwas_1"
 
 
-def apply_gwaslab():
-    sumstats = load_sumstats(GWAS_1_QC_APPLIED_FILE_PATH_PARQUET)
-    print("plotting")
-    figs = {}
-    figs["gwaslab_manhattan_qq"] = plot_manhattan_and_qq(
-        sumstats=sumstats,
+def apply_gwaslab_gwas1():
+    apply_gwaslab_to_gwas(
+        qc_datafile_parquet=GWAS_1_QC_APPLIED_FILE_PATH_PARQUET,
+        root_output_dir=DECODE_ME_OUTPUT_DIR / GWAS_1_SUBDIR,
     )
-    write_plots_to_dir(path=DECODE_ME_OUTPUT_DIR, plots=figs)
-    print("done plotting")
-    print(sumstats)
 
 
 if __name__ == "__main__":
-    apply_gwaslab()
+    apply_gwaslab_gwas1()
