@@ -40,7 +40,9 @@ def apply_gwaslab_to_gwas(
     print(f"Loading data from {qc_datafile_parquet}...")
     sumstats = load_sumstats(qc_datafile_parquet)
     print("Getting lead variants with gwaslab...")
-    lead_variants: pd.DataFrame = sumstats.get_lead(anno=True, sig_level=sig_level)
+    lead_variants: pd.DataFrame = sumstats.get_lead(
+        anno=True, sig_level=sig_level
+    )  # Interestingly, some the gene annotations here are inconsistent with those in the paper. May be they used different databases
     print("Done getting lead variants with gwaslab")
     lead_variants.to_csv(csv_output_dir / "gwaslab_lead_variants.csv", index=False)
     print("plotting with gwaslab")
