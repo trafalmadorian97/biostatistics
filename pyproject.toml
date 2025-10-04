@@ -1,10 +1,11 @@
 [project]
 name = "biostatistics"
 version = "0.1.0"
-description = "Add your description here"
+description = "A project apply biostatistical techniques to publically availible data on ME/CFS."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "attrs>=25.3.0",
     "geneview>=0.2.1",
     "gwaslab==3.6.8",
     "invoke>=2.2.0",
