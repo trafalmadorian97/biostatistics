@@ -82,23 +82,6 @@ def plot_regional_around_sig_variants(
         )
 
 
-# def write_regional_plots_around_sig_variants(
-#         sumstats: gl.Sumstats,
-#         sig_variants:Sequence[Variant],
-#         output_dir: Path,
-#         buffer: int= 500_000,
-# ) -> None:
-#     figs = plot_regional_around_sig_variants(
-#         sumstats=sumstats,
-#         sig_variants=sig_variants,
-#         buffer=buffer,
-#     )
-#     for var, fig in figs.items():
-#         sig_dir = output_dir/LEAD_VARIANT_DIR_NAME/ var
-#         sig_dir.mkdir(parents=True, exist_ok=True)
-#         write_plots_to_dir(sig_dir, {"region_plots": fig})
-
-
 def apply_gwaslab_to_gwas(
     qc_datafile_parquet: Path,
     root_output_dir: Path,
