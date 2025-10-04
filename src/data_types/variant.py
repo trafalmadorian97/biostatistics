@@ -12,6 +12,10 @@ from src.plotting.save_fig import normalize_filename
 
 @frozen
 class Variant:
+    """
+    Represents a genetic variant.
+    """
+
     chromosome: int
     position: int
     effect_allele: str
