@@ -33,5 +33,7 @@ jobs:
         run: uv run invoke formatcheck
       - name: Lint using ruff
         run: uv run invoke lintcheck
+      - name: Check types with mypy
+        run: uv run invoke typecheck
       - name: Run tests
         run: uv run invoke test # run unit and integration tests

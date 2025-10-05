@@ -49,7 +49,16 @@ def lintcheck(c):
     c.run("uv run ruff check")
 
 
-@task(pre=[lintfix, format, test])
+@task
+def typecheck(c):
+    """
+    Check for type errors
+    """
+    print("Typechecking with mypy...")
+    c.run("uv run mypy .", pty=True)
+
+
+@task(pre=[lintfix, format, typecheck, test])
 def green(c):
     pass
 
