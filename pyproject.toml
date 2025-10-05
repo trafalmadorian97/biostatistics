@@ -13,6 +13,7 @@ dependencies = [
     "numpy>=1.21.2",
     "osfclient>=0.0.5",
     "pandas>=2.3.3",
+    "pandasgwas>=1.2.2",
     "plotly>=6.3.0",
     "polars>=1.33.1",
     "pytest>=8.4.2",
