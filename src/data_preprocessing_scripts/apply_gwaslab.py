@@ -13,6 +13,7 @@ def apply_gwaslab_gwas1():
     apply_gwaslab_to_gwas(
         qc_datafile_parquet=GWAS_1_QC_APPLIED_FILE_PATH_PARQUET,
         root_output_dir=DECODE_ME_OUTPUT_DIR / GWAS_1_SUBDIR,
+        ld_regional_plots=True,
     )
 
 

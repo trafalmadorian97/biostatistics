@@ -12,6 +12,7 @@ DECODE_ME_RAW_OSF_DATA_PATH = DECODE_ME_RAW_DATA_PATH / OSF_FILE_NAME
 UNIT_TEST_PATH = Path("test/unit")
 
 
+# dev tasks
 @task
 def test(c):
     print("Running unit and integration tests with pytest")
@@ -51,6 +52,28 @@ def lintcheck(c):
 @task(pre=[lintfix, format, test])
 def green(c):
     pass
+
+
+## Library setup tasks
+
+
+@task
+def get_eur_1k_genomes_gwaslab(c):
+    import gwaslab as gl
+
+    from src.data_processing.using_gwaslab.gwaslab_constants import (
+        GWASLAB_EUR_1K_GENOMES_NAME,
+    )
+
+    gl.download_ref(GWASLAB_EUR_1K_GENOMES_NAME)
+
+
+@task
+def install_tabix_ubuntu(c):
+    c.run("sudo apt-get install tabix")
+
+
+## Data tasks
 
 
 @task
