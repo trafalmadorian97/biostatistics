@@ -12,7 +12,4 @@ def check_singletons(studies: list[Study]):
 
 
 def summarize_studies(studies: list[Study]) -> pd.DataFrame:
-    pass
-    # data = [
-    #     {} item for item in studies
-    # ]
+    return pd.concat([study.studies for study in studies])
