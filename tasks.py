@@ -1,8 +1,8 @@
-import gzip
-import shutil
 from pathlib import Path
 
 from invoke import task
+
+from src.data_processing_util.gzip_util import copy_extract
 
 DECODE_ME_PROJECT_ID = "rgqs3"
 DECODE_ME_RAW_DATA_PATH = Path("data/DecodeME/raw")
@@ -95,15 +95,3 @@ def pull_Decode_ME(c):
 def extract_Decode_ME(c):
     print("Extracting DecodeME data...")
     copy_extract(DECODE_ME_RAW_DATA_PATH, DECODE_ME_EXTRACTED_DATA_PATH)
-
-
-def copy_extract(source_root: Path, dest_root: Path):
-    for item in source_root.iterdir():
-        if item.is_dir():
-            copy_extract(item, dest_root / item.name)
-        if item.suffix == ".gz":
-            dest_root.mkdir(exist_ok=True, parents=True)
-            print(f"Extracting {item}")
-            with gzip.open(item, "rb") as fp_src:
-                with open(dest_root / item.stem, "wb") as fp_dst:
-                    shutil.copyfileobj(fp_src, fp_dst)
