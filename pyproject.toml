@@ -1,7 +1,7 @@
 [project]
 name = "biostatistics"
 version = "0.1.0"
-description = "A project apply biostatistical techniques to publically availible data on ME/CFS."
+description = "A project apply biostatistical techniques to publicly available data on ME/CFS."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
