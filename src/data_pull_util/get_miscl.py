@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import requests
@@ -18,6 +19,7 @@ def download_file(url: str, local_path: Path):
             for chunk in tqdm(response.iter_content(chunk_size=8192)):
                 f.write(chunk)
         print(f"File '{local_path}' downloaded successfully.")
+        print(f"Filesize is {os.path.getsize(local_path)} bytes.")
     except requests.exceptions.RequestException as e:
         print(f"Error downloading file: {e}")
 
