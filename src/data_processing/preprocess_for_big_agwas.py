@@ -5,8 +5,10 @@ import polars
 from src.data_processing.decode_me_constants import (
     DECODE_ME_BETA_COL,
     DECODE_ME_CHROM_COL,
+    DECODE_ME_EA,
+    DECODE_ME_NEA,
     DECODE_ME_POS_COL,
-    DECODE_ME_mLOGP_COL, DECODE_ME_NEA, DECODE_ME_EA,
+    DECODE_ME_mLOGP_COL,
 )
 
 _BIG_A_GWAS_REANAME_MAPPING = {
