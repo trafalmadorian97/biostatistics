@@ -19,8 +19,8 @@ BIPOLAR_PGC_2011_DATA_SOURCE = BasicDataSource(
     ),
     extractor=ZipGZipDataExtractor(None),
     path_extension=PurePath("other_conditions/Bipolar_Disorder/PGS_2011"),
-    src_filename="14671995.zip",
-    dst_filename="14671995",
+    raw_filename="14671995.zip",
+    extracted_filename="14671995",
 )
 
 if __name__ == "__main__":

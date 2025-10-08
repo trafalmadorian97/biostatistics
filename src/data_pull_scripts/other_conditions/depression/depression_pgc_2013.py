@@ -14,8 +14,8 @@ DEPRESSION_PGC_2011_DATA_SOURCE = BasicDataSource(
     ),
     extractor=ZipDataExtractor(None),
     path_extension=PurePath("other_conditions/Depression/PGC_2011"),
-    src_filename="pgc.mdd.2012-04.zip",
-    dst_filename="pgc.mdd.2012-04",
+    raw_filename="pgc.mdd.2012-04.zip",
+    extracted_filename="pgc.mdd.2012-04",
 )
 
 if __name__ == "__main__":
