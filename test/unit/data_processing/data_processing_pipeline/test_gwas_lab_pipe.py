@@ -11,7 +11,7 @@ from test.unit.data_processing.path_constants import DUMMY_DATA_PATH
 
 def test_pipe_rename(tmp_path: Path):
     """
-    Test that Gwaslab pip appropriately renames the effect allele columns
+    Test that Gwaslab pipe appropriately renames the effect allele columns
     """
     df = pd.read_csv(DUMMY_DATA_PATH, sep=" ")
     nlf = narwhals.from_native(df).lazy()

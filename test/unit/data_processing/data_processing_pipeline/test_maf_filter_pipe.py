@@ -9,7 +9,7 @@ from src.data_processing.using_gwaslab.gwaslab_constants import GWASLAB_EFFECT_A
 
 def test_maf_filter_pipe(tmp_path: Path):
     """
-    Verify we can filter a row that does not meet the minor allele frequency threshold
+    Verify we can filter rows that do not meet the minor allele frequency threshold
     """
     df = pd.DataFrame(
         {GWASLAB_EFFECT_ALLELE_FREQ_COL: [0.001, 0.01, 0.5, 0.99, 0.999]}
