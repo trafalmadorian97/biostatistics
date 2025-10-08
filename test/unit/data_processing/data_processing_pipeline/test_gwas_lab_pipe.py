@@ -22,5 +22,4 @@ def test_pipe_rename(tmp_path: Path):
     )
     result = pipe.process(x=nlf, data_cache_root=tmp_path)
     pd_result = result.collect().to_pandas()
-    import pdb; pdb.set_trace()
     assert (pd_result[GWASLAB_EFFECT_ALLELE_COL] == df[DECODE_ME_EA]).all()
