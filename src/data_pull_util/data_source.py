@@ -47,6 +47,15 @@ class URLDataRetriever(DataRetriever):
         )
 
 
+@frozen
+class CopyDataRetriever(DataRetriever):
+    src_path: Path
+
+    def retrieve(self, local_dst: Path):
+        local_dst.parent.mkdir(parents=True, exist_ok=True)
+        local_dst.write_bytes(self.src_path.read_bytes())
+
+
 class DataExtractor(ABC):
     @abstractmethod
     def extract(self, src: Path, dst: Path):
@@ -107,11 +116,14 @@ class BasicDataSource(DataSource):
     retriever: DataRetriever
     extractor: DataExtractor | None
     path_extension: PurePath
-    src_filename: str
-    dst_filename: str
+    raw_filename: str
+    extracted_filename: str | None
+
+    def __attrs_post_init__(self):
+        assert (self.extractor is None) == (self.extracted_filename is None)
 
     def raw_path(self, data_cache_root: Path) -> Path:
-        rpath = data_cache_root / self.path_extension / RAW_DIR_NAME / self.src_filename
+        rpath = data_cache_root / self.path_extension / RAW_DIR_NAME / self.raw_filename
         self.retriever.retrieve(rpath)
         return rpath
 
@@ -119,11 +131,12 @@ class BasicDataSource(DataSource):
         rpath = self.raw_path(data_cache_root)
         if self.extractor is None:
             return rpath
+        assert self.extracted_filename is not None
         xpath = (
             data_cache_root
             / self.path_extension
             / EXTRACTED_DIR_NAME
-            / self.dst_filename
+            / self.extracted_filename
         )
         self.extractor.extract(rpath, xpath)
         return xpath
