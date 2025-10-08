@@ -6,6 +6,7 @@ GWASLAB_EFFECT_ALLELE_COL = "EA"
 GWASLAB_NON_EFFECT_ALLELE_COL = "NEA"
 GWASLAB_INFO_SCORE_COL = "INFO"
 GWASLAB_EFFECT_ALLELE_FREQ_COL = "EAF"
+GWASLAB_SAMPLE_SIZE_COLUMN = "N"
 # see
 # https://github.com/Cloufield/formatbook
 # for column names in different file formats

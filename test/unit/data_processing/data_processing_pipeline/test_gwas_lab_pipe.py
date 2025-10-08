@@ -21,6 +21,10 @@ def test_pipe_rename(tmp_path: Path):
         basic_check=True,
         genome_build="38",
         filter_hapmap3=False,
+        filter_indels=True,
+        filter_palindromic=True,
+        exclude_hla=False,
+        exclude_sexchr=False,
     )
     result = pipe.process(x=nlf, data_cache_root=tmp_path)
     pd_result = result.collect().to_pandas()
