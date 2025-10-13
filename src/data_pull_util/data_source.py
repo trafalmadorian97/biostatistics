@@ -16,7 +16,7 @@ EXTRACTED_DIR_NAME = "extracted"
 
 class DataRetriever(ABC):
     @abstractmethod
-    def retrieve(self, local_dst: Path):
+    def retrieve(self, local_dst: Path, expected_name: str | None = None):
         pass
 
 
@@ -38,13 +38,14 @@ class URLDataRetriever(DataRetriever):
             return True
         return False
 
-    def retrieve(self, local_dst: Path):
+    def retrieve(self, local_dst: Path, expected_name: str | None = None):
         if self._already_exists(local_dst):
             return
         local_dst.parent.mkdir(parents=True, exist_ok=True)
         download_file(
             url=self.url,
             local_path=local_dst,
+            expected_filename=expected_name,
         )
 
 
@@ -52,7 +53,7 @@ class URLDataRetriever(DataRetriever):
 class CopyDataRetriever(DataRetriever):
     src_path: Path
 
-    def retrieve(self, local_dst: Path):
+    def retrieve(self, local_dst: Path, expected_name: str | None = None):
         local_dst.parent.mkdir(parents=True, exist_ok=True)
         local_dst.write_bytes(self.src_path.read_bytes())
 
@@ -152,7 +153,7 @@ class BasicDataSource(DataSource):
 
     def raw_path(self, data_cache_root: Path) -> Path:
         rpath = data_cache_root / self.path_extension / RAW_DIR_NAME / self.raw_filename
-        self.retriever.retrieve(rpath)
+        self.retriever.retrieve(rpath, expected_name=self.raw_filename)
         return rpath
 
     def extracted_path(self, data_cache_root: Path) -> Path:

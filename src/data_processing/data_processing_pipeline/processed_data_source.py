@@ -79,6 +79,7 @@ class TSVDataOpener(DataOpener):
 @frozen
 class WhiteSpaceDelimitedDataOpener(DataOpener):
     path_extension: PurePath | None = None
+    skip_rows: int | None = None
 
     def open_data(self, data_path: Path) -> narwhals.LazyFrame:
         data_path = (
@@ -87,7 +88,7 @@ class WhiteSpaceDelimitedDataOpener(DataOpener):
             else data_path / self.path_extension
         )
         return narwhals.from_native(
-            pd.read_csv(data_path, delim_whitespace=True)
+            pd.read_csv(data_path, delim_whitespace=True, skiprows=self.skip_rows)
         ).lazy()
 
 
@@ -131,6 +132,8 @@ class ParquetCachingProcessedDataSource(ProcessedDataSource):
     def processed_data(self, data_cache_root: Path) -> narwhals.LazyFrame:
         if not self._cached_processed_data_exists(data_cache_root):
             self._prepare_processed_data(data_cache_root)
+        else:
+            print("Processed Data already exists.  Scanning")
         return narwhals.scan_parquet(
             self._cached_processed_data_path(data_cache_root), backend="polars"
         )
