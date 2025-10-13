@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path, PurePath
 
 import narwhals
+import pandas as pd
 import polars
 from attrs import frozen
 
@@ -23,14 +24,84 @@ class DataOpener(ABC):
         pass
 
 
+@frozen
 class ParquetDataOpener(DataOpener):
+    path_extension: PurePath | None
+
     def open_data(self, data_path: Path) -> narwhals.LazyFrame:
+        data_path = (
+            data_path
+            if self.path_extension is None
+            else data_path / self.path_extension
+        )
         return narwhals.from_native(polars.scan_parquet(data_path))
 
 
-class TSVDataOpener(DataOpener):
+@frozen
+class SSVDataOpener(DataOpener):
+    path_extension: PurePath | None = None
+
     def open_data(self, data_path: Path) -> narwhals.LazyFrame:
+        data_path = (
+            data_path
+            if self.path_extension is None
+            else data_path / self.path_extension
+        )
         return narwhals.from_native(polars.scan_csv(data_path, separator=" "))
+
+
+@frozen
+class TSVDataOpener(DataOpener):
+    path_extension: PurePath | None = None
+
+    def open_data(self, data_path: Path) -> narwhals.LazyFrame:
+        data_path = (
+            data_path
+            if self.path_extension is None
+            else data_path / self.path_extension
+        )
+        return narwhals.from_native(polars.scan_csv(data_path, separator="\t"))
+
+
+@frozen
+class TSVDataOpener(DataOpener):
+    path_extension: PurePath | None = None
+
+    def open_data(self, data_path: Path) -> narwhals.LazyFrame:
+        data_path = (
+            data_path
+            if self.path_extension is None
+            else data_path / self.path_extension
+        )
+        return narwhals.from_native(polars.scan_csv(data_path, separator="\t"))
+
+
+@frozen
+class WhiteSpaceDelimitedDataOpener(DataOpener):
+    path_extension: PurePath | None = None
+
+    def open_data(self, data_path: Path) -> narwhals.LazyFrame:
+        data_path = (
+            data_path
+            if self.path_extension is None
+            else data_path / self.path_extension
+        )
+        return narwhals.from_native(
+            pd.read_csv(data_path, delim_whitespace=True)
+        ).lazy()
+
+
+# @frozen
+# class TextReplacingDataOpener(DataOpener):
+#     target: str
+#     replacement:str
+#     separator: str
+#     def open_data(self, data_path: Path) -> narwhals.LazyFrame:
+#         with open(data_path, "r") as file:
+#             content = file.read()
+#         content = content.replace(self.target, self.replacement)
+#         stringio = StringIO(content)
+#         return narwhals.from_native(polars.scan_csv(stringio, separator=self.separator))
 
 
 @frozen
@@ -38,15 +109,11 @@ class ParquetCachingProcessedDataSource(ProcessedDataSource):
     data_source: DataSource
     input_opener: DataOpener
     processed_filename: str
-    processed_path_extension_from_root: PurePath
+    processed_path_extension: PurePath
     pipe: DataProcessingPipe
 
     def _cached_processed_data_path(self, data_cache_root: Path) -> Path:
-        return (
-            data_cache_root
-            / self.processed_path_extension_from_root
-            / self.processed_filename
-        )
+        return data_cache_root / self.processed_path_extension / self.processed_filename
 
     def _cached_processed_data_exists(self, data_cache_root: Path) -> bool:
         return self._cached_processed_data_path(

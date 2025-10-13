@@ -3,7 +3,7 @@ from pathlib import Path, PurePath
 from src.data_processing.data_processing_pipeline.gwas_lab_pipe import GWASLabPipe
 from src.data_processing.data_processing_pipeline.processed_data_source import (
     ParquetCachingProcessedDataSource,
-    TSVDataOpener,
+    SSVDataOpener,
 )
 from src.data_processing.using_gwaslab.gwaslab_constants import (
     GWASLAB_EFFECT_ALLELE_COL,
@@ -28,8 +28,8 @@ def test_preprocess_and_drop_indel(tmp_path: Path):
     processed_source = ParquetCachingProcessedDataSource(
         data_source=source,
         processed_filename="processed_data.parquet",
-        input_opener=TSVDataOpener(),
-        processed_path_extension_from_root=PurePath("my_processed_data"),
+        input_opener=SSVDataOpener(),
+        processed_path_extension=PurePath("my_processed_data"),
         pipe=GWASLabPipe(
             basic_check=True,
             genome_build="38",
@@ -39,6 +39,8 @@ def test_preprocess_and_drop_indel(tmp_path: Path):
             exclude_hla=False,
             exclude_sexchr=False,
             harmonize_options=None,
+            liftover_to=None,
+            fmt="regenie",
         ),
     )
     frame = (
