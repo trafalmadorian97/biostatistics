@@ -11,11 +11,13 @@ from src.data_processing.data_processing_pipeline.data_processing_pipe import (
     DataProcessingPipe,
 )
 from src.data_processing.using_gwaslab.gwaslab_constants import (
+    GWASLAB_STATUS_COL,
     GwaslabKnownFormat,
     GWASLabVCFRef,
 )
 
 GenomeBuildMode = Literal["infer", "19", "38"]
+GenomeBuild = Literal["19", "38"]
 
 
 @frozen
@@ -28,13 +30,14 @@ class HarmonizationOptions:
     ref_seq: str
     cores: int
     check_ref_files: bool
+    drop_missing_from_ref: bool
 
 
 def _do_harmonization(
     sumstats: gl.Sumstats, basic_check: bool, options: HarmonizationOptions
 ):
     if options.check_ref_files:
-        gwaslab.download_ref(name=options.ref_infer, overwrite=False)
+        gwaslab.download_ref(name=options.ref_infer.name, overwrite=False)
         gwaslab.download_ref(name=options.ref_seq, overwrite=False)
     sumstats.harmonize(
         basic_check=basic_check,
@@ -42,6 +45,51 @@ def _do_harmonization(
         ref_seq=gl.get_path(options.ref_seq),
         ref_infer=gl.get_path(options.ref_infer.name),
         ref_alt_freq=options.ref_infer.ref_alt_freq,
+    )
+    if options.drop_missing_from_ref:
+        # see meaning of status codes here: https://cloufield.github.io/gwaslab/StatusCode/
+        missing_from_ref = sumstats.data[GWASLAB_STATUS_COL].str[5:6] == "8"
+        print(
+            f"Dropping {missing_from_ref.sum()} variants that are missing from the reference"
+        )
+        sumstats.data = sumstats.data.loc[~missing_from_ref, :]
+
+
+@frozen
+class GWASLabColumnSpecifiers:
+    rsid: str | None
+    snpid: str | None
+    chrom: str
+    pos: str
+    ea: str
+    nea: str
+    OR: str | None
+    se: str | None
+    p: str
+    info: str
+
+
+def _get_sumstats(
+    x: narwhals.LazyFrame, fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers
+) -> gl.Sumstats:
+    if isinstance(fmt, GWASLabColumnSpecifiers):
+        return gl.Sumstats(
+            x.collect().to_pandas(),
+            rsid=fmt.rsid,
+            snpid=fmt.snpid,
+            chrom=fmt.chrom,
+            pos=fmt.pos,
+            ea=fmt.ea,
+            nea=fmt.nea,
+            OR=fmt.OR,
+            se=fmt.se,
+            p=fmt.p,
+            info=fmt.info,
+        )
+
+    return gl.Sumstats(
+        x.collect().to_pandas(),
+        fmt=fmt,
     )
 
 
@@ -64,23 +112,26 @@ class GWASLabPipe(DataProcessingPipe):
     exclude_hla: bool
     exclude_sexchr: bool
     harmonize_options: HarmonizationOptions | None
-    fmt: GwaslabKnownFormat = "regenie"
+    liftover_to: GenomeBuild | None
+    fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers
 
     def process(
         self, x: narwhals.LazyFrame, data_cache_root: PurePath
     ) -> narwhals.LazyFrame:
-        sumstats = gl.Sumstats(
-            x.collect().to_pandas(),
-            fmt=self.fmt,
-        )
-        if self.basic_check:
-            sumstats.basic_check()
+        sumstats = _get_sumstats(x, self.fmt)
         if self.genome_build == "infer":
             sumstats.infer_build()
+            build = sumstats.meta["gwaslab"]["genome_build"]
             forced_build = None
-            print(f"Build is {sumstats.meta['gwaslab']['genome_build']}")
+            print(f"Build is {build}")
         else:
-            forced_build = self.genome_build
+            build = self.genome_build
+            forced_build = build
+        if self.basic_check:
+            sumstats.basic_check()
+
+        if self.liftover_to is not None and (build != self.liftover_to):
+            sumstats.liftover(to_build=self.liftover_to, from_build=forced_build)
         if self.filter_hapmap3:
             sumstats.filter_hapmap3(inplace=True, build=forced_build)
         if self.filter_indels:
@@ -97,5 +148,12 @@ class GWASLabPipe(DataProcessingPipe):
                 basic_check=(not self.basic_check),
                 options=self.harmonize_options,
             )
-
+        _sumstats_raise_on_error(sumstats)
+        print(f"Finished gwaslab pipe.  Data has shape {sumstats.data.shape}")
         return narwhals.from_native(sumstats.data).lazy()
+
+
+def _sumstats_raise_on_error(sumstats: gl.Sumstats):
+    error_status = sumstats.data[GWASLAB_STATUS_COL] == "9999999"
+    if error_status.any():
+        raise ValueError("GWASLAB Error")

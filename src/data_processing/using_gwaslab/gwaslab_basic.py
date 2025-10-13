@@ -7,7 +7,7 @@ import pandas as pd
 from matplotlib.figure import Figure
 
 from src.data_processing.using_gwaslab.gwaslab_constants import (
-    GWASLAB_EUR_1K_GENOMES_NAME,
+    GWASLAB_EUR_1K_GENOMES_NAME_38,
 )
 from src.data_types.variant import Variant, df_to_variants
 from src.general.timing_util import time_this
@@ -61,7 +61,7 @@ def plot_regional_around_variant(
 ) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     with time_this("generating regional plot"):
-        vcf_path = gl.get_path(GWASLAB_EUR_1K_GENOMES_NAME) if with_ld else None
+        vcf_path = gl.get_path(GWASLAB_EUR_1K_GENOMES_NAME_38) if with_ld else None
         sumstats.plot_mqq(
             mode="r",
             skip=2,

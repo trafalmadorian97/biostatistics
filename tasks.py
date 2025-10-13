@@ -71,10 +71,10 @@ def get_eur_1k_genomes_gwaslab(c):
     import gwaslab as gl
 
     from src.data_processing.using_gwaslab.gwaslab_constants import (
-        GWASLAB_EUR_1K_GENOMES_NAME,
+        GWASLAB_EUR_1K_GENOMES_NAME_38,
     )
 
-    gl.download_ref(GWASLAB_EUR_1K_GENOMES_NAME)
+    gl.download_ref(GWASLAB_EUR_1K_GENOMES_NAME_38)
 
 
 @task

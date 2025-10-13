@@ -26,6 +26,8 @@ def test_pipe_rename(tmp_path: Path):
         exclude_hla=False,
         exclude_sexchr=False,
         harmonize_options=None,
+        fmt="regenie",
+        liftover_to=None,
     )
     result = pipe.process(x=nlf, data_cache_root=tmp_path)
     pd_result = result.collect().to_pandas()
