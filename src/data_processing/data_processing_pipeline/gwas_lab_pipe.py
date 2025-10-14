@@ -67,6 +67,12 @@ class GWASLabColumnSpecifiers:
     se: str | None
     p: str
     info: str
+    eaf: str | None = None
+    neaf: str | None = None
+    beta: str | None = None
+    ncase: str | None = None
+    ncontrol: str | None = None
+    neff: str | None = None
 
 
 def _get_sumstats(
@@ -85,6 +91,12 @@ def _get_sumstats(
             se=fmt.se,
             p=fmt.p,
             info=fmt.info,
+            eaf=fmt.eaf,
+            neaf=fmt.neaf,
+            beta=fmt.beta,
+            ncase=fmt.ncase,
+            ncontrol=fmt.ncontrol,
+            neff=fmt.neff,
         )
 
     return gl.Sumstats(

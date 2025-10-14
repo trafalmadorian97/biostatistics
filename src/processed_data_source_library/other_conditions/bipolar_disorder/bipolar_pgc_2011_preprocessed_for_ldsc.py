@@ -15,6 +15,9 @@ from src.data_processing.data_processing_pipeline.processed_data_source import (
     ParquetCachingProcessedDataSource,
     WhiteSpaceDelimitedDataOpener,
 )
+from src.data_processing.data_processing_pipeline.set_sample_size_pipe import (
+    SetSampleSizePipe,
+)
 from src.data_processing.using_gwaslab.gwaslab_constants import (
     GWASLAB_EUR_1K_GENOMES_REF_19,
     GWASLAB_HUMAN_GENOME_NAME_19,
@@ -66,6 +69,9 @@ BIPOLAR_PGC_2011_PROC_FOR_LDSC = ParquetCachingProcessedDataSource(
             # MinorAlleleFreqFilterPipe(
             #     min_maf=0.01
             # ),
+            SetSampleSizePipe(
+                sample_size=16731,  # see abstract above
+            ),
             InfoFilterPipe(
                 info_low_bound=0.9,
             ),
