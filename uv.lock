@@ -84,6 +84,7 @@ dependencies = [
     { name = "pandasgwas" },
     { name = "plotly" },
     { name = "polars" },
+    { name = "py3-wget" },
     { name = "pytest" },
     { name = "requests" },
     { name = "ruff" },
@@ -108,6 +109,7 @@ requires-dist = [
     { name = "pandasgwas", specifier = ">=1.2.2" },
     { name = "plotly", specifier = ">=6.3.0" },
     { name = "polars", specifier = ">=1.33.1" },
+    { name = "py3-wget", specifier = ">=1.0.13" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "ruff", specifier = ">=0.13.2" },
@@ -932,6 +934,18 @@ name = "progressbar33"
 version = "2.4"
 source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/71/fc/7c8e01f41a6e671d7b11be470eeb3d15339c75ce5559935f3f55890eec6b/progressbar33-2.4.tar.gz", hash = "sha256:51fe0d9b3b4023db2f983eeccdfc8c9846b84db8443b9bee002c7f58f4376eff", size = 10184, upload-time = "2014-08-29T08:55:20.581Z" }
+
+[[package]]
+name = "py3-wget"
+version = "1.0.13"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tqdm" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/eb/b1/33b716985b9e691737e9697849bbbb265df96bef2f247cafb95207cdb84c/py3_wget-1.0.13.tar.gz", hash = "sha256:036e19e6dd5a766ca15c5400a6d2150227dd2a0090852e99ac58cb27977bd833", size = 13028, upload-time = "2025-07-26T19:47:54.452Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/47/22/bd577aa6743cd14a8fedd0cea0f3847ba9526a14119425b273b02a77fd5c/py3_wget-1.0.13-py3-none-any.whl", hash = "sha256:9393efef98d5ec3a5c8e1518b415f70c299f820d54121cf56955006f09a5db83", size = 11600, upload-time = "2025-07-26T19:47:53.642Z" },
+]
 
 [[package]]
 name = "pyarrow"

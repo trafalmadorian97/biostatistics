@@ -30,3 +30,5 @@ exclude = [
 [lint]
 select= ["I","F401","F541","UP"]
 ignore =["UP007", "UP035"]
+[format]
+docstring-code-format = true
