@@ -1,6 +1,6 @@
 from pathlib import PurePath
 
-from src.data_preprocessing_scripts.file_path_constants import DATA_DEFAULT_ROOT
+from src.data_preprocessing_scripts.file_path_constants import DEFAULT_DATA_CACHE_ROOT
 from src.data_pull_util.data_source import (
     BasicDataSource,
     URLDataRetriever,
@@ -22,5 +22,5 @@ DEPRESSION_PGC_2011_DATA_SOURCE = BasicDataSource(
 )
 
 if __name__ == "__main__":
-    result = DEPRESSION_PGC_2011_DATA_SOURCE.extracted_path(DATA_DEFAULT_ROOT)
+    result = DEPRESSION_PGC_2011_DATA_SOURCE.extracted_path(DEFAULT_DATA_CACHE_ROOT)
     # print(result)
