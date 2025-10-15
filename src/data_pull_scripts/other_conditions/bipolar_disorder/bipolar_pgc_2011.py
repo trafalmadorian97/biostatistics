@@ -1,6 +1,6 @@
 from pathlib import Path, PurePath
 
-from src.data_preprocessing_scripts.file_path_constants import DATA_DEFAULT_ROOT
+from src.data_preprocessing_scripts.file_path_constants import DEFAULT_DATA_CACHE_ROOT
 from src.data_pull_util.data_source import (
     BasicDataSource,
     URLDataRetriever,
@@ -36,5 +36,5 @@ BIPOLAR_PGC_2011_DATA_SOURCE = BasicDataSource(
 )
 
 if __name__ == "__main__":
-    BIPOLAR_PGC_2011_DATA_SOURCE.extracted_path(DATA_DEFAULT_ROOT)
+    BIPOLAR_PGC_2011_DATA_SOURCE.extracted_path(DEFAULT_DATA_CACHE_ROOT)
     # print(result)

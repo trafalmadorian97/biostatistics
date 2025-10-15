@@ -39,7 +39,9 @@ def download_file(url: str, local_path: Path, expected_filename: str | None):
 
         print(f"Downloading from {url}")
         with open(local_path, "wb") as f:
-            for chunk in tqdm(response.iter_content(chunk_size=8192)):
+            for chunk in tqdm(
+                response.iter_content(chunk_size=8192),
+            ):
                 f.write(chunk)
         print(f"File '{local_path}' downloaded successfully.")
         print(f"Filesize is {os.path.getsize(local_path)} bytes.")

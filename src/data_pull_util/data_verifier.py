@@ -51,13 +51,15 @@ class FileSizeVerifier(DataVerifier):
     Verifier that works by checking file size
     """
 
-    expected_size: int
+    expected_size: int | None
 
     def _measure_size(self, data_path: Path) -> int:
         return data_path.stat().st_size
 
     def verify(self, data_path: Path) -> bool:
         if not data_path.exists():
+            return False
+        if self.expected_size is None:
             return False
         return self.expected_size == self._measure_size(data_path)
 

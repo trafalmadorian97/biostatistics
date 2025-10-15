@@ -1,7 +1,10 @@
 from pathlib import PurePath
 
-from src.data_preprocessing_scripts.file_path_constants import DATA_DEFAULT_ROOT
+from src.data_preprocessing_scripts.file_path_constants import DEFAULT_DATA_CACHE_ROOT
 from src.data_processing.data_processing_pipeline.composite_pipe import CompositePipe
+from src.data_processing.data_processing_pipeline.compute_beta_pipe import (
+    ComputeBetaPipe,
+)
 from src.data_processing.data_processing_pipeline.filter_freq_range_pipe import (
     FilterFreqRangePipe,
 )
@@ -76,8 +79,9 @@ BIPOLAR_PGC_2011_PROC_FOR_LDSC = ParquetCachingProcessedDataSource(
                 info_low_bound=0.9,
             ),
             FilterFreqRangePipe(),
+            ComputeBetaPipe(),
         ]
     ),
 )
 if __name__ == "__main__":
-    BIPOLAR_PGC_2011_PROC_FOR_LDSC.processed_data(DATA_DEFAULT_ROOT)
+    BIPOLAR_PGC_2011_PROC_FOR_LDSC.processed_data(DEFAULT_DATA_CACHE_ROOT)

@@ -1,6 +1,6 @@
 from pathlib import PurePath
 
-from src.data_preprocessing_scripts.file_path_constants import DATA_DEFAULT_ROOT
+from src.data_preprocessing_scripts.file_path_constants import DEFAULT_DATA_CACHE_ROOT
 from src.data_pull_util.data_source import BasicDataSource, URLDataRetriever
 
 SCHIZOPHRENIA_PGC_2022_EUROPEAN_DATA_SOURCE = BasicDataSource(
@@ -16,4 +16,4 @@ SCHIZOPHRENIA_PGC_2022_EUROPEAN_DATA_SOURCE = BasicDataSource(
 
 
 if __name__ == "__main__":
-    print(SCHIZOPHRENIA_PGC_2022_EUROPEAN_DATA_SOURCE.raw_path(DATA_DEFAULT_ROOT))
+    print(SCHIZOPHRENIA_PGC_2022_EUROPEAN_DATA_SOURCE.raw_path(DEFAULT_DATA_CACHE_ROOT))

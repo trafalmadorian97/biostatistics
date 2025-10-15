@@ -1,7 +1,8 @@
 from pathlib import PurePath
 
-from src.data_preprocessing_scripts.file_path_constants import DATA_DEFAULT_ROOT
+from src.data_preprocessing_scripts.file_path_constants import DEFAULT_DATA_CACHE_ROOT
 from src.data_processing.data_processing_pipeline.composite_pipe import CompositePipe
+from src.data_processing.data_processing_pipeline.estimate_n_pipe import EstimateNPipe
 from src.data_processing.data_processing_pipeline.filter_freq_range_pipe import (
     FilterFreqRangePipe,
 )
@@ -18,6 +19,7 @@ from src.data_processing.data_processing_pipeline.processed_data_source import (
 from src.data_processing.using_gwaslab.gwaslab_constants import (
     GWASLAB_EUR_1K_GENOMES_REF_19,
     GWASLAB_HUMAN_GENOME_NAME_19,
+    GWASLAB_SAMPLE_SIZE_COLUMN,
 )
 from src.data_pull_scripts.other_conditions.schizophrenia.schizophrenia_pgc_2022 import (
     SCHIZOPHRENIA_PGC_2022_EUROPEAN_DATA_SOURCE,
@@ -50,6 +52,7 @@ SCHIZOPHRENIA_EUROPEAN_PGC_2022_PROC_FOR_LDSC = ParquetCachingProcessedDataSourc
     ),
     pipe=CompositePipe(
         [
+            EstimateNPipe(),
             GWASLabPipe(
                 basic_check=True,
                 genome_build="infer",
@@ -81,6 +84,7 @@ SCHIZOPHRENIA_EUROPEAN_PGC_2022_PROC_FOR_LDSC = ParquetCachingProcessedDataSourc
                     neff="NEFF",
                     snpid=None,
                     OR=None,
+                    n=GWASLAB_SAMPLE_SIZE_COLUMN,
                 ),
             ),
             # MinorAlleleFreqFilterPipe(
@@ -94,4 +98,6 @@ SCHIZOPHRENIA_EUROPEAN_PGC_2022_PROC_FOR_LDSC = ParquetCachingProcessedDataSourc
     ),
 )
 if __name__ == "__main__":
-    SCHIZOPHRENIA_EUROPEAN_PGC_2022_PROC_FOR_LDSC.processed_data(DATA_DEFAULT_ROOT)
+    SCHIZOPHRENIA_EUROPEAN_PGC_2022_PROC_FOR_LDSC.processed_data(
+        DEFAULT_DATA_CACHE_ROOT
+    )
