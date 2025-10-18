@@ -10,13 +10,14 @@ DECODE_ME_EXTRACTED_DATA_PATH = Path("data/DecodeME/extracted")
 OSF_FILE_NAME = "osfstorage"
 DECODE_ME_RAW_OSF_DATA_PATH = DECODE_ME_RAW_DATA_PATH / OSF_FILE_NAME
 UNIT_TEST_PATH = Path("test/unit")
+NEW_UNIT_TEST_PATH = Path("test_src_new/unit")
 
 
 # dev tasks
 @task
 def test(c):
     print("Running unit and integration tests with pytest")
-    c.run(f"uv run -m pytest {UNIT_TEST_PATH}", pty=True)
+    c.run(f"uv run -m pytest {UNIT_TEST_PATH} {NEW_UNIT_TEST_PATH}", pty=True)
 
 
 @task
