@@ -6,9 +6,11 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "attrs>=25.3.0",
+    "emoji>=2.15.0",
     "geneview>=0.2.1",
     "gwaslab==3.6.8",
     "invoke>=2.2.0",
+    "loguru>=0.7.3",
     "matplotlib>=3.8",
     "mypy>=1.18.2",
     "narwhals>=2.6.0",
@@ -25,6 +27,7 @@ dependencies = [
     "requests>=2.32.5",
     "ruff>=0.13.2",
     "tqdm>=4.67.1",
+    "types-networkx>=3.5.0.20251001",
     "types-requests>=2.32.4.20250913",
     "types-tqdm>=4.67.0.20250809",
     "universal-pathlib>=0.3.4",

@@ -1,11 +1,9 @@
-from typing import Mapping
+from typing import Iterator, Mapping
 
 from attrs import frozen
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.base_meta import Meta
-from src_new.build_system.meta.file_meta import FileMeta
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.tasks.base_tasks import Tasks
 
@@ -18,5 +16,14 @@ class SimpleTasks(Tasks):
         for meta, task in self._tasks.items():
             assert task.meta == meta
 
-    def __call__[A: Asset](self, meta: Meta[A]) -> Task[A]:
+    def __getitem__[A: Asset](self, meta: Meta[A]) -> Task[A]:
         return self._tasks[meta]
+
+    def __len__(self) -> int:
+        return len(self._tasks)
+
+    def __iter__(self) -> Iterator[Meta]:
+        yield from self._tasks
+
+
+# def

@@ -12,3 +12,10 @@ class WF(ABC):
         self, url: str, md5_hash: str | None, local_path: WritablePath
     ) -> None:
         pass
+
+
+class DummyWF(WF):
+    def download_from_url(
+        self, url: str, md5_hash: str | None, local_path: WritablePath
+    ) -> None:
+        raise NotImplementedError("Not implemented")

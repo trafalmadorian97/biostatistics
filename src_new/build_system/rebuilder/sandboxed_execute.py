@@ -25,7 +25,9 @@ def sandboxed_execute[A: Asset](
     target_path = meta_to_path(meta)
     with tempfile.TemporaryDirectory() as temp_dir:
         temp_path = Path(temp_dir) / "temp"
+        temp_path.mkdir(parents=True, exist_ok=True)
         result = task.execute(scratch_dir=temp_path, fetch=fetch, wf=wf)
+        target_path.parent.mkdir(exist_ok=True, parents=True)
         result = _move_asset(result, target_path)
     return result
 

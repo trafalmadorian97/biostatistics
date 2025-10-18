@@ -1,4 +1,4 @@
-from attrs import frozen, define
+from attrs import define
 from pathlib_abc import WritablePath
 
 from src_new.build_system.asset.base_asset import Asset

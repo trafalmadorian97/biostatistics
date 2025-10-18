@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-
 from src_new.build_system.meta.base_meta import Meta
 
 

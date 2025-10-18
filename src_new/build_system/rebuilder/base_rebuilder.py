@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.base_meta import Meta
 from src_new.build_system.rebuilder.base_fetch import Fetch
+from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF
 
@@ -17,6 +17,12 @@ class Rebuilder[Info](ABC):
 
     @abstractmethod
     def rebuild[A: Asset](
-        self, task: Task[A], asset: A | None, fetch: Fetch, wf: WF, info: Info
+        self,
+        task: Task[A],
+        asset: A | None,
+        fetch: Fetch,
+        wf: WF,
+        info: Info,
+        meta_to_path: MetaToPath,
     ) -> tuple[A, Info]:
         pass

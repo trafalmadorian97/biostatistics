@@ -13,5 +13,5 @@ class SimpleMetaToPath(MetaToPath):
 
     def __call__(self, m: Meta) -> Path:
         if isinstance(m, SimpleFileMeta):
-            return self.root / m.short_id
+            return self.root / "other_files" / m.short_id
         raise ValueError(f"Unknown meta {m} of type {type(m)}.")

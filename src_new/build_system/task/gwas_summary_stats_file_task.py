@@ -2,7 +2,6 @@ from attrs import frozen
 from pathlib_abc import WritablePath
 
 from src_new.build_system.asset.file_asset import FileAsset
-from src_new.build_system.meta.base_meta import Meta
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
 from src_new.build_system.rebuilder.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
