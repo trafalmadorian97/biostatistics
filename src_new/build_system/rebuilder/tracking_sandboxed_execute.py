@@ -1,6 +1,6 @@
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.meta.base_meta import Meta
-from src_new.build_system.rebuilder.base_fetch import Fetch
+from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 from src_new.build_system.rebuilder.sandboxed_execute import sandboxed_execute
 from src_new.build_system.task.base_task import Task
