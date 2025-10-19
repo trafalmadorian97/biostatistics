@@ -1,9 +1,11 @@
+import shutil
 import tempfile
 from pathlib import Path
 
 import attr
 
 from src_new.build_system.asset.base_asset import Asset
+from src_new.build_system.asset.directory_asset import DirectoryAsset
 from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
@@ -33,7 +35,9 @@ def sandboxed_execute[A: Asset](
 
 
 def _move_asset[A: Asset](asset: A, dst: Path) -> A:
-    if isinstance(asset, FileAsset):
+    if isinstance(asset, (FileAsset, DirectoryAsset)):
+        if dst.is_dir():
+            shutil.rmtree(dst)
         return attr.evolve(
             asset,
             path=asset.path.rename(dst),

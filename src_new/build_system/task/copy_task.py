@@ -7,12 +7,12 @@ from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.base_meta import Meta
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
-from src_new.build_system.task.base_task import Task
+from src_new.build_system.task.base_task import GeneratingTask, Task
 from src_new.build_system.wf.base_wf import WF
 
 
 @frozen
-class CopyTask(Task[FileAsset]):
+class CopyTask(GeneratingTask[FileAsset]):
     """
     Copies a file from a dependency
     Used for testing

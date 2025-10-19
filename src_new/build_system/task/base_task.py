@@ -7,7 +7,7 @@ from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.wf.base_wf import WF
 
 
-class Task[A: Asset](ABC):
+class GeneratingTask[A: Asset](ABC):
     """
     Instructions for materializing an asset.
     """
@@ -19,7 +19,7 @@ class Task[A: Asset](ABC):
 
     @property
     @abstractmethod
-    def deps(self) -> list["Task"]:
+    def deps(self) -> list["GeneratingTask"]:
         pass
 
     @abstractmethod
@@ -30,3 +30,6 @@ class Task[A: Asset](ABC):
         wf: WF,
     ) -> A:
         pass
+
+
+Task = GeneratingTask

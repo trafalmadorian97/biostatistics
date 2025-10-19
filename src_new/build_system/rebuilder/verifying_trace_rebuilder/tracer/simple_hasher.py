@@ -5,6 +5,7 @@ from typing import Any, Callable
 from attrs import frozen
 
 from src_new.build_system.asset.base_asset import Asset
+from src_new.build_system.asset.directory_asset import DirectoryAsset
 from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.base_tracer import (
     Tracer,
@@ -25,6 +26,15 @@ class SimpleHasher(Tracer):
                 while chunk := f.read(self.chunk_size):
                     file_hash.update(chunk)
             return file_hash.hexdigest()
+        if isinstance(a, DirectoryAsset):
+            dir_hash = self.hash_constructor()
+            for file_path in sorted(a.path.rglob("*")):
+                if file_path.is_file():
+                    with open(file_path, "rb") as f:
+                        while chunk := f.read(self.chunk_size):
+                            dir_hash.update(chunk)
+            return dir_hash.hexdigest()
+
         raise ValueError(f"Unknown asset {a} of type{type(a)}")
 
     @classmethod
