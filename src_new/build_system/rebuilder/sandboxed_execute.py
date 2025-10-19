@@ -5,7 +5,7 @@ import attr
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.file_asset import FileAsset
-from src_new.build_system.rebuilder.base_fetch import Fetch
+from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF

@@ -6,7 +6,7 @@ from attrs import frozen
 from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.base_meta import Meta
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
-from src_new.build_system.rebuilder.base_fetch import Fetch
+from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF
 

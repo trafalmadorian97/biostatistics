@@ -5,8 +5,9 @@ from loguru import logger
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.meta.base_meta import Meta
-from src_new.build_system.rebuilder.base_fetch import Fetch
 from src_new.build_system.rebuilder.base_rebuilder import Rebuilder
+from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
+from src_new.build_system.rebuilder.fetch.restricted_fetch import RestrictedFetch
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 from src_new.build_system.rebuilder.tracking_sandboxed_execute import (
     tracking_sandboxed_execute,
@@ -98,7 +99,7 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
             task=task,
             meta_to_path=meta_to_path,
             wf=wf,
-            fetch=fetch,
+            fetch=RestrictedFetch.from_task(fetch=fetch, task=task),
         )
         deps_traced = [(k, self.tracer(v)) for k, v in deps]
         update_verifying_trace_info_in_place(
