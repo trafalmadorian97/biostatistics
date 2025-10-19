@@ -1,9 +1,13 @@
+from pathlib import Path
 from typing import Callable
 
-from attrs import define, frozen
+import attr
+import yaml
+from attrs import define, field, frozen
 from loguru import logger
 
 from src_new.build_system.asset.base_asset import Asset
+from src_new.build_system.meta.AnyMeta import AnyMeta
 from src_new.build_system.meta.base_meta import Meta
 from src_new.build_system.rebuilder.base_rebuilder import Rebuilder
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
@@ -15,18 +19,22 @@ from src_new.build_system.rebuilder.tracking_sandboxed_execute import (
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.base_tracer import (
     Tracer,
 )
+from src_new.build_system.serialization.converter import CONVERTER_FOR_SERIALIZATION
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF
+
+TraceRecord = tuple[str, list[tuple[AnyMeta, str]]]
 
 
 @define
 class VerifyingTraceInfo:
     """
+    Stores persistent data relevant to the verifying trace rebuilder
     Note that this is mutable
     """
 
-    trace_store: dict[Meta, tuple[str, list[tuple[Meta, str]]]]
-    must_rebuild: set[Meta]
+    trace_store: dict[AnyMeta, TraceRecord]
+    must_rebuild: set[AnyMeta] = field(factory=set)
 
     @classmethod
     def empty(cls) -> "VerifyingTraceInfo":
@@ -34,6 +42,41 @@ class VerifyingTraceInfo:
             trace_store={},
             must_rebuild=set(),
         )
+
+    def serialize(self, path: Path) -> None:
+        to_unstruc = attr.evolve(self, must_rebuild=set())
+        conv = CONVERTER_FOR_SERIALIZATION
+        unstructured = [
+            (
+                conv.unstructure(key, unstructure_as=AnyMeta),
+                _unstructure_trace_record(value),
+            )
+            for key, value in to_unstruc.trace_store.items()
+        ]
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "w") as outfile:
+            yaml.dump(unstructured, outfile, default_flow_style=False)
+
+    @classmethod
+    def deserialize(cls, path: Path) -> "VerifyingTraceInfo":
+        conv = CONVERTER_FOR_SERIALIZATION
+        with open(path) as infile:
+            unstructured = yaml.load(infile, Loader=yaml.FullLoader)
+
+        trace_store: dict = {
+            conv.structure(key, AnyMeta): conv.structure(value, TraceRecord)
+            for key, value in unstructured
+        }
+
+        return cls(trace_store=trace_store, must_rebuild=set())
+
+
+def _unstructure_trace_record(item: TraceRecord) -> tuple[str, list[tuple[dict, str]]]:
+    conv = CONVERTER_FOR_SERIALIZATION
+    return item[0], [
+        (conv.unstructure(record[0], unstructure_as=AnyMeta), record[1])
+        for record in item[1]
+    ]
 
 
 def update_verifying_trace_info_in_place(
