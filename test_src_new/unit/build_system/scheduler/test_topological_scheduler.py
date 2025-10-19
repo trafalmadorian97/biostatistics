@@ -15,7 +15,7 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_re
 from src_new.build_system.scheduler.topological_scheduler import topological
 from src_new.build_system.task.copy_task import CopyTask
 from src_new.build_system.task.counting_task import CountingTask
-from src_new.build_system.task.external_copy_task import ExternalCopyTask
+from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTask
 from src_new.build_system.tasks.simple_tasks import SimpleTasks
 from src_new.build_system.wf.base_wf import DummyWF
 
@@ -29,7 +29,7 @@ def test_file_copying_task(tmp_path: Path):
     external_file = external_dir / "external_file.txt"
     external_file.write_text("abc123")
     task1 = CountingTask(
-        ExternalCopyTask(meta=SimpleFileMeta("file_1"), external_path=external_file)
+        ExternalFileCopyTask(meta=SimpleFileMeta("file_1"), external_path=external_file)
     )
 
     task2 = CountingTask(

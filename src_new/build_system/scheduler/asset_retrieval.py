@@ -15,4 +15,5 @@ def get_asset_if_exists[A: Asset](
         path = meta_to_path(meta)
         if path.is_file():
             return cast(A, FileAsset(path))
-    return None
+        return None
+    raise ValueError(f"Unknown asset type{asset_type}")
