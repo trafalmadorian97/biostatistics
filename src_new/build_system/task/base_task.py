@@ -32,29 +32,4 @@ class GeneratingTask[A: Asset](ABC):
         pass
 
 
-class SelectingTask[A: Asset](ABC):
-    """
-    Instructions for specifying an asset without generating new files.
-    Example: the result might be a pointer into a pre-existing zip archive.
-    """
-
-    @property
-    @abstractmethod
-    def meta(self) -> Meta[A]:
-        pass
-
-    @property
-    @abstractmethod
-    def deps(self) -> list["Task"]:
-        pass
-
-    @abstractmethod
-    def execute(
-            self,
-            fetch: Fetch,
-            wf: WF,
-    ) -> A:
-        pass
-
-
-Task = GeneratingTask | SelectingTask
+Task = GeneratingTask
