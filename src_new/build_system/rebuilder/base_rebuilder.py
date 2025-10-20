@@ -16,13 +16,13 @@ class Rebuilder[Info](ABC):
     """
 
     @abstractmethod
-    def rebuild[A: Asset](
+    def rebuild(
         self,
-        task: Task[A],
-        asset: A | None,
+        task: Task,
+        asset: Asset | None,
         fetch: Fetch,
         wf: WF,
         info: Info,
         meta_to_path: MetaToPath,
-    ) -> tuple[A, Info]:
+    ) -> tuple[Asset, Info]:
         pass

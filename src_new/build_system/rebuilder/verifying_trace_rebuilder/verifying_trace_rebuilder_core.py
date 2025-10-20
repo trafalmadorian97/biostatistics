@@ -1,10 +1,10 @@
 from typing import Callable
 
-from attrs import define, frozen
+from attrs import frozen
 from loguru import logger
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.base_meta import Meta
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.rebuilder.base_rebuilder import Rebuilder
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.rebuilder.fetch.restricted_fetch import RestrictedFetch
@@ -15,86 +15,59 @@ from src_new.build_system.rebuilder.tracking_sandboxed_execute import (
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.base_tracer import (
     Tracer,
 )
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_info import (
+    VerifyingTraceInfo,
+    update_verifying_trace_info_in_place,
+)
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF
-
-
-@define
-class VerifyingTraceInfo:
-    """
-    Note that this is mutable
-    """
-
-    trace_store: dict[Meta, tuple[str, list[tuple[Meta, str]]]]
-    must_rebuild: set[Meta]
-
-    @classmethod
-    def empty(cls) -> "VerifyingTraceInfo":
-        return cls(
-            trace_store={},
-            must_rebuild=set(),
-        )
-
-
-def update_verifying_trace_info_in_place(
-    verifying_trace_info: VerifyingTraceInfo,
-    meta: Meta,
-    new_value_hash: str,
-    deps_hashed: list[tuple[Meta, str]],
-) -> None:
-    new_rebuild_set = set(verifying_trace_info.must_rebuild) - {meta}
-    new_trace_store = dict(verifying_trace_info.trace_store)
-    new_trace_store[meta] = new_value_hash, deps_hashed
-    verifying_trace_info.must_rebuild = new_rebuild_set
-    verifying_trace_info.trace_store = new_trace_store
 
 
 @frozen
 class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
     """
+    A rebuilder that calculates traces for the assets it manages, and uses these traces
+    to decide when to rebuild.
     Based on:
     Mokhov, Andrey, Neil Mitchell, and Simon Peyton Jones.
     "Build systems à la carte: Theory and practice."
     Journal of Functional Programming 30 (2020): e11.
-    and Google AI
     """
 
     tracer: Tracer
 
-    def rebuild[A: Asset](
+    def rebuild(
         self,
-        task: Task[A],
-        asset: A | None,
+        task: Task,
+        asset: Asset | None,
         fetch: Fetch,
         wf: WF,
         info: VerifyingTraceInfo,
         meta_to_path: MetaToPath,
-    ) -> tuple[A, VerifyingTraceInfo]:
-        must_rebuild = task.meta in info.must_rebuild
+    ) -> tuple[Asset, VerifyingTraceInfo]:
+        must_rebuild = task.meta.asset_id in info.must_rebuild
 
-        def fetch_trace(meta: Meta) -> str:
-            return self.tracer(fetch(meta))
+        def fetch_trace(asset_id: AssetId) -> str:
+            return self.tracer(fetch(asset_id))
 
         if not must_rebuild and asset is not None:
             logger.debug(
-                f"Attempting to verify the trace of asset {task.meta.short_name}..."
+                f"Attempting to verify the trace of asset {task.meta.asset_id}..."
             )
             old_value_trace = self.tracer(asset)
             if verify_trace(
-                m=task.meta,
+                m=task.meta.asset_id,
                 value_trace=old_value_trace,
                 fetch_trace=fetch_trace,
                 info=info,
             ):
                 logger.debug(
-                    f"Successfully verified the trace of asset {task.meta.short_name}."
+                    f"Successfully verified the trace of asset {task.meta.asset_id}."
                 )
                 return asset, info
-            logger.debug(
-                f"Failed to verify the trace  of asset {task.meta.short_name}."
-            )
+            logger.debug(f"Failed to verify the trace  of asset {task.meta.asset_id}.")
 
-        logger.debug(f"Materializing asset {task.meta.short_name}....")
+        logger.debug(f"Materializing asset {task.meta.asset_id}....")
         new_value, deps = tracking_sandboxed_execute(
             task=task,
             meta_to_path=meta_to_path,
@@ -105,16 +78,16 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
         update_verifying_trace_info_in_place(
             verifying_trace_info=info,
             meta=task.meta,
-            new_value_hash=self.tracer(new_value),
-            deps_hashed=deps_traced,
+            new_value_trace=self.tracer(new_value),
+            deps_traced=deps_traced,
         )
         return new_value, info
 
 
 def verify_trace(
-    m: Meta,
+    m: AssetId,
     value_trace: str,
-    fetch_trace: Callable[[Meta], str],
+    fetch_trace: Callable[[AssetId], str],
     info: VerifyingTraceInfo,
 ) -> bool:
     """ """
