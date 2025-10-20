@@ -1,7 +1,8 @@
 from pathlib import Path
 
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
-from src_new.build_system.rebuilder.verifying_trace_rebuilder.info import (
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_info import (
     VerifyingTraceInfo,
 )
 
@@ -10,9 +11,9 @@ def test_serialization(tmp_path: Path):
     target_path = tmp_path / "dump_loc.yml"
     info = VerifyingTraceInfo(
         trace_store={
-            SimpleFileMeta("file1"): (
+            SimpleFileMeta(AssetId("file1")).asset_id: (
                 "fakehash",
-                [(SimpleFileMeta("file2"), "fakehash2")],
+                [(SimpleFileMeta(AssetId("file2")).asset_id, "fakehash2")],
             )
         }
     )

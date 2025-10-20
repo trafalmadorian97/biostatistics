@@ -1,5 +1,6 @@
+from pathlib import Path
+
 from attrs import define
-from pathlib_abc import WritablePath
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.meta.meta import Meta
@@ -21,7 +22,7 @@ class CountingTask(GeneratingTask):
     def deps(self) -> list["Task"]:
         return self.wrapped.deps
 
-    def execute(self, scratch_dir: WritablePath, fetch: Fetch, wf: WF) -> Asset:
+    def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> Asset:
         self.run_count += 1
         return self.wrapped.execute(scratch_dir, fetch, wf)
 

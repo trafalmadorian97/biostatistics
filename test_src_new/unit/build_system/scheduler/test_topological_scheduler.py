@@ -1,15 +1,16 @@
 from pathlib import Path
 
 from src_new.build_system.asset.file_asset import FileAsset
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
 from src_new.build_system.rebuilder.metadata_to_path.simple_meta_to_path import (
     SimpleMetaToPath,
 )
-from src_new.build_system.rebuilder.verifying_trace_rebuilder.info import (
-    VerifyingTraceInfo,
-)
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.simple_hasher import (
     SimpleHasher,
+)
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_info import (
+    VerifyingTraceInfo,
 )
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_rebuilder_core import (
     VerifyingTraceRebuilder,
@@ -31,28 +32,34 @@ def test_file_copying_task(tmp_path: Path):
     external_file = external_dir / "external_file.txt"
     external_file.write_text("abc123")
     task1 = CountingTask(
-        ExternalFileCopyTask(meta=SimpleFileMeta("file_1"), external_path=external_file)
+        ExternalFileCopyTask(
+            meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
+        )
     )
 
     task2 = CountingTask(
         CopyTask(
-            meta=SimpleFileMeta("file_2"),
+            meta=SimpleFileMeta(
+                AssetId("file_2"),
+            ),
             dep_file_task=task1,
         )
     )
 
     task3 = CountingTask(
         CopyTask(
-            meta=SimpleFileMeta("file_3"),
+            meta=SimpleFileMeta(
+                AssetId("file_3"),
+            ),
             dep_file_task=task2,
         )
     )
 
     tasks = SimpleTasks(
         {
-            task1.meta: task1,
-            task2.meta: task2,
-            task3.meta: task3,
+            task1.meta.asset_id: task1,
+            task2.meta.asset_id: task2,
+            task3.meta.asset_id: task3,
         }
     )
 
@@ -65,7 +72,7 @@ def test_file_copying_task(tmp_path: Path):
 
     rebuilder = VerifyingTraceRebuilder(SimpleHasher.md5_hasher())
 
-    targets = [task3.meta]
+    targets = [task3.meta.asset_id]
 
     # Verify that all files are created in the correct location
     store, info = topological(
@@ -82,9 +89,9 @@ def test_file_copying_task(tmp_path: Path):
     file_3_path = meta_to_path(task3.meta)
 
     expected_store = {
-        task1.meta: FileAsset(file_1_path),
-        task2.meta: FileAsset(file_2_path),
-        task3.meta: FileAsset(file_3_path),
+        task1.meta.asset_id: FileAsset(file_1_path),
+        task2.meta.asset_id: FileAsset(file_2_path),
+        task3.meta.asset_id: FileAsset(file_3_path),
     }
     assert expected_store == store
     assert task1.run_count == 1
@@ -140,10 +147,8 @@ def test_file_copying_task(tmp_path: Path):
     assert task2.run_count == 3
     assert task3.run_count == 3
 
-
-
     # check that a deserialized info object can be used with the scheduler
-    serialization_loc = tmp_path / "serialization_loc"/ "info.yaml"
+    serialization_loc = tmp_path / "serialization_loc" / "info.yaml"
     info.serialize(serialization_loc)
     info_2 = VerifyingTraceInfo.deserialize(serialization_loc)
     topological(

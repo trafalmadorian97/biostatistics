@@ -1,7 +1,7 @@
 from attrs import frozen
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
 
@@ -14,15 +14,15 @@ class RestrictedFetch(Fetch):
     """
 
     inner: Fetch
-    meta_deps: frozenset[Meta]
+    meta_deps: frozenset[AssetId]
 
-    def __call__(self, m: Meta) -> Asset:
-        if m not in self.meta_deps:
+    def __call__(self, asset_id: AssetId) -> Asset:
+        if asset_id not in self.meta_deps:
             raise ValueError(
-                f"Attempted to fetch asset {m}, but only assets {self.meta_deps} are declared as dependencies."
+                f"Attempted to fetch asset {asset_id}, but only assets {self.meta_deps} are declared as dependencies."
             )
-        return self.inner(m)
+        return self.inner(asset_id)
 
     @classmethod
     def from_task(cls, fetch: Fetch, task: Task):
-        return cls(fetch, frozenset({dep.meta for dep in task.deps}))
+        return cls(fetch, frozenset({dep.meta.asset_id for dep in task.deps}))

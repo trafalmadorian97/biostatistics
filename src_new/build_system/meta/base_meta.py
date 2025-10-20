@@ -1,5 +1,7 @@
 from abc import ABC, abstractmethod
 
+from src_new.build_system.meta.asset_id import AssetId
+
 # @frozen
 # class Meta[S: Asset](ABC):
 
@@ -7,12 +9,12 @@ from abc import ABC, abstractmethod
 class FileMeta(ABC):
     @property
     @abstractmethod
-    def short_name(self) -> str:
+    def asset_id(self) -> AssetId:
         pass
 
 
 class DirMeta(ABC):
     @property
     @abstractmethod
-    def short_name(self) -> str:
+    def asset_id(self) -> AssetId:
         pass

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.asset_id import AssetId
 
 
 class Fetch(ABC):
@@ -10,5 +10,5 @@ class Fetch(ABC):
     """
 
     @abstractmethod
-    def __call__(self, m: Meta) -> Asset:
+    def __call__(self, asset_id: AssetId) -> Asset:
         pass

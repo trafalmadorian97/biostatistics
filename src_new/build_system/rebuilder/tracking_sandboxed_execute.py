@@ -1,5 +1,5 @@
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 from src_new.build_system.rebuilder.sandboxed_execute import sandboxed_execute
@@ -12,13 +12,13 @@ def tracking_sandboxed_execute(
     meta_to_path: MetaToPath,
     wf: WF,
     fetch: Fetch,
-) -> tuple[Asset, list[tuple[Meta, Asset]]]:
-    deps: list[tuple[Meta, Asset]] = []
+) -> tuple[Asset, list[tuple[AssetId, Asset]]]:
+    deps: list[tuple[AssetId, Asset]] = []
 
     class TrackingFetch(Fetch):
-        def __call__(self, m: Meta) -> Asset:
-            a = fetch(m)
-            deps.append((m, a))
+        def __call__(self, asset_id: AssetId) -> Asset:
+            a = fetch(asset_id)
+            deps.append((asset_id, a))
             return a
 
     result = sandboxed_execute(
