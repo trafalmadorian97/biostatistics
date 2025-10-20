@@ -12,7 +12,7 @@ from src_new.build_system.wf.base_wf import WF
 
 
 @frozen
-class OSFRetrievalTask(GeneratingTask[FileAsset]):
+class OSFRetrievalTask(GeneratingTask):
     _meta: GWASSummaryDataFileMeta
     osf_project_id: str
 

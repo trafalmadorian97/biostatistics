@@ -2,7 +2,7 @@ from pathlib import Path
 
 from attrs import frozen
 
-from src_new.build_system.meta.base_meta import Meta
+from src_new.build_system.meta.meta import Meta
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 

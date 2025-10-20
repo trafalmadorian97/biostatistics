@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
-from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_rebuilder_core import (
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.info import (
     VerifyingTraceInfo,
 )
 

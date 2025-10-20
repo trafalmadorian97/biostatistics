@@ -13,12 +13,12 @@ from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF
 
 
-def sandboxed_execute[A: Asset](
-    task: Task[A],
+def sandboxed_execute(
+    task: Task,
     meta_to_path: MetaToPath,
     wf: WF,
     fetch: Fetch,
-) -> A:
+) -> Asset:
     """
     Execute a task in a temporary directory, then move its result to the final location
     determined by the task's metadata.

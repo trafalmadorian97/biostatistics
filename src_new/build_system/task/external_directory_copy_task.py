@@ -15,7 +15,7 @@ from src_new.build_system.wf.base_wf import WF
 
 
 @frozen
-class ExternalDirectoryCopyTask(GeneratingTask[DirectoryAsset]):
+class ExternalDirectoryCopyTask(GeneratingTask):
     """
     Copies a directory from an external source.
     Used for testing.

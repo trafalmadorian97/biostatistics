@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Mapping
 
-from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.base_meta import Meta
+from src_new.build_system.meta.meta import Meta
 from src_new.build_system.task.base_task import Task
 
 
@@ -12,5 +11,5 @@ class Tasks(ABC, Mapping[Meta, Task]):
     """
 
     @abstractmethod
-    def __getitem__[A: Asset](self, meta: Meta[A]) -> Task[A]:
+    def __getitem__(self, meta: Meta) -> Task:
         pass

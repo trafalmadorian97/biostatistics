@@ -12,7 +12,7 @@ from src_new.build_system.wf.base_wf import WF
 
 
 @frozen
-class ExternalFileCopyTask(GeneratingTask[FileAsset]):
+class ExternalFileCopyTask(GeneratingTask):
     """
     Copies a file from an external source.
     Used for testing

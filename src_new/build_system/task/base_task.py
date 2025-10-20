@@ -2,19 +2,19 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.base_meta import Meta
+from src_new.build_system.meta.meta import Meta
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.wf.base_wf import WF
 
 
-class GeneratingTask[A: Asset](ABC):
+class GeneratingTask(ABC):
     """
     Instructions for materializing an asset.
     """
 
     @property
     @abstractmethod
-    def meta(self) -> Meta[A]:
+    def meta(self) -> Meta:
         pass
 
     @property
@@ -28,7 +28,7 @@ class GeneratingTask[A: Asset](ABC):
         scratch_dir: Path,
         fetch: Fetch,
         wf: WF,
-    ) -> A:
+    ) -> Asset:
         pass
 
 

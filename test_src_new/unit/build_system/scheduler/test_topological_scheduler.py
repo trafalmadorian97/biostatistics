@@ -5,11 +5,13 @@ from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
 from src_new.build_system.rebuilder.metadata_to_path.simple_meta_to_path import (
     SimpleMetaToPath,
 )
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.info import (
+    VerifyingTraceInfo,
+)
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.simple_hasher import (
     SimpleHasher,
 )
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_rebuilder_core import (
-    VerifyingTraceInfo,
     VerifyingTraceRebuilder,
 )
 from src_new.build_system.scheduler.topological_scheduler import topological

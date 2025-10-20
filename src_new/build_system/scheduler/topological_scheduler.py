@@ -1,11 +1,11 @@
-from typing import Mapping, Sequence, cast
+from typing import Mapping, Sequence
 
 import emoji
 import networkx as nx
 from loguru import logger
 
 from src_new.build_system.asset.base_asset import Asset
-from src_new.build_system.meta.base_meta import Meta
+from src_new.build_system.meta.meta import Meta
 from src_new.build_system.rebuilder.base_rebuilder import Rebuilder
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
@@ -75,8 +75,8 @@ def topological[
         )
 
         class SimpleFetch(Fetch):
-            def __call__[A: Asset](self, m: Meta[A]) -> A:
-                return cast(A, store[m])
+            def __call__(self, m: Meta) -> Asset:
+                return store[m]
 
         new_asset, info = rebuilder.rebuild(
             task=task,
