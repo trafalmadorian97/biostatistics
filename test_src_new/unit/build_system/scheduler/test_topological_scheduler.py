@@ -57,7 +57,7 @@ def test_file_copying_task(tmp_path: Path):
     )
 
     wf = DummyWF()
-    info = VerifyingTraceInfo.empty()
+    info: VerifyingTraceInfo = VerifyingTraceInfo.empty()
 
     asset_dir = tmp_path / "asset_dir"
     asset_dir.mkdir(exist_ok=True, parents=True)
@@ -133,6 +133,25 @@ def test_file_copying_task(tmp_path: Path):
         targets=targets,
         wf=wf,
         info=info,
+        meta_to_path=meta_to_path,
+    )
+
+    assert task1.run_count == 2
+    assert task2.run_count == 3
+    assert task3.run_count == 3
+
+
+
+    # check that a deserialized info object can be used with the scheduler
+    serialization_loc = tmp_path / "serialization_loc"/ "info.yaml"
+    info.serialize(serialization_loc)
+    info_2 = VerifyingTraceInfo.deserialize(serialization_loc)
+    topological(
+        rebuilder=rebuilder,
+        tasks=tasks,
+        targets=targets,
+        wf=wf,
+        info=info_2,
         meta_to_path=meta_to_path,
     )
 
