@@ -1,10 +1,11 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from typing import Protocol
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.meta.asset_id import AssetId
 
 
-class Fetch(ABC):
+class Fetch(Protocol):
     """
     An interface for materializing or retrieving assets, given their id.
     """

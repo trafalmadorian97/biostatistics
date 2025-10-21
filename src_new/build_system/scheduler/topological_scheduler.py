@@ -2,7 +2,10 @@ from typing import Mapping, Sequence
 
 import emoji
 import networkx as nx
+import structlog
 from loguru import logger
+
+logger = structlog.get_logger()
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.meta.asset_id import AssetId
