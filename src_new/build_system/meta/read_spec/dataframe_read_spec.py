@@ -20,4 +20,9 @@ DataFrameFormat = DataFrameTextFormat | DataFrameParquetFormat
 
 @frozen
 class DataFrameReadSpec:
+    """
+    Specifies how a file containing a dataframe should be read.
+    Allows client code to operate without concern for the specifics of the dataframe format.
+    """
+
     format: DataFrameFormat

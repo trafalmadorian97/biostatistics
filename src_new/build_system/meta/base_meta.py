@@ -11,9 +11,15 @@ class FileMeta(ABC):
     @property
     @abstractmethod
     def asset_id(self) -> AssetId:
+        """
+        A uniquely identifying ID for the asset
+        """
         pass
 
     def read_spec(self) -> ReadSpec | None:
+        """
+        A specifier describing how the data should be read
+        """
         return None
 
 
