@@ -45,7 +45,9 @@ def test_filer_snps(tmp_path: Path):
     task3 = FilterSNPsTask(
         raw_gwas_task=task_1,
         snp_list_task=task_2,
-        meta=FilteredGWASDataMeta(AssetId("file3"), "trait", "proj", "raw", ".parquet"),
+        meta=FilteredGWASDataMeta(
+            AssetId("file3"), "trait", "proj", "raw", extension=".parquet"
+        ),
     )
     runner = SimpleRunner(info_store=store_path, asset_root=asset_root)
     runner.run(targets=[task3])
