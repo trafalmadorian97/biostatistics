@@ -3,6 +3,7 @@ import tempfile
 from pathlib import Path
 
 import attr
+from loguru import logger
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.directory_asset import DirectoryAsset
@@ -31,6 +32,7 @@ def sandboxed_execute(
         result = task.execute(scratch_dir=temp_path, fetch=fetch, wf=wf)
         target_path.parent.mkdir(exist_ok=True, parents=True)
         result = _move_asset(result, target_path)
+        logger.debug(f"Saved asset {task.asset_id} to {target_path}.")
     return result
 
 

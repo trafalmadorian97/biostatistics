@@ -45,29 +45,27 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
         info: VerifyingTraceInfo,
         meta_to_path: MetaToPath,
     ) -> tuple[Asset, VerifyingTraceInfo]:
-        must_rebuild = task.meta.asset_id in info.must_rebuild
+        must_rebuild = task.asset_id in info.must_rebuild
 
         def fetch_trace(asset_id: AssetId) -> str:
             return self.tracer(fetch(asset_id))
 
         if not must_rebuild and asset is not None:
-            logger.debug(
-                f"Attempting to verify the trace of asset {task.meta.asset_id}..."
-            )
+            logger.debug(f"Attempting to verify the trace of asset {task.asset_id}...")
             old_value_trace = self.tracer(asset)
             if verify_trace(
-                m=task.meta.asset_id,
+                m=task.asset_id,
                 value_trace=old_value_trace,
                 fetch_trace=fetch_trace,
                 info=info,
             ):
                 logger.debug(
-                    f"Successfully verified the trace of asset {task.meta.asset_id}."
+                    f"Successfully verified the trace of asset {task.asset_id}."
                 )
                 return asset, info
-            logger.debug(f"Failed to verify the trace  of asset {task.meta.asset_id}.")
+            logger.debug(f"Failed to verify the trace  of asset {task.asset_id}.")
 
-        logger.debug(f"Materializing asset {task.meta.asset_id}....")
+        logger.debug(f"Materializing asset {task.asset_id}....")
         new_value, deps = tracking_sandboxed_execute(
             task=task,
             meta_to_path=meta_to_path,

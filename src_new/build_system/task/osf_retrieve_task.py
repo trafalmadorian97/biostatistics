@@ -1,7 +1,7 @@
 import shlex
-import subprocess
 from pathlib import Path
 
+import invoke
 from attrs import frozen
 
 from src_new.build_system.asset.file_asset import FileAsset
@@ -13,6 +13,10 @@ from src_new.build_system.wf.base_wf import WF
 
 @frozen
 class OSFRetrievalTask(GeneratingTask):
+    """
+    A task that fetches GWAS data from the Open Science data store
+    """
+
     _meta: GWASSummaryDataFileMeta
     osf_project_id: str
 
@@ -26,19 +30,14 @@ class OSFRetrievalTask(GeneratingTask):
 
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> FileAsset:
         tmp_dst = scratch_dir / "tmp"
-        result = subprocess.run(
-            [
-                "uv",
-                "run",
-                "osf",
-                "-p",
-                self.osf_project_id,
-                "fetch",
-                shlex.quote(str(self._meta.project_path)),
-                str(tmp_dst),
-            ],
-            check=True,
-        )
+
+        @invoke.task
+        def fetch_osf(c):
+            c.run(
+                f"uv run osf -p {self.osf_project_id} fetch {str(shlex.quote(str(self._meta.project_path)))} {str(tmp_dst)}"
+            )
+
+        fetch_osf(invoke.Context())
         return FileAsset(
             tmp_dst,
         )

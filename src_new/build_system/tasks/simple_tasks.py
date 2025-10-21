@@ -9,14 +9,14 @@ from src_new.build_system.tasks.base_tasks import Tasks
 
 @frozen
 class SimpleTasks(Tasks):
-    _tasks: Mapping[AssetId, Task]  # implicit invariant: maps Meta[A] to Task[A]
+    _tasks: Mapping[AssetId, Task]
 
     def __attrs_post_init__(self):
         for asset_id, task in self._tasks.items():
-            assert task.meta.asset_id == asset_id
+            assert task.asset_id == asset_id
 
-    def __getitem__(self, meta: AssetId) -> Task:
-        return self._tasks[meta]
+    def __getitem__(self, asset_id: AssetId) -> Task:
+        return self._tasks[asset_id]
 
     def __len__(self) -> int:
         return len(self._tasks)
@@ -25,4 +25,20 @@ class SimpleTasks(Tasks):
         yield from self._tasks
 
 
-# def
+def find_tasks(tasks: list[Task]) -> SimpleTasks:
+    """
+    Build a SimpleTasks object by walking the task graph
+    """
+    _tasks = {}
+    visited = set()
+
+    def explore_task(t: Task):
+        visited.add(t.asset_id)
+        for dep in t.deps:
+            if dep.asset_id not in visited:
+                explore_task(dep)
+        _tasks[t.asset_id] = t
+
+    for task in tasks:
+        explore_task(task)
+    return SimpleTasks(_tasks)

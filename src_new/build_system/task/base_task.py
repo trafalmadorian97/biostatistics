@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 
 from src_new.build_system.asset.base_asset import Asset
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.meta import Meta
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.wf.base_wf import WF
@@ -21,6 +22,10 @@ class GeneratingTask(ABC):
     @abstractmethod
     def deps(self) -> list["Task"]:
         pass
+
+    @property
+    def asset_id(self) -> AssetId:
+        return self.meta.asset_id
 
     @abstractmethod
     def execute(

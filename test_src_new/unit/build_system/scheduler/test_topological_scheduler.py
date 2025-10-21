@@ -15,11 +15,14 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_in
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_rebuilder_core import (
     VerifyingTraceRebuilder,
 )
-from src_new.build_system.scheduler.topological_scheduler import topological
+from src_new.build_system.scheduler.topological_scheduler import (
+    dependency_graph,
+    topological,
+)
 from src_new.build_system.task.copy_task import CopyTask
 from src_new.build_system.task.counting_task import CountingTask
 from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTask
-from src_new.build_system.tasks.simple_tasks import SimpleTasks
+from src_new.build_system.tasks.simple_tasks import find_tasks
 from src_new.build_system.wf.base_wf import DummyWF
 
 
@@ -55,13 +58,7 @@ def test_file_copying_task(tmp_path: Path):
         )
     )
 
-    tasks = SimpleTasks(
-        {
-            task1.meta.asset_id: task1,
-            task2.meta.asset_id: task2,
-            task3.meta.asset_id: task3,
-        }
-    )
+    tasks = find_tasks([task3])
 
     wf = DummyWF()
     info: VerifyingTraceInfo = VerifyingTraceInfo.empty()
@@ -163,3 +160,34 @@ def test_file_copying_task(tmp_path: Path):
     assert task1.run_count == 2
     assert task2.run_count == 3
     assert task3.run_count == 3
+
+
+def test_graph_generation(tmp_path: Path):
+    external_dir = tmp_path / "external"
+    external_dir.mkdir(exist_ok=True, parents=True)
+    external_file = external_dir / "external_file.txt"
+    external_file.write_text("abc123")
+    task1 = ExternalFileCopyTask(
+        meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
+    )
+
+    task2 = CopyTask(
+        meta=SimpleFileMeta(
+            AssetId("file_2"),
+        ),
+        dep_file_task=task1,
+    )
+
+    task3 = CopyTask(
+        meta=SimpleFileMeta(
+            AssetId("file_3"),
+        ),
+        dep_file_task=task2,
+    )
+    tasks = find_tasks([task3])
+    graph_1 = dependency_graph(tasks, [task1.asset_id])
+    graph_2 = dependency_graph(tasks, [task2.asset_id])
+    graph_3 = dependency_graph(tasks, [task3.asset_id])
+    assert len(graph_1) == 1
+    assert len(graph_2) == 2
+    assert len(graph_3) == 3

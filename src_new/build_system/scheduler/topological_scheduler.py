@@ -17,8 +17,9 @@ from src_new.build_system.wf.base_wf import WF
 def dependency_graph(tasks: Tasks, targets: Sequence[AssetId]) -> nx.DiGraph:
     G: nx.DiGraph = nx.DiGraph()
     for asset_id, task in tasks.items():
+        G.add_node(asset_id)
         for dep in task.deps:
-            G.add_edge(dep.meta.asset_id, asset_id)
+            G.add_edge(dep.asset_id, asset_id)
     reachable = set(targets)
     for target in targets:
         reachable = nx.ancestors(G, target) | reachable
