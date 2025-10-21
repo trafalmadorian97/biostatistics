@@ -6,6 +6,10 @@ from src_new.assets.decode_me.raw_gwas_data.decode_me_quality_control_snps impor
 )
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
+from src_new.build_system.meta.read_spec.dataframe_read_spec import (
+    DataFrameParquetFormat,
+    DataFrameReadSpec,
+)
 from src_new.build_system.task.filter_snps_task import FilterSNPsTask
 
 DECODE_ME_FILTER_SNPS_GWAS_1_TASK = FilterSNPsTask(
@@ -16,5 +20,6 @@ DECODE_ME_FILTER_SNPS_GWAS_1_TASK = FilterSNPsTask(
         trait="ME_CFS",
         project="DecodeME",
         sub_dir="processed",
+        read_spec=DataFrameReadSpec(format=DataFrameParquetFormat()),
     ),
 )
