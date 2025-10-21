@@ -15,11 +15,14 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_in
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_rebuilder_core import (
     VerifyingTraceRebuilder,
 )
-from src_new.build_system.scheduler.topological_scheduler import topological, dependency_graph
+from src_new.build_system.scheduler.topological_scheduler import (
+    dependency_graph,
+    topological,
+)
 from src_new.build_system.task.copy_task import CopyTask
 from src_new.build_system.task.counting_task import CountingTask
 from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTask
-from src_new.build_system.tasks.simple_tasks import SimpleTasks, find_tasks
+from src_new.build_system.tasks.simple_tasks import find_tasks
 from src_new.build_system.wf.base_wf import DummyWF
 
 
@@ -160,28 +163,27 @@ def test_file_copying_task(tmp_path: Path):
 
 
 def test_graph_generation(tmp_path: Path):
-
     external_dir = tmp_path / "external"
     external_dir.mkdir(exist_ok=True, parents=True)
     external_file = external_dir / "external_file.txt"
     external_file.write_text("abc123")
     task1 = ExternalFileCopyTask(
-            meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
-        )
+        meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
+    )
 
     task2 = CopyTask(
-            meta=SimpleFileMeta(
-                AssetId("file_2"),
-            ),
-            dep_file_task=task1,
-        )
+        meta=SimpleFileMeta(
+            AssetId("file_2"),
+        ),
+        dep_file_task=task1,
+    )
 
     task3 = CopyTask(
-            meta=SimpleFileMeta(
-                AssetId("file_3"),
-            ),
-            dep_file_task=task2,
-        )
+        meta=SimpleFileMeta(
+            AssetId("file_3"),
+        ),
+        dep_file_task=task2,
+    )
     tasks = find_tasks([task3])
     graph_1 = dependency_graph(tasks, [task1.asset_id])
     graph_2 = dependency_graph(tasks, [task2.asset_id])
@@ -189,4 +191,3 @@ def test_graph_generation(tmp_path: Path):
     assert len(graph_1) == 1
     assert len(graph_2) == 2
     assert len(graph_3) == 3
-

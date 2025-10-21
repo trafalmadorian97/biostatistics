@@ -14,4 +14,4 @@ class FilteredGWASDataMeta(FileMeta):
     trait: str
     project: str
     sub_dir: str
-    extension:str =".parquet"
+    extension: str = ".parquet"

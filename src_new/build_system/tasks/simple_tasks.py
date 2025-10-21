@@ -31,12 +31,14 @@ def find_tasks(tasks: list[Task]) -> SimpleTasks:
     """
     _tasks = {}
     visited = set()
+
     def explore_task(t: Task):
         visited.add(t.asset_id)
         for dep in t.deps:
             if dep.asset_id not in visited:
                 explore_task(dep)
         _tasks[t.asset_id] = t
-    for  task in tasks:
+
+    for task in tasks:
         explore_task(task)
     return SimpleTasks(_tasks)

@@ -2,11 +2,12 @@ from pathlib import Path
 
 from attrs import frozen
 
-from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.file_asset import FileAsset
-from src_new.build_system.meta.base_meta import FileMeta
 from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
 from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.read_spec.read_dataframe import (
+    scan_dataframe_asset,
+)
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.wf.base_wf import WF
@@ -14,25 +15,30 @@ from src_new.build_system.wf.base_wf import WF
 
 @frozen
 class FilterSNPsTask(Task):
-    _raw_gwas_data_task: Task
-    _filtration_data_task: Task
+    _raw_gwas_task: Task
+    _snp_list_task: Task
     _meta: FilteredGWASDataMeta
-    _col_in_raw_data: str= "ID"
-    _col_in_filter_data:str = "ID"
+    _col_in_raw_data: str = "ID"
+    _col_in_filter_data: str = "ID"
+
     @property
     def meta(self) -> Meta:
         return self._meta
 
     @property
     def deps(self) -> list["Task"]:
-        return [self._raw_gwas_data_task, self._filtration_data_task]
+        return [self._raw_gwas_task, self._snp_list_task]
 
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> FileAsset:
-        asset_1 = fetch(self._raw_gwas_data_task.asset_id)
-        asset_2 = fetch(self._filtration_data_task.asset_id)
-        meta_1 = self._raw_gwas_data_task.meta
-        meta_2 = self._filtration_data_task.meta
-        assert isinstance(asset_1, FileAsset)
-        assert isinstance(asset_2, FileAsset)
-        assert isinstance(meta_1, FileMeta)
-        assert isinstance(meta_2, FileMeta)
+        df_1 = scan_dataframe_asset(
+            asset=fetch(self._raw_gwas_task.asset_id), meta=self._raw_gwas_task.meta
+        )
+        df_2 = scan_dataframe_asset(
+            asset=fetch(self._snp_list_task.asset_id), meta=self._snp_list_task.meta
+        )
+        result = df_1.join(
+            df_2, left_on=self._col_in_raw_data, right_on=self._col_in_filter_data
+        )
+        target_path = scratch_dir / "tmp.parqet"
+        result.sink_parquet(target_path)
+        return FileAsset(target_path)

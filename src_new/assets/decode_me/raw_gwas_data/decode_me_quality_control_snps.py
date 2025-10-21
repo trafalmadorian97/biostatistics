@@ -2,9 +2,11 @@ from pathlib import PurePath
 
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
+from src_new.build_system.meta.read_spec.dataframe_read_spec import (
+    DataFrameReadSpec,
+    DataFrameTextFormat,
+)
 from src_new.build_system.task.osf_retrieve_task import OSFRetrievalTask
-
-
 
 DECODE_ME_QC_SNPS = OSFRetrievalTask(
     meta=GWASSummaryDataFileMeta(
@@ -13,6 +15,7 @@ DECODE_ME_QC_SNPS = OSFRetrievalTask(
         project="DecodeME",
         sub_dir="raw",
         project_path=PurePath("DecodeME Summary Statistics") / "gwas_qced.var.gz",
+        read_spec=DataFrameReadSpec(format=DataFrameTextFormat(separator=" ")),
     ),
     osf_project_id="rgqs3",
 )

@@ -51,9 +51,7 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
             return self.tracer(fetch(asset_id))
 
         if not must_rebuild and asset is not None:
-            logger.debug(
-                f"Attempting to verify the trace of asset {task.asset_id}..."
-            )
+            logger.debug(f"Attempting to verify the trace of asset {task.asset_id}...")
             old_value_trace = self.tracer(asset)
             if verify_trace(
                 m=task.asset_id,

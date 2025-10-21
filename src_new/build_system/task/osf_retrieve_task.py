@@ -1,11 +1,7 @@
-import sys
 import shlex
-import subprocess
-
-import invoke
-from loguru import logger
 from pathlib import Path
 
+import invoke
 from attrs import frozen
 
 from src_new.build_system.asset.file_asset import FileAsset
@@ -34,9 +30,13 @@ class OSFRetrievalTask(GeneratingTask):
 
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> FileAsset:
         tmp_dst = scratch_dir / "tmp"
+
         @invoke.task
         def fetch_osf(c):
-            c.run(f"uv run osf -p {self.osf_project_id} fetch {str(shlex.quote(str(self._meta.project_path)))} {str(tmp_dst)}")
+            c.run(
+                f"uv run osf -p {self.osf_project_id} fetch {str(shlex.quote(str(self._meta.project_path)))} {str(tmp_dst)}"
+            )
+
         fetch_osf(invoke.Context())
         return FileAsset(
             tmp_dst,

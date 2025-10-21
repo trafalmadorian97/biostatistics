@@ -24,7 +24,7 @@ class GeneratingTask(ABC):
         pass
 
     @property
-    def asset_id(self) ->AssetId:
+    def asset_id(self) -> AssetId:
         return self.meta.asset_id
 
     @abstractmethod
