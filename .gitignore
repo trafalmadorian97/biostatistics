@@ -224,3 +224,8 @@ data/*
 
 # output
 output/*
+
+assets/*
+asset_store/*
+build_system/*
+
