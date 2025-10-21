@@ -1,9 +1,12 @@
 from pathlib import PurePath
+from typing import Sequence
 
-from attrs import frozen
+from attrs import frozen, field
 
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.base_meta import FileMeta
+from src_new.build_system.meta.read_spec.read_spec import ReadSpec
+
 
 # from src_new.build_system.meta.remote_file_meta import RemoteFileMeta
 
@@ -19,3 +22,4 @@ class GWASSummaryDataFileMeta(FileMeta):
     project: str
     sub_dir: str
     project_path: PurePath | None
+    _read_specs: ReadSpec | None =None

@@ -30,7 +30,7 @@ class CopyTask(GeneratingTask):
         return [self.dep_file_task]
 
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> FileAsset:
-        dep_asset = fetch(self.dep_file_task.meta.asset_id)
+        dep_asset = fetch(self.dep_file_task.asset_id)
         temp_dst = scratch_dir / "temp_dst"
         assert isinstance(dep_asset, FileAsset)
         shutil.copyfile(dep_asset.path, temp_dst)

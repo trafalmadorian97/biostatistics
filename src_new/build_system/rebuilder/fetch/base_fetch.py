@@ -6,7 +6,7 @@ from src_new.build_system.meta.asset_id import AssetId
 
 class Fetch(ABC):
     """
-    An interface for materializing or retrieving assets, given their metadata.
+    An interface for materializing or retrieving assets, given their id.
     """
 
     @abstractmethod
