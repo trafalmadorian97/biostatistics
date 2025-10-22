@@ -49,6 +49,14 @@ from src_new.build_system.wf.base_wf import WF
 
 @frozen
 class GwasLabRegionPlotsFromLeadVariantsTask(Task):
+    """
+    A task to generate region plots near the lead variants described by GWAS summary statistics
+    Useful for visualizing the local significance structure around lead variants, and their nearby genes.
+     see https://cloufield.github.io/gwaslab/tutorial_3.4/#quick-regional-plot-without-ld-information
+    Gwaslab can also use a vcf reference file to plot the linkage disequilibrium structure around the lead variants
+    (vcf_name_for_lead_variants).  Doing this at a reasonable speed requires the installation of the "tabix" binary.
+    """
+
     _lead_variants_task: GwasLabLeadVariantsTask
     _sumstats_task: GWASLabCreateSumstatsTask
     vcf_name_for_ld: GWASLabVCFRefFile | None
