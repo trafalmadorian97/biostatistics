@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Mapping, Sequence
 
 import emoji
@@ -18,6 +19,12 @@ from src_new.build_system.wf.base_wf import WF
 
 
 def dependency_graph(tasks: Tasks, targets: Sequence[AssetId]) -> nx.DiGraph:
+    """
+    G
+    :param tasks:
+    :param targets:
+    :return:
+    """
     G: nx.DiGraph = nx.DiGraph()
     for asset_id, task in tasks.items():
         G.add_node(asset_id)
@@ -30,12 +37,30 @@ def dependency_graph(tasks: Tasks, targets: Sequence[AssetId]) -> nx.DiGraph:
     return subgraph
 
 
-def get_next_node(
-    graph: nx.DiGraph,
-) -> AssetId:
-    generations = nx.topological_generations(graph)
+def _get_initial_frontier(g: nx.DiGraph) -> list[AssetId]:
+    """
+    Frontier is defined as the set of assets without dependencies, or whose dependencies have been built
+    """
+    generations = nx.topological_generations(g)
     list_of_generations = [sorted(gen) for gen in generations]
-    return list_of_generations[0][0]
+    return list_of_generations[0]
+
+
+def _update_frontier_and_G(
+    G: nx.DiGraph, completed: AssetId, frontier: list[AssetId]
+) -> tuple[list[AssetId], nx.DiGraph]:
+    """
+    After competing an asset, any nodes whose only predecessor was that asset can be added to the frontier
+    """
+    frontier = deepcopy(frontier)
+    G = deepcopy(G)
+    succs = list(G.successors(completed))
+    G.remove_node(completed)
+    frontier.remove(completed)
+    for node in succs:
+        if len(list(G.predecessors(node))) == 0:
+            frontier.append(node)
+    return frontier, G
 
 
 def _get_progress_list(todo: Sequence[AssetId], done: set[AssetId]) -> str:
@@ -68,10 +93,10 @@ def topological[
     todo: list[AssetId] = list(nx.topological_sort(G))
     done: set[AssetId] = set()
     store: dict[AssetId, Asset] = {}
-
+    frontier = _get_initial_frontier(G)
     while len(G) > 0:
         logger.info(_get_progress_list(todo=todo, done=done))
-        node = get_next_node(G)
+        node = frontier[-1]
         task = tasks[node]
         maybe_asset = get_asset_if_exists(
             meta=task.meta,
@@ -91,7 +116,7 @@ def topological[
             meta_to_path=meta_to_path,
         )
         store[node] = new_asset
-        G.remove_node(node)
+        frontier, G = _update_frontier_and_G(G=G, completed=node, frontier=frontier)
         done.add(node)
     logger.info(_get_progress_list(todo=todo, done=done))
     return store, info

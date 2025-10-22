@@ -57,7 +57,7 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
             logger.debug(f"Attempting to verify the trace of asset {task.asset_id}...")
             old_value_trace = self.tracer(asset)
             if verify_trace(
-                m=task.asset_id,
+                asset_id=task.asset_id,
                 value_trace=old_value_trace,
                 fetch_trace=fetch_trace,
                 info=info,
@@ -86,15 +86,15 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
 
 
 def verify_trace(
-    m: AssetId,
+    asset_id: AssetId,
     value_trace: str,
     fetch_trace: Callable[[AssetId], str],
     info: VerifyingTraceInfo,
 ) -> bool:
     """ """
-    if m not in info.trace_store:
+    if asset_id not in info.trace_store:
         return False
-    recorded_trace, recorded_deps = info.trace_store[m]
+    recorded_trace, recorded_deps = info.trace_store[asset_id]
     if recorded_trace != value_trace:
         return False
     for dep, dep_hash in recorded_deps:
