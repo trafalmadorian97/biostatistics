@@ -66,7 +66,7 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
                     f"Successfully verified the trace of asset {task.asset_id}."
                 )
                 return asset, info
-            logger.debug(f"Failed to verify the trace  of asset {task.asset_id}.")
+            logger.debug(f"Failed to verify the trace of asset {task.asset_id}.")
 
         logger.debug(f"Materializing asset {task.asset_id}....")
         new_value, deps = tracking_sandboxed_execute(

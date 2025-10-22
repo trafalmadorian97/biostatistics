@@ -11,7 +11,8 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.base_tracer
     Tracer,
 )
 
-HashConstructor = Callable[[], Any]
+HashObject = Any
+HashConstructor = Callable[[], HashObject]
 
 
 @frozen
