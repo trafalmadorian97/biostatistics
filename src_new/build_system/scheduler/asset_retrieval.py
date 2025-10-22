@@ -2,8 +2,9 @@ import typeguard
 from typeguard import TypeCheckError
 
 from src_new.build_system.asset.base_asset import Asset
+from src_new.build_system.asset.directory_asset import DirectoryAsset
 from src_new.build_system.asset.file_asset import FileAsset
-from src_new.build_system.meta.base_meta import FileMeta
+from src_new.build_system.meta.base_meta import DirMeta, FileMeta
 from src_new.build_system.meta.meta import Meta
 from src_new.build_system.rebuilder.metadata_to_path.base_meta_to_path import MetaToPath
 
@@ -18,6 +19,11 @@ def get_asset_if_exists(
         path = meta_to_path(meta)
         if path.is_file():
             return FileAsset(path)
+        return None
+    if _isinstance(meta, DirMeta):
+        path = meta_to_path(meta)
+        if path.is_dir():
+            return DirectoryAsset(path)
         return None
     raise ValueError("Unknown asset type")
 
