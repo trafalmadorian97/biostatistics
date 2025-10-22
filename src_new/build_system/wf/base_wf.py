@@ -1,6 +1,7 @@
 from abc import ABC
+from pathlib import Path
 
-from pathlib_abc import WritablePath
+import py3_wget
 
 
 class WF(ABC):
@@ -9,13 +10,17 @@ class WF(ABC):
     """
 
     def download_from_url(
-        self, url: str, md5_hash: str | None, local_path: WritablePath
+        self, url: str, md5_hash: str | None, local_path: Path
     ) -> None:
         pass
 
 
-class DummyWF(WF):
+class SimpleWF(WF):
     def download_from_url(
-        self, url: str, md5_hash: str | None, local_path: WritablePath
+        self, url: str, md5_hash: str | None, local_path: Path
     ) -> None:
-        raise NotImplementedError("Not implemented")
+        py3_wget.download_file(
+            url=url,
+            output_path=local_path,
+            md5=md5_hash,
+        )

@@ -23,7 +23,7 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_re
 from src_new.build_system.scheduler.topological_scheduler import topological
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.tasks.simple_tasks import find_tasks
-from src_new.build_system.wf.base_wf import DummyWF
+from src_new.build_system.wf.base_wf import SimpleWF
 
 
 @frozen
@@ -42,7 +42,7 @@ class SimpleRunner:
         else:
             info = VerifyingTraceInfo.empty()
         rebuilder = VerifyingTraceRebuilder(self.tracer)
-        wf = DummyWF()
+        wf = SimpleWF()
         meta_to_path = self.meta_to_path
         tasks = find_tasks(targets)
         store, info = topological(

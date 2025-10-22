@@ -17,7 +17,9 @@ from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
-from src_new.build_system.meta.gwaslab.gwaslab_sumstats_meta import GWASLabSumStatsMeta
+from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
+    GWASLabSumStatsMeta,
+)
 from src_new.build_system.meta.read_spec.read_dataframe import scan_dataframe_asset
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task

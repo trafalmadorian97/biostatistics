@@ -15,7 +15,7 @@ from src_new.build_system.task.fake_task import FakeTask
 from src_new.build_system.task.gwaslab.gwaslab_create_sumstats_task import (
     GWASLabCreateSumstatsTask,
 )
-from src_new.build_system.wf.base_wf import DummyWF
+from src_new.build_system.wf.base_wf import SimpleWF
 
 
 def test_gwaslab_sumstats(
@@ -39,7 +39,7 @@ def test_gwaslab_sumstats(
     def fetch(asset_id: AssetId) -> Asset:
         return FileAsset(Path("test_src_new/unit/build_system/task/dummy_data.regenie"))
 
-    asset_result = task.execute(scratch_dir=tmp_path, fetch=fetch, wf=DummyWF())
+    asset_result = task.execute(scratch_dir=tmp_path, fetch=fetch, wf=SimpleWF())
     with open(asset_result.path, "rb") as f:
         loaded = pickle.load(
             f,
