@@ -12,3 +12,11 @@ GWASLAB_SAMPLE_SIZE_COLUMN = "N"
 GWASLAB_STATUS_COL = "STATUS"
 
 GwaslabKnownFormat = Literal["gwaslab", "regenie"]
+
+GWASLabVCFRefFile = Literal["1kg_eur_hg38"]
+
+GWASLAB_EUR_1K_GENOMES_NAME_38: GWASLabVCFRefFile = "1kg_eur_hg38"
+GWASLAB_HUMAN_GENOME_NAME_38 = "ucsc_genome_hg38"
+
+GWASLAB_EUR_1K_GENOMES_NAME_19 = "1kg_eur_hg19"
+GWASLAB_HUMAN_GENOME_NAME_19 = "ucsc_genome_hg19"
