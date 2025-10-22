@@ -35,4 +35,5 @@ dependencies = [
     "types-tqdm>=4.67.0.20250809",
     "universal-pathlib>=0.3.4",
     "xarray>=2025.9.1",
+    "xxhash>=3.6.0",
 ]

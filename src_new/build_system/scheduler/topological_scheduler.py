@@ -42,7 +42,7 @@ def _get_progress_list(todo: Sequence[AssetId], done: set[AssetId]) -> str:
     s = "\nWork Progress:\n"
     for asset_id in todo:
         if asset_id in done:
-            s += f"{asset_id} {emoji.emojize(':check_mark_button:')}\n"
+            s += f"{emoji.emojize(':check_mark_button:')} {asset_id}\n"
         else:
             s += f"{asset_id}\n"
     return s

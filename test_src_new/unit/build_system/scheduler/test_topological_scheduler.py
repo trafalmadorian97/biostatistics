@@ -1,10 +1,18 @@
 from pathlib import Path
 
+import pytest
+
 from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
 from src_new.build_system.rebuilder.metadata_to_path.simple_meta_to_path import (
     SimpleMetaToPath,
+)
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.base_tracer import (
+    Tracer,
+)
+from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.imohash import (
+    ImoHasher,
 )
 from src_new.build_system.rebuilder.verifying_trace_rebuilder.tracer.simple_hasher import (
     SimpleHasher,
@@ -25,8 +33,18 @@ from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTa
 from src_new.build_system.tasks.simple_tasks import find_tasks
 from src_new.build_system.wf.base_wf import DummyWF
 
+#
 
-def test_file_copying_task(tmp_path: Path):
+
+@pytest.mark.parametrize(
+    argnames="tracer",
+    argvalues=[
+        SimpleHasher.md5_hasher(),
+        ImoHasher.with_xxhash_32(),
+        ImoHasher.with_xxhash_128(),
+    ],
+)
+def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
     """
     Test a number of basic properties of the topological scheduler
     """
@@ -67,7 +85,7 @@ def test_file_copying_task(tmp_path: Path):
     asset_dir.mkdir(exist_ok=True, parents=True)
     meta_to_path = SimpleMetaToPath(root=asset_dir)
 
-    rebuilder = VerifyingTraceRebuilder(SimpleHasher.md5_hasher())
+    rebuilder = VerifyingTraceRebuilder(tracer)
 
     targets = [task3.meta.asset_id]
 
