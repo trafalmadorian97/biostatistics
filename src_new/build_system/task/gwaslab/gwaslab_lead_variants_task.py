@@ -21,6 +21,12 @@ from src_new.build_system.wf.base_wf import WF
 
 @frozen
 class GwasLabLeadVariantsTask(Task):
+    """
+    A task to generate a list of lead variants from summary statistics.
+    Uses Gwaslab.
+    see: https://cloufield.github.io/gwaslab/utility_get_lead_novel/
+    """
+
     _sumstats_task: GWASLabCreateSumstatsTask
     short_id: AssetId = field(converter=AssetId)
     sig_level: float = 5e-8
