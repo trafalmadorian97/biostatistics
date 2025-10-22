@@ -20,10 +20,8 @@ from src_new.build_system.wf.base_wf import WF
 
 def dependency_graph(tasks: Tasks, targets: Sequence[AssetId]) -> nx.DiGraph:
     """
-    G
-    :param tasks:
-    :param targets:
-    :return:
+    Given a set of tasks, and a list of targets, build a minimal dependency graph containing the targets
+    and all their transitive dependencies.
     """
     G: nx.DiGraph = nx.DiGraph()
     for asset_id, task in tasks.items():
