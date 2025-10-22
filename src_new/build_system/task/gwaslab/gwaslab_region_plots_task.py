@@ -19,13 +19,15 @@ import gwaslab as gl
 from attrs import field, frozen
 
 from src_new.build_system.meta.asset_id import AssetId
-from src_new.build_system.meta.gwaslab.gwaslab_lead_variants_meta import (
+from src_new.build_system.meta.gwaslab_meta.gwaslab_lead_variants_meta import (
     GWASLabLeadVariantsMeta,
 )
-from src_new.build_system.meta.gwaslab.gwaslab_region_plots_meta import (
+from src_new.build_system.meta.gwaslab_meta.gwaslab_region_plots_meta import (
     GWASLabRegionPlotsMeta,
 )
-from src_new.build_system.meta.gwaslab.gwaslab_sumstats_meta import GWASLabSumStatsMeta
+from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
+    GWASLabSumStatsMeta,
+)
 from src_new.build_system.meta.read_spec.read_dataframe import scan_dataframe_asset
 from src_new.build_system.meta.read_spec.read_sumstats import read_sumstats
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch

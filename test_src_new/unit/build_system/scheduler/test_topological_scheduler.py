@@ -31,7 +31,7 @@ from src_new.build_system.task.copy_task import CopyTask
 from src_new.build_system.task.counting_task import CountingTask
 from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTask
 from src_new.build_system.tasks.simple_tasks import find_tasks
-from src_new.build_system.wf.base_wf import DummyWF
+from src_new.build_system.wf.base_wf import SimpleWF
 
 #
 
@@ -78,7 +78,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
 
     tasks = find_tasks([task3])
 
-    wf = DummyWF()
+    wf = SimpleWF()
     info: VerifyingTraceInfo = VerifyingTraceInfo.empty()
 
     asset_dir = tmp_path / "asset_dir"
