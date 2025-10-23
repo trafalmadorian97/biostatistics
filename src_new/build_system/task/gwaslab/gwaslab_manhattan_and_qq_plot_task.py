@@ -26,7 +26,7 @@ from src_new.util.plotting.save_fig import write_plots_to_dir
 @attrs.frozen
 class GWASLabManhattanAndQQPlotTask(Task):
     """
-    A task to generate a manhattan plot
+    A task to generate a manhattan plot and/or a qq plot.
     Uses Gwaslab.
     see: https://cloufield.github.io/gwaslab/Visualization/
     """
