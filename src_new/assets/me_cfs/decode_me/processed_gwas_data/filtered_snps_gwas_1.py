@@ -1,7 +1,7 @@
-from src_new.assets.decode_me.raw_gwas_data.decode_me_gwas_1 import (
+from src_new.assets.me_cfs.decode_me.raw_gwas_data.decode_me_gwas_1 import (
     DECODE_ME_GWAS_1_TASK,
 )
-from src_new.assets.decode_me.raw_gwas_data.decode_me_quality_control_snps import (
+from src_new.assets.me_cfs.decode_me.raw_gwas_data.decode_me_quality_control_snps import (
     DECODE_ME_QC_SNPS,
 )
 from src_new.build_system.meta.asset_id import AssetId
