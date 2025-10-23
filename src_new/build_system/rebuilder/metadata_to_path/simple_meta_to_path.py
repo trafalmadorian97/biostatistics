@@ -7,6 +7,9 @@ from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFile
 from src_new.build_system.meta.gwaslab_meta.gwaslab_lead_variants_meta import (
     GWASLabLeadVariantsMeta,
 )
+from src_new.build_system.meta.gwaslab_meta.gwaslab_manhattan_plot_meta import (
+    GWASLabManhattanQQPlotMeta,
+)
 from src_new.build_system.meta.gwaslab_meta.gwaslab_region_plots_meta import (
     GWASLabRegionPlotsMeta,
 )
@@ -78,11 +81,18 @@ class SimpleMetaToPath(MetaToPath):
                 / m.asset_id
             )
             return pth
-        if isinstance(m, ReferenceFileMeta):
+        if isinstance(m, GWASLabManhattanQQPlotMeta):
             pth = (
-                self.root / "reference_data" / m.group / m.sub_folder
-                # / str(m.asset_id + m.extension)
+                self.root
+                / "gwas_summary"
+                / m.trait
+                / m.project
+                / m.sub_dir
+                / str(m.asset_id + ".png")
             )
+            return pth
+        if isinstance(m, ReferenceFileMeta):
+            pth = self.root / "reference_data" / m.group / m.sub_folder
             if m.filename is not None:
                 pth = pth / (m.filename + m.extension)
             else:

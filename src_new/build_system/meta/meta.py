@@ -3,6 +3,9 @@ from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFile
 from src_new.build_system.meta.gwaslab_meta.gwaslab_lead_variants_meta import (
     GWASLabLeadVariantsMeta,
 )
+from src_new.build_system.meta.gwaslab_meta.gwaslab_manhattan_plot_meta import (
+    GWASLabManhattanQQPlotMeta,
+)
 from src_new.build_system.meta.gwaslab_meta.gwaslab_region_plots_meta import (
     GWASLabRegionPlotsMeta,
 )
@@ -28,4 +31,5 @@ Meta = (
     | GWASLabLeadVariantsMeta
     | GWASLabRegionPlotsMeta
     | ReferenceFileMeta
+    | GWASLabManhattanQQPlotMeta
 )
