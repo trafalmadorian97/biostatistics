@@ -80,12 +80,13 @@ class SimpleMetaToPath(MetaToPath):
             return pth
         if isinstance(m, ReferenceFileMeta):
             pth = (
-                self.root
-                / "reference_data"
-                / m.group
-                / m.sub_folder
-                / str(m.asset_id + m.extension)
+                self.root / "reference_data" / m.group / m.sub_folder
+                # / str(m.asset_id + m.extension)
             )
+            if m.filename is not None:
+                pth = pth / (m.filename + m.extension)
+            else:
+                pth = pth / str(m.asset_id + m.extension)
             return pth
 
         raise ValueError(f"Unknown meta {m} of type {type(m)}.")

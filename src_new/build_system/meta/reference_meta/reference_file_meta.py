@@ -11,6 +11,7 @@ class ReferenceFileMeta(FileMeta):
     group: str
     sub_folder: PurePath
     _asset_id: AssetId = field(converter=AssetId)
+    filename: str | None = None
     extension: str = ".zip"
 
     @property
