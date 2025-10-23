@@ -1,8 +1,8 @@
 from src_new.analysis.default_runner import DEFAULT_RUNNER
-from src_new.assets.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan import (
+from src_new.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan import (
     DECODE_ME_GWAS_1_MANHATTAN_PLOT,
 )
-from src_new.assets.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan_and_qq import (
+from src_new.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan_and_qq import (
     DECODE_ME_GWAS_1_MANHATTAN_AND_QQ_PLOT,
 )
 
