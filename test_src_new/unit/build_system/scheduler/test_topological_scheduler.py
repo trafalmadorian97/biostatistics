@@ -24,7 +24,8 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_re
     VerifyingTraceRebuilder,
 )
 from src_new.build_system.scheduler.topological_scheduler import (
-    dependency_graph,
+    dependees_of_targets_from_tasks,
+    dependencies_of_targets_from_tasks,
     topological,
 )
 from src_new.build_system.task.copy_task import CopyTask
@@ -181,6 +182,10 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
 
 
 def test_graph_generation(tmp_path: Path):
+    """
+    verify we can correctly calculate the dependencies and dependees of nodes in a simple
+    graph
+    """
     external_dir = tmp_path / "external"
     external_dir.mkdir(exist_ok=True, parents=True)
     external_file = external_dir / "external_file.txt"
@@ -203,9 +208,15 @@ def test_graph_generation(tmp_path: Path):
         dep_file_task=task2,
     )
     tasks = find_tasks([task3])
-    graph_1 = dependency_graph(tasks, [task1.asset_id])
-    graph_2 = dependency_graph(tasks, [task2.asset_id])
-    graph_3 = dependency_graph(tasks, [task3.asset_id])
+    graph_1 = dependencies_of_targets_from_tasks(tasks, [task1.asset_id])
+    graph_2 = dependencies_of_targets_from_tasks(tasks, [task2.asset_id])
+    graph_3 = dependencies_of_targets_from_tasks(tasks, [task3.asset_id])
     assert len(graph_1) == 1
     assert len(graph_2) == 2
     assert len(graph_3) == 3
+    graph_a = dependees_of_targets_from_tasks(tasks, [task1.asset_id])
+    graph_b = dependees_of_targets_from_tasks(tasks, [task2.asset_id])
+    graph_c = dependees_of_targets_from_tasks(tasks, [task3.asset_id])
+    assert len(graph_a) == 3
+    assert len(graph_b) == 2
+    assert len(graph_c) == 1
