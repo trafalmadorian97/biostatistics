@@ -1,4 +1,4 @@
-from src_new.assets.decode_me.processed_gwas_data.filtered_snps_gwas_1 import (
+from src_new.assets.gwas.me_cfs.decode_me.processed_gwas_data.filtered_snps_gwas_1 import (
     DECODE_ME_FILTER_SNPS_GWAS_1_TASK,
 )
 from src_new.build_system.meta.asset_id import AssetId
