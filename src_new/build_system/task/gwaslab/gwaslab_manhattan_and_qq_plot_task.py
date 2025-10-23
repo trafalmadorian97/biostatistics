@@ -24,7 +24,7 @@ from src_new.util.plotting.save_fig import write_plots_to_dir
 
 
 @attrs.frozen
-class GWASLabManhattanPlotTask(Task):
+class GWASLabManhattanAndQQPlotTask(Task):
     """
     A task to generate a manhattan plot
     Uses Gwaslab.
@@ -35,6 +35,7 @@ class GWASLabManhattanPlotTask(Task):
     _meta: GWASLabManhattanQQPlotMeta
     sig_level: float = 5e-8
     top_cut: int = 12  # upper bound of graph
+    plot_setting: str = "mqq"  # passed to gwaslab to decide which plots to create
 
     @property
     def meta(self) -> GWASLabManhattanQQPlotMeta:
@@ -57,14 +58,23 @@ class GWASLabManhattanPlotTask(Task):
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> Asset:
         sumstats_asset = fetch(self._input_asset_id)
         sumstats: gl.Sumstats = read_sumstats(sumstats_asset)
-        fig, (ax1, ax2) = plt.subplots(figsize=(24, 16), ncols=2, nrows=1)
+        if self.plot_setting == "mqq":
+            fig, (ax1, ax2) = plt.subplots(figsize=(24, 16), ncols=2, nrows=1)
+            figax = [fig, ax1, ax2]
+        else:
+            fig, ax1 = plt.subplots(figsize=(24, 16), ncols=1, nrows=1)
+            figax = [
+                fig,
+                ax1,
+            ]
+
         figs = {}
         plot_name = "mqq"
         sumstats.plot_mqq(
-            figax=[fig, ax1, ax2],
+            figax=figax,
             skip=2,
             cut=self.top_cut,
-            mode="mqq",
+            mode=self.plot_setting,
             scaled=True,
             anno="GENENAME",
             sig_level_lead=self.sig_level,
@@ -79,6 +89,7 @@ class GWASLabManhattanPlotTask(Task):
         sumstats_task: GWASLabCreateSumstatsTask,
         asset_id: str,
         sig_leve: float = 5e-8,
+        plot_setting: str = "mqq",
     ):
         input_meta = sumstats_task.meta
         assert isinstance(input_meta, GWASLabSumStatsMeta)
@@ -91,4 +102,5 @@ class GWASLabManhattanPlotTask(Task):
             sumstats_task=sumstats_task,
             meta=meta,
             sig_level=sig_leve,
+            plot_setting=plot_setting,
         )

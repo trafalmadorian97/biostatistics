@@ -67,7 +67,6 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
                 )
                 return asset, info
             logger.debug(f"Failed to verify the trace of asset {task.asset_id}.")
-
         logger.debug(f"Materializing asset {task.asset_id}....")
         new_value, deps = tracking_sandboxed_execute(
             task=task,
@@ -91,7 +90,6 @@ def verify_trace(
     fetch_trace: Callable[[AssetId], str],
     info: VerifyingTraceInfo,
 ) -> bool:
-    """ """
     if asset_id not in info.trace_store:
         return False
     recorded_trace, recorded_deps = info.trace_store[asset_id]
