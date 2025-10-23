@@ -18,19 +18,55 @@ from src_new.build_system.tasks.base_tasks import Tasks
 from src_new.build_system.wf.base_wf import WF
 
 
-def dependency_graph(tasks: Tasks, targets: Sequence[AssetId]) -> nx.DiGraph:
-    """
-    Given a set of tasks, and a list of targets, build a minimal dependency graph containing the targets
-    and all their transitive dependencies.
-    """
+def get_dependency_graph_from_tasks(tasks: Tasks) -> nx.DiGraph:
     G: nx.DiGraph = nx.DiGraph()
     for asset_id, task in tasks.items():
         G.add_node(asset_id)
         for dep in task.deps:
             G.add_edge(dep.asset_id, asset_id)
+    return G
+
+
+def dependencies_of_targets_from_tasks(
+    tasks: Tasks, targets: Sequence[AssetId]
+) -> nx.DiGraph:
+    """
+    Given a set of tasks, and a list of targets, build a minimal dependency graph containing the targets
+    and all their transitive dependencies.
+    """
+    G = get_dependency_graph_from_tasks(tasks)
+    return dependencies_of_targets(G, targets)
+
+
+def dependees_of_targets_from_tasks(
+    tasks: Tasks, targets: Sequence[AssetId]
+) -> nx.DiGraph:
+    """
+    Given a set of tasks, and a list of targets, build a minimal dependency graph containing the targets
+    and all their transitive dependees.
+    """
+    G = get_dependency_graph_from_tasks(tasks)
+    return dependees_of_targets(G, targets)
+
+
+def dependencies_of_targets(G: nx.DiGraph, targets: Sequence[AssetId]) -> nx.DiGraph:
+    """
+    Given a dependency graph of assets, find the transitive dependencies of given targets
+    """
     reachable = set(targets)
     for target in targets:
         reachable = nx.ancestors(G, target) | reachable
+    subgraph = nx.DiGraph(G.subgraph(reachable))
+    return subgraph
+
+
+def dependees_of_targets(G: nx.DiGraph, targets: Sequence[AssetId]) -> nx.DiGraph:
+    """
+    Given a dependency graph of assets, find the transitive dependees of given targets
+    """
+    reachable = set(targets)
+    for target in targets:
+        reachable = nx.descendants(G, target) | reachable
     subgraph = nx.DiGraph(G.subgraph(reachable))
     return subgraph
 
@@ -87,7 +123,7 @@ def topological[
     Mokhov, Andrey, Neil Mitchell, and Simon Peyton Jones.
     "Build systems à la carte: Theory and practice." Journal of Functional Programming 30 (2020): e11.
     """
-    G = dependency_graph(tasks, targets)
+    G = dependencies_of_targets_from_tasks(tasks, targets)
     todo: list[AssetId] = list(nx.topological_sort(G))
     done: set[AssetId] = set()
     store: dict[AssetId, Asset] = {}

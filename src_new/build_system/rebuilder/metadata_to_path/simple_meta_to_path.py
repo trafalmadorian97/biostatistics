@@ -35,7 +35,7 @@ class SimpleMetaToPath(MetaToPath):
         if isinstance(m, SimpleDirectoryMeta):
             return self.root / "other_files" / m.asset_id
         if isinstance(m, GWASSummaryDataFileMeta):
-            pth = self.root / "gwas_summary" / m.trait / m.project / m.sub_dir
+            pth = self.root / "gwas" / m.trait / m.project / m.sub_dir
             if m.project_path is not None:
                 pth = pth / m.project_path
             else:
@@ -44,7 +44,7 @@ class SimpleMetaToPath(MetaToPath):
         if isinstance(m, FilteredGWASDataMeta):
             pth = (
                 self.root
-                / "gwas_summary"
+                / "gwas"
                 / m.trait
                 / m.project
                 / m.sub_dir
@@ -54,7 +54,7 @@ class SimpleMetaToPath(MetaToPath):
         if isinstance(m, GWASLabSumStatsMeta):
             pth = (
                 self.root
-                / "gwas_summary"
+                / "gwas"
                 / m.trait
                 / m.project
                 / m.sub_dir
@@ -64,7 +64,7 @@ class SimpleMetaToPath(MetaToPath):
         if isinstance(m, GWASLabLeadVariantsMeta):
             pth = (
                 self.root
-                / "gwas_summary"
+                / "gwas"
                 / m.trait
                 / m.project
                 / m.sub_dir
@@ -72,19 +72,12 @@ class SimpleMetaToPath(MetaToPath):
             )
             return pth
         if isinstance(m, GWASLabRegionPlotsMeta):
-            pth = (
-                self.root
-                / "gwas_summary"
-                / m.trait
-                / m.project
-                / m.sub_dir
-                / m.asset_id
-            )
+            pth = self.root / "gwas" / m.trait / m.project / m.sub_dir / m.asset_id
             return pth
         if isinstance(m, GWASLabManhattanQQPlotMeta):
             pth = (
                 self.root
-                / "gwas_summary"
+                / "gwas"
                 / m.trait
                 / m.project
                 / m.sub_dir
