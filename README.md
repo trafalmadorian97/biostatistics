@@ -6,4 +6,4 @@ Welcome to the ME/CFS biostatistics repo!
 We aim to implement analysis in a clean and modular way, such that:
 - It should be possible to fully reproduce an existing analysis by checking out this repo and running a single Linux command.
 - Modifying an analysis should usually involve tweaking only a few lines of Python code.
-- When possible, analyses should make extensive use of cacheing so that heavy pipeline steps do not need to repeatedly be rerun.
+- Analyses should make extensive use of cacheing so that heavy pipeline steps do not need to repeatedly be rerun.
