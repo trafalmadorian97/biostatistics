@@ -1,6 +1,7 @@
-from typing import Literal
+from typing import Literal, Mapping, Sequence
 
-from attrs import frozen
+import polars as pl
+from attrs import field, frozen
 
 Compression = Literal["gzip"]
 
@@ -8,6 +9,8 @@ Compression = Literal["gzip"]
 @frozen
 class DataFrameTextFormat:
     separator: str
+    null_values: Sequence[str] = tuple()
+    schema_overrides: Mapping[str, pl.DataType] = field(factory=dict)
 
 
 @frozen

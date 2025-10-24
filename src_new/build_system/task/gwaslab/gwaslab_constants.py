@@ -11,7 +11,7 @@ GWASLAB_EFFECT_ALLELE_FREQ_COL = "EAF"
 GWASLAB_SAMPLE_SIZE_COLUMN = "N"
 GWASLAB_STATUS_COL = "STATUS"
 
-GwaslabKnownFormat = Literal["gwaslab", "regenie"]
+GwaslabKnownFormat = Literal["gwaslab", "regenie", "gwascatalog"]
 
 GWASLabVCFRefFile = Literal["1kg_eur_hg38"]
 

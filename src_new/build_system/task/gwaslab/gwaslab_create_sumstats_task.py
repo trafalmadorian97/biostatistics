@@ -5,7 +5,7 @@ from src_new.build_system.meta.meta import Meta
 
 logger = structlog.get_logger()
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Sequence
 
 import gwaslab
 import gwaslab as gl
@@ -85,7 +85,7 @@ class GWASLabColumnSpecifiers:
     OR: str | None
     se: str | None
     p: str
-    info: str
+    info: str | None
     eaf: str | None = None
     neaf: str | None = None
     beta: str | None = None
@@ -96,11 +96,15 @@ class GWASLabColumnSpecifiers:
 
 
 def _get_sumstats(
-    x: narwhals.LazyFrame, fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers
+    x: narwhals.LazyFrame,
+    fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers,
+    drop_cols: Sequence[str],
 ) -> gl.Sumstats:
+    x = x.drop(drop_cols)
+    collected_df = x.collect().to_pandas()
     if isinstance(fmt, GWASLabColumnSpecifiers):
         return gl.Sumstats(
-            x.collect().to_pandas(),
+            collected_df,
             rsid=fmt.rsid,
             snpid=fmt.snpid,
             chrom=fmt.chrom,
@@ -121,7 +125,7 @@ def _get_sumstats(
         )
 
     return gl.Sumstats(
-        x.collect().to_pandas(),
+        collected_df,
         fmt=fmt,
     )
 
@@ -146,6 +150,7 @@ class GWASLabCreateSumstatsTask(Task):
     harmonize_options: HarmonizationOptions | None = None
     liftover_to: GenomeBuild | None = None
     fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers = "regenie"
+    drop_col_list: Sequence[str] = tuple()
 
     def __attrs_post_init__(self):
         assert self._source_meta is not None
@@ -176,7 +181,10 @@ class GWASLabCreateSumstatsTask(Task):
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> FileAsset:
         df = scan_dataframe_asset(asset=fetch(self._source_id), meta=self._source_meta)
 
-        sumstats = _get_sumstats(df, self.fmt)
+        logger.debug("Fetching source dataframe asset...")
+        sumstats = _get_sumstats(df, self.fmt, drop_cols=self.drop_col_list)
+        logger.debug("Running gwas summary statistics through gwaslab pipelines...")
+        sumstats.fix_chr()
         if self.genome_build == "infer":
             sumstats.infer_build()
             build = sumstats.meta["gwaslab"]["genome_build"]

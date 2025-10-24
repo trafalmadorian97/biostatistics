@@ -39,7 +39,10 @@ class SimpleMetaToPath(MetaToPath):
             if m.project_path is not None:
                 pth = pth / m.project_path
             else:
-                pth = pth / m.short_id
+                f_name = str(m.short_id)
+                if m.extension is not None:
+                    f_name += m.extension
+                pth = pth / f_name
             return pth
         if isinstance(m, FilteredGWASDataMeta):
             pth = (
