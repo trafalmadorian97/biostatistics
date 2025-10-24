@@ -1,6 +1,7 @@
 from typing import Sequence
 
 import matplotlib.pyplot as plt
+import pandas as pd
 
 plt.rcParams["font.sans-serif"] = (
     "DejaVu Sans"  # Gwaslab defaults to plotting in Arial font, which is not availible by default on linux
@@ -63,6 +64,7 @@ class GwasLabRegionPlotsFromLeadVariantsTask(Task):
     _sumstats_task: GWASLabCreateSumstatsTask
     vcf_name_for_ld: GWASLabVCFRefFile | None
     short_id: AssetId = field(converter=AssetId)
+    plot_top: int | None = None
 
     def __attrs_post_init__(self):
         # might remove these checks if we end up wanting to explore lead variants from one project in the data of another
@@ -110,6 +112,7 @@ class GwasLabRegionPlotsFromLeadVariantsTask(Task):
             .collect()
             .to_pandas()
         )
+        variant_df = get_top_var_df(variant_df, plot_top=self.plot_top)
         variants = df_to_variants(variant_df)
         plot_region_around_variants(
             sumstats=sumstats,
@@ -120,6 +123,18 @@ class GwasLabRegionPlotsFromLeadVariantsTask(Task):
         return DirectoryAsset(
             path=target_path,
         )
+
+
+def get_top_var_df(df: pd.DataFrame, plot_top: int | None) -> pd.DataFrame:
+    if plot_top is None:
+        return df
+    if "P" in df.columns:
+        return df.sort_values(by="P").iloc[:plot_top]
+    if "MLOG10P" in df.columns:
+        return df.sort_values(by="MLOG10P", ascending=False).iloc[:plot_top]
+    raise ValueError(
+        f"task attempted to plot top variants, but neither P nor MLOG10P was in the variant dataframe. columns were: {df.columns}"
+    )
 
 
 def _plot_region_around_variant(
@@ -136,11 +151,12 @@ def _plot_region_around_variant(
         vcf_path = gl.get_path(vcf_name_for_ld)
     else:
         vcf_path = None
+    scaled = "MLOG10P" in sumstats.data.columns
     sumstats.plot_mqq(
         mode="r",
         skip=2,
         cut=20,
-        scaled=True,
+        scaled=scaled,
         region_grid=True,
         region=(chrom, max(pos - buffer, 0), pos + buffer),
         save=str(
@@ -158,7 +174,7 @@ def plot_region_around_variants(
     vcf_name_for_ld: GWASLabVCFRefFile | None,
     buffer: int = 500_000,
 ) -> None:
-    for variant in variants:
+    for i, variant in enumerate(variants):
         logger.debug(f"Creating region plot around variant {variant.id}")
         _plot_region_around_variant(
             sumstats=sumstats,
