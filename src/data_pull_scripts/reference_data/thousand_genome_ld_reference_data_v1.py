@@ -8,6 +8,7 @@ from src.data_pull_util.data_source import (
 )
 from src.data_pull_util.data_verifier import FileSizeVerifier
 
+
 THOUSAND_GENOME_EUR_LD_REFERENCE_DATA_V1 = BasicDataSource(
     retriever=WGetDataRetriever(
         url="https://zenodo.org/records/7768714/files/1000G_Phase3_ldscores.tgz?download=1",

@@ -1,3 +1,3 @@
-# LD Score Reference DAta
+# LD Score Reference Data
 An LD score measures the extent to which a SNP is correlated with other neighbouring SNPs in the context of a given population.
 The concept of the LD score was introduced [here](https://pmc.ncbi.nlm.nih.gov/articles/PMC4495769/pdf/nihms683841.pdf) by Bulik-Sullivan et al, and has since been widely used in the computation of heritability, genetic correlation, and other important qualtities.  
