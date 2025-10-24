@@ -8,7 +8,7 @@ from src_new.build_system.task.gwaslab.gwaslab_create_sumstats_task import (
 )
 
 """
-Hmm. These sumstats seem a bit messed up
+Noted some missing data here
 For instance the variant rs887369 has a p value but no beta.
 """
 BENTHAM_2015_SUMSTATS_MINIMAL_PROCESSING_FROM_RAW_BUILD_37 = GWASLabCreateSumstatsTask(
