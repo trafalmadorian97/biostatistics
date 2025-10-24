@@ -8,7 +8,8 @@ from src_new.build_system.task.reference.download_file_task import DownloadFileT
 MAGMA_GENE_LOCATION_REFERENCE_DATA_BUILD_38_RAW = DownloadFileTask(
     meta=ReferenceFileMeta(
         group="magma_reference_data",
-        sub_folder=PurePath("gene_locations/raw"),
+        sub_group="gene_locations",
+        sub_folder=PurePath("raw"),
         asset_id="magma_gene_location_reference_data_build_38_raw",
         extension=".zip",
     ),
