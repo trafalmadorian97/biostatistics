@@ -174,7 +174,7 @@ def plot_region_around_variants(
     vcf_name_for_ld: GWASLabVCFRefFile | None,
     buffer: int = 500_000,
 ) -> None:
-    for i, variant in enumerate(variants):
+    for variant in variants:
         logger.debug(f"Creating region plot around variant {variant.id}")
         _plot_region_around_variant(
             sumstats=sumstats,
