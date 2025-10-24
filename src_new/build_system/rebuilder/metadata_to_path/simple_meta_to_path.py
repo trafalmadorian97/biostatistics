@@ -17,6 +17,9 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
 from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.reference_data_directory_meta import (
+    ReferenceDataDirectoryMeta,
+)
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
@@ -88,11 +91,22 @@ class SimpleMetaToPath(MetaToPath):
             )
             return pth
         if isinstance(m, ReferenceFileMeta):
-            pth = self.root / "reference_data" / m.group / m.sub_folder
+            pth = self.root / "reference_data" / m.group / m.sub_group / m.sub_folder
             if m.filename is not None:
                 pth = pth / (m.filename + m.extension)
             else:
                 pth = pth / str(m.asset_id + m.extension)
+            return pth
+
+        if isinstance(m, ReferenceDataDirectoryMeta):
+            pth = (
+                self.root
+                / "reference_data"
+                / m.group
+                / m.sub_group
+                / m.sub_folder
+                / m.asset_id
+            )
             return pth
 
         raise ValueError(f"Unknown meta {m} of type {type(m)}.")

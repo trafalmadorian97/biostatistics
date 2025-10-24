@@ -3,17 +3,15 @@ from pathlib import PurePath
 from attrs import field, frozen
 
 from src_new.build_system.meta.asset_id import AssetId
-from src_new.build_system.meta.base_meta import FileMeta
+from src_new.build_system.meta.base_meta import DirMeta
 
 
 @frozen
-class ReferenceFileMeta(FileMeta):
+class ReferenceDataDirectoryMeta(DirMeta):
     group: str
     sub_group: str
     sub_folder: PurePath
     _asset_id: AssetId = field(converter=AssetId)
-    filename: str | None = None
-    extension: str = ".zip"
 
     @property
     def asset_id(self) -> AssetId:
