@@ -5,6 +5,11 @@ from src_new.build_system.meta.reference_meta.reference_file_meta import (
 )
 from src_new.build_system.task.reference.download_file_task import DownloadFileTask
 
+"""
+Note: reference LD scores derived from the 1000 genome project were formerly stored on the broad institute's website, but have since been move.
+See: https://storage.googleapis.com/broad-alkesgroup-public/LDSCORE/README_new_data_location.txt
+New data location: https://zenodo.org/records/7768714
+"""
 THOUSAND_GENOME_EUR_LD_REFERENCE_DATA_V1_RAW = DownloadFileTask(
     meta=ReferenceFileMeta(
         asset_id="thousand_genomes_phase_3_v1_eur_ld_scores_tar_gzip",
