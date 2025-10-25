@@ -5,6 +5,9 @@ from src_new.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manh
 from src_new.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan_and_qq import (
     DECODE_ME_GWAS_1_MANHATTAN_AND_QQ_PLOT,
 )
+from src_new.assets.reference_data.linkage_disequilibrium_score_reference_data.extracted.eur_ld_scores_thousand_genome_phase_3_v1_extracted import (
+    THOUSAND_GENOME_EUR_LD_REFERENCE_DATA_V1_EXTRACTED,
+)
 
 
 def run_initial_analysis():
@@ -13,7 +16,11 @@ def run_initial_analysis():
         # [DECODE_ME_GWAS_1_SUMSTATS_MINIMAL_FILTERING],
         # [DECODE_ME_GWAS_1_LEAD_VARIANTS]
         # [DECODE_ME_GWAS_1_REGION_PLOTS, MAGMA_GENE_LOCATION_REFERENCE_DATA_BUILD_38_RAW],
-        [DECODE_ME_GWAS_1_MANHATTAN_AND_QQ_PLOT, DECODE_ME_GWAS_1_MANHATTAN_PLOT],
+        [
+            DECODE_ME_GWAS_1_MANHATTAN_AND_QQ_PLOT,
+            DECODE_ME_GWAS_1_MANHATTAN_PLOT,
+            THOUSAND_GENOME_EUR_LD_REFERENCE_DATA_V1_EXTRACTED,
+        ]
     )
 
 
