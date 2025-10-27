@@ -1,13 +1,17 @@
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePath
 
 from attrs import frozen
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.file_asset import FileAsset
+from src_new.build_system.meta.executable.executable_meta import ExecutableMeta
 from src_new.build_system.meta.meta import Meta
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
+from src_new.build_system.task.make_executable_wrapper_task import (
+    MakeExecutableWrapperTask,
+)
 from src_new.build_system.wf.base_wf import WF
 
 
@@ -20,6 +24,26 @@ class ExtractFromZipTask(Task):
     _meta: Meta
     _source_file_task: Task
     _file_to_extract: str
+
+    @classmethod
+    def create_from_zipped_executable(
+        cls, source_task: Task, asset_id: str, file_to_extract: str
+    ) -> Task:
+        src_meta = source_task.meta
+        assert isinstance(src_meta, ExecutableMeta)
+        return MakeExecutableWrapperTask(
+            cls(
+                meta=ExecutableMeta.create(
+                    group=src_meta.group,
+                    sub_folder=PurePath("extracted"),
+                    asset_id=asset_id,
+                    filename=src_meta.filename,
+                    extension=None,
+                ),
+                source_file_task=source_task,
+                file_to_extract=file_to_extract,
+            )
+        )
 
     @property
     def meta(self) -> Meta:

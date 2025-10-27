@@ -1,4 +1,4 @@
-from src_new.analysis.default_runner import DEFAULT_RUNNER
+from src_new.analysis.runner.default_runner import DEFAULT_RUNNER
 from src_new.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan import (
     DECODE_ME_GWAS_1_MANHATTAN_PLOT,
 )

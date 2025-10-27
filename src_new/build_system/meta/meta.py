@@ -1,3 +1,4 @@
+from src_new.build_system.meta.executable.executable_meta import ExecutableMeta
 from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
 from src_new.build_system.meta.gwaslab_meta.gwaslab_lead_variants_meta import (
@@ -12,7 +13,7 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_region_plots_meta import (
 from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
-from src_new.build_system.meta.reference_data_directory_meta import (
+from src_new.build_system.meta.reference_meta.reference_data_directory_meta import (
     ReferenceDataDirectoryMeta,
 )
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
@@ -36,4 +37,5 @@ Meta = (
     | ReferenceFileMeta
     | GWASLabManhattanQQPlotMeta
     | ReferenceDataDirectoryMeta
+    | ExecutableMeta
 )
