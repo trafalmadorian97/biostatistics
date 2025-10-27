@@ -2,6 +2,7 @@ from pathlib import Path
 
 from attrs import frozen
 
+from src_new.build_system.meta.executable.executable_meta import ExecutableMeta
 from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
 from src_new.build_system.meta.gwaslab_meta.gwaslab_lead_variants_meta import (
@@ -17,7 +18,7 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
 from src_new.build_system.meta.meta import Meta
-from src_new.build_system.meta.reference_data_directory_meta import (
+from src_new.build_system.meta.reference_meta.reference_data_directory_meta import (
     ReferenceDataDirectoryMeta,
 )
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
@@ -109,4 +110,14 @@ class SimpleMetaToPath(MetaToPath):
             )
             return pth
 
+        if isinstance(m, ExecutableMeta):
+            pth = self.root / "executable" / m.group / m.sub_folder
+            if m.filename is not None:
+                fname = m.filename
+                if m.extension is not None:
+                    fname += m.extension
+                pth = pth / fname
+            else:
+                pth = pth / m.asset_id
+            return pth
         raise ValueError(f"Unknown meta {m} of type {type(m)}.")

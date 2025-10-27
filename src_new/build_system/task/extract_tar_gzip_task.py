@@ -11,7 +11,7 @@ from src_new.build_system.asset.directory_asset import DirectoryAsset
 from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.meta import Meta
-from src_new.build_system.meta.reference_data_directory_meta import (
+from src_new.build_system.meta.reference_meta.reference_data_directory_meta import (
     ReferenceDataDirectoryMeta,
 )
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
