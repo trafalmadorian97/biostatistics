@@ -11,9 +11,9 @@ A key advantage of MAGMA is that it can operate on GWAS summary statistics combi
 
 
 In a GWAS, we estimate the $\beta_i$ in
-$$
-Y= \beta_i X_i +\epsilon_i.
-$$
+
+$$Y= \beta_i X_i +\epsilon_i.$$
+
 where $\beta_i$ is the regression coefficient of $Y$ on $X_i$, and $\epsilon_i$ is the regression error.
 
 
@@ -37,4 +37,5 @@ The resulting p-value offers a measure of the strength of the evidence that the 
 [MAGMA Paper](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004219) 
 
 [Note on Magma SNP-wise model](https://vu.data.surfsara.nl/s/VeuWKUwd0rz6AZD?dir=/&editing=false&openfile=true)
+
 
