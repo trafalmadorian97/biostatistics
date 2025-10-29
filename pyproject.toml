@@ -3,7 +3,7 @@ name = "biostatistics"
 version = "0.1.0"
 description = "A project apply biostatistical techniques to publicly available data on ME/CFS."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = "==3.12"
 dependencies = [
     "attrs>=25.3.0",
     "cattrs>=25.2.0",
@@ -37,3 +37,20 @@ dependencies = [
     "xarray>=2025.9.1",
     "xxhash>=3.6.0",
 ]
+
+[tool.pixi.workspace]
+channels = [
+    "conda-forge",
+    "bioconda",
+]
+platforms = ["linux-64"]
+
+[tool.pixi.pypi-dependencies]
+biostatistics = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+pysam = ">=0.23.3,<0.24"
+pixi-pycharm = ">=0.0.9,<0.0.10"
+ruff = ">=0.14.2,<0.15"
