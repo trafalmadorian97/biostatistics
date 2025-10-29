@@ -17,7 +17,7 @@ NEW_UNIT_TEST_PATH = Path("test_src_new/unit")
 @task
 def test(c):
     print("Running unit and integration tests with pytest")
-    c.run(f"uv run -m pytest {UNIT_TEST_PATH} {NEW_UNIT_TEST_PATH}", pty=True)
+    c.run(f"pixi r python  -m pytest {UNIT_TEST_PATH} {NEW_UNIT_TEST_PATH}", pty=True)
 
 
 @task
@@ -26,7 +26,7 @@ def format(c):
     Format code
     """
     print("Formatting with ruff...")
-    c.run("uv run ruff format", pty=True)
+    c.run("pixi r  ruff format", pty=True)
 
 
 @task
@@ -35,19 +35,19 @@ def formatcheck(c):
     Check for format errors
     """
     print("Checking format with black...")
-    c.run("uv run ruff format --check .")
+    c.run("pixi r ruff format --check .")
 
 
 @task
 def lintfix(c):
     print("linting and applying lint auto-fixes using ruff...")
-    c.run(" uv run ruff check --fix --unsafe-fixes")
+    c.run(" pixi r  ruff check --fix --unsafe-fixes")
 
 
 @task
 def lintcheck(c):
     print("linting using ruff...")
-    c.run("uv run ruff check")
+    c.run("pixi r ruff check")
 
 
 @task
@@ -56,7 +56,7 @@ def typecheck(c):
     Check for type errors
     """
     print("Typechecking with mypy...")
-    c.run("uv run mypy .", pty=True)
+    c.run("pixi r  mypy .", pty=True)
 
 
 @task(pre=[lintfix, format, typecheck, test])
@@ -89,7 +89,7 @@ def install_tabix_ubuntu(c):
 @task
 def pull_Decode_ME(c):
     print("Pulling DecodeME data...")
-    c.run(f"uv run osf -p {DECODE_ME_PROJECT_ID} clone -U {DECODE_ME_RAW_DATA_PATH}")
+    c.run(f"pixi r python -p {DECODE_ME_PROJECT_ID} clone -U {DECODE_ME_RAW_DATA_PATH}")
 
 
 @task

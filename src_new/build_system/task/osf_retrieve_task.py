@@ -34,7 +34,7 @@ class OSFRetrievalTask(GeneratingTask):
         @invoke.task
         def fetch_osf(c):
             c.run(
-                f"uv run osf -p {self.osf_project_id} fetch {str(shlex.quote(str(self._meta.project_path)))} {str(tmp_dst)}"
+                f"pixi r osf -p {self.osf_project_id} fetch {str(shlex.quote(str(self._meta.project_path)))} {str(tmp_dst)}"
             )
 
         fetch_osf(invoke.Context())
