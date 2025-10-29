@@ -24,8 +24,6 @@ jobs:
         with:
           pixi-version: v0.55.0
           cache: true
-          auth-host: prefix.dev
-          auth-token: ${{ secrets.PREFIX_DEV_TOKEN }}
       - name: Check formatting with ruff
         run: pixi r python  invoke formatcheck
       - name: Lint using ruff
