@@ -9,18 +9,14 @@ class WF(ABC):
     An interface to the external world.
     """
 
-    def download_from_url(
-        self, url: str, md5_hash: str | None, local_path: Path
-    ) -> None:
+    def download_from_url(self, url: str, local_path: Path) -> None:
         pass
 
 
 class SimpleWF(WF):
-    def download_from_url(
-        self, url: str, md5_hash: str | None, local_path: Path
-    ) -> None:
+    def download_from_url(self, url: str, local_path: Path) -> None:
+        # py3_wget attempts to read the while file to check md5.  doesn't work for large files.  So implement my own check
         py3_wget.download_file(
             url=url,
             output_path=local_path,
-            md5=md5_hash,
         )
