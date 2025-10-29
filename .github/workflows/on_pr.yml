@@ -25,10 +25,10 @@ jobs:
           pixi-version: v0.55.0
           cache: true
       - name: Check formatting with ruff
-        run: pixi r python  invoke formatcheck
+        run: pixi r invoke formatcheck
       - name: Lint using ruff
-        run: pixi r python  invoke lintcheck
+        run: pixi r  invoke lintcheck
       - name: Check types with mypy
-        run: pixi r python  invoke typecheck
+        run: pixi r  invoke typecheck
       - name: Run tests
-        run: pixi r python  invoke test # run unit and integration tests
+        run: pixi r  invoke test # run unit and integration tests
