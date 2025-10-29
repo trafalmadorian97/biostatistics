@@ -18,3 +18,9 @@ class SimpleFileMeta(FileMeta):
 
     def read_spec(self) -> ReadSpec | None:
         return self._read_spec
+
+    @classmethod
+    def create(cls, asset_id: str):
+        return cls(
+            short_id=AssetId(asset_id),
+        )
