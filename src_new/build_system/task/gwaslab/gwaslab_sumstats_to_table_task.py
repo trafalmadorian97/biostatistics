@@ -23,6 +23,9 @@ from src_new.build_system.wf.base_wf import WF
 
 @frozen
 class GwasLabSumstatsToTableTask(Task):
+    """
+    Task to write a sumstats object to a plain table for further processing.
+    """
     _meta: Meta
     source_sumstats_task: Task
 
