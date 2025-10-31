@@ -10,6 +10,7 @@ GWASLAB_BETA_COL = "BETA"
 GWASLAB_EFFECT_ALLELE_FREQ_COL = "EAF"
 GWASLAB_SAMPLE_SIZE_COLUMN = "N"
 GWASLAB_STATUS_COL = "STATUS"
+GWASLAB_RSID_COL = "rsID"
 
 GwaslabKnownFormat = Literal["gwaslab", "regenie", "gwascatalog"]
 

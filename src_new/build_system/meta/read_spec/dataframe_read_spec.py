@@ -9,8 +9,10 @@ Compression = Literal["gzip"]
 @frozen
 class DataFrameTextFormat:
     separator: str
-    null_values: Sequence[str] = tuple()
+    null_values: Sequence[str] | None = None
     schema_overrides: Mapping[str, pl.DataType] = field(factory=dict)
+    column_names: list[str] | None = None
+    has_header: bool = True
 
 
 @frozen
