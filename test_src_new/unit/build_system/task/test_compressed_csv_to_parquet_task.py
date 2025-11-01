@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path, PurePath
 
 import pandas as pd
+from src_new.build_system.reference.schemas.hg19_sn151_schema import HG19_SNP151_SCHEMA
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.file_asset import FileAsset
@@ -15,7 +16,6 @@ from src_new.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
-from src_new.build_system.reference.schemas.hg19_sn151_schema import HG19_SNP151_SCHEMA
 from src_new.build_system.task.compressed_csv_to_parquet_task import (
     CompressedCSVToParquetTask,
 )
