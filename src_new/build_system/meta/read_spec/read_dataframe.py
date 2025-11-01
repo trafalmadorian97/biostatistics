@@ -18,12 +18,19 @@ def scan_dataframe(path: Path, spec: DataFrameReadSpec) -> nw.LazyFrame:
     if isinstance(spec.format, DataFrameParquetFormat):
         return nw.scan_parquet(path, backend="polars")
     if isinstance(spec.format, DataFrameTextFormat):
+        if spec.format.column_names is not None:
+            col_list: list[str] = spec.format.column_names
+            col_func = lambda x: col_list
+        else:
+            col_func = None
         return nw.from_native(
             pl.scan_csv(
                 path,
                 separator=spec.format.separator,
                 null_values=spec.format.null_values,
                 schema_overrides=spec.format.schema_overrides,
+                with_column_names=col_func,
+                has_header=spec.format.has_header,
             )
         )
     raise ValueError("Unknown format")
