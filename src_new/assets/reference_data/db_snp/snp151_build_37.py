@@ -1,7 +1,5 @@
 from pathlib import PurePath
 
-from src_new.build_system.reference.schemas.hg19_sn151_schema import HG19_SNP151_SCHEMA
-
 from src_new.build_system.meta.read_spec.dataframe_read_spec import (
     DataFrameReadSpec,
     DataFrameTextFormat,
@@ -9,6 +7,7 @@ from src_new.build_system.meta.read_spec.dataframe_read_spec import (
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
+from src_new.build_system.reference.schemas.hg19_sn151_schema import HG19_SNP151_SCHEMA
 from src_new.build_system.task.reference.download_file_task import DownloadFileTask
 
 """
