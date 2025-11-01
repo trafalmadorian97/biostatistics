@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 
 import narwhals as nw
 import polars as pl
@@ -13,18 +14,22 @@ from src_new.build_system.meta.read_spec.dataframe_read_spec import (
     DataFrameTextFormat,
 )
 
+ValidBackend = Literal["ibis", "polars"]
 
-def scan_dataframe(path: Path, spec: DataFrameReadSpec) -> nw.LazyFrame:
+
+def scan_dataframe(
+    path: Path, spec: DataFrameReadSpec, parquet_backend: ValidBackend
+) -> nw.LazyFrame:
     if isinstance(spec.format, DataFrameParquetFormat):
-        return nw.scan_parquet(path, backend="polars")
+        return nw.scan_parquet(path, backend=parquet_backend)
     if isinstance(spec.format, DataFrameTextFormat):
         if spec.format.column_names is not None:
             col_list: list[str] = spec.format.column_names
             col_func = lambda x: col_list
         else:
             col_func = None
-        return nw.from_native(
-            pl.scan_csv(
+        if parquet_backend == "polars":
+            polars_scan = pl.scan_csv(
                 path,
                 separator=spec.format.separator,
                 null_values=spec.format.null_values,
@@ -32,20 +37,26 @@ def scan_dataframe(path: Path, spec: DataFrameReadSpec) -> nw.LazyFrame:
                 with_column_names=col_func,
                 has_header=spec.format.has_header,
             )
-        )
+            return nw.from_native(polars_scan)
+        raise ValueError("Only polars backend can be used to read text files")
+
     raise ValueError("Unknown format")
 
 
-def _scan_dataframe_asset(asset: FileAsset, meta: FileMeta) -> nw.LazyFrame:
+def _scan_dataframe_asset(
+    asset: FileAsset, meta: FileMeta, parquet_backend: ValidBackend
+) -> nw.LazyFrame:
     read_spec = meta.read_spec()
     assert read_spec is not None
-    return scan_dataframe(asset.path, read_spec)
+    return scan_dataframe(asset.path, read_spec, parquet_backend)
 
 
-def scan_dataframe_asset(asset: Asset, meta: Meta) -> nw.LazyFrame:
+def scan_dataframe_asset(
+    asset: Asset, meta: Meta, parquet_backend: ValidBackend = "polars"
+) -> nw.LazyFrame:
     """
     Use the information in an Asset's metadata to read it as a DataFrame
     """
     assert isinstance(asset, FileAsset)
     assert isinstance(meta, FileMeta)
-    return _scan_dataframe_asset(asset, meta)
+    return _scan_dataframe_asset(asset, meta, parquet_backend)
