@@ -1,0 +1,32 @@
+"""
+https://hgw2.soe.ucsc.edu/cgi-bin/hgTables?hgsid=2912494930_cRufLdpdc1ynRc2sCM3g1WGAWAgH&hgta_doSchemaDb=hg19&hgta_doSchemaTable=snp151Flagged
+"""
+
+HG19_SNP151_SCHEMA = [
+    "bin",
+    "chrom",
+    "chromStart_zero_based",
+    "chromEnd_zero_based",
+    "name",
+    "score",
+    "strand",
+    "refNCBI",
+    "refUCSC",
+    "observed",
+    "molType",
+    "class",
+    "valid",
+    "avHet",
+    "avHetSE",
+    "func",
+    "locType",
+    "weight",
+    "exceptions",
+    "submitterCount",
+    "submitters",
+    "alleleFreqCount",
+    "alleles",
+    "alleleNs",
+    "alleleFreqs",
+    "bitfields",
+]
