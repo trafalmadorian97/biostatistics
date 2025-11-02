@@ -17,17 +17,12 @@ from src_new.build_system.rebuilder.verifying_trace_rebuilder.verifying_trace_re
 )
 from src_new.build_system.scheduler.topological_scheduler import topological
 from src_new.build_system.task.base_task import Task
-from src_new.build_system.task.gwaslab.gwaslab_constants import GWASLAB_RSID_COL
 from src_new.build_system.tasks.simple_tasks import find_tasks
 from src_new.build_system.wf.base_wf import SimpleWF
 
-# from test_src_new.unit.build_system.task.conftest import parquet_snp151, dummy_processed_gwas_parquet
 
-
-def test_assign_rsids_via_snp_task(tmp_path: Path, assign_rsids_task: Task):
-    task3 = assign_rsids_task
-
-    tasks = find_tasks([task3])
+def test_magma_snp_locations_task(tmp_path: Path, magma_snp_locations_task: Task):
+    tasks = find_tasks([magma_snp_locations_task])
 
     wf = SimpleWF()
     info: VerifyingTraceInfo = VerifyingTraceInfo.empty()
@@ -39,7 +34,7 @@ def test_assign_rsids_via_snp_task(tmp_path: Path, assign_rsids_task: Task):
     tracer = SimpleHasher.md5_hasher()
     rebuilder = VerifyingTraceRebuilder(tracer)
 
-    targets = [task3.meta.asset_id]
+    targets = [magma_snp_locations_task.meta.asset_id]
 
     # Verify that all files are created in the correct location
     store, info = topological(
@@ -50,10 +45,10 @@ def test_assign_rsids_via_snp_task(tmp_path: Path, assign_rsids_task: Task):
         info=info,
         meta_to_path=meta_to_path,
     )
-    asset = store[AssetId("assign_rsids_via_snp_task")]
+    asset = store[AssetId("magma_snp_locations_task")]
     assert isinstance(asset, FileAsset)
-    df = scan_dataframe_asset(asset, task3.meta).collect().to_pandas()
-    assert "bad_chrom_dummy" not in df[GWASLAB_RSID_COL].tolist()
+    df = (
+        scan_dataframe_asset(asset, magma_snp_locations_task.meta).collect().to_pandas()
+    )
     assert len(df) == 1
-    assert GWASLAB_RSID_COL in df.columns
-    assert df[GWASLAB_RSID_COL].iloc[0] == "rstest_dummy"
+    assert len(df.columns) == 3
