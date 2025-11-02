@@ -100,13 +100,14 @@ class SimpleMetaToPath(MetaToPath):
             return pth
 
         if isinstance(m, ReferenceDataDirectoryMeta):
+            dirname = m.dirname if m.dirname is not None else m.asset_id
             pth = (
                 self.root
                 / "reference_data"
                 / m.group
                 / m.sub_group
                 / m.sub_folder
-                / m.asset_id
+                / dirname
             )
             return pth
 

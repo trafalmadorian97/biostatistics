@@ -1,6 +1,6 @@
 from src_new.analysis.runner.default_runner import DEFAULT_RUNNER
-from src_new.assets.reference_data.magma_ld_reference.magma_eur_build_37_1k_genomes_ref import (
-    MAGMA_EUR_BUILD_37_1k_GENOMES_REF,
+from src_new.assets.reference_data.magma_ld_reference.magma_eur_build_37_1k_genomes_ref_extracted import (
+    MAGMA_EUR_BUILD_37_1K_GENOMES_EXTRACTED,
 )
 
 
@@ -19,7 +19,8 @@ def run_initial_analysis():
         #     DECODE_ME_GWAS_1_BUILD_37_MAGMA_SNP_LOCS,
         # ],
         # [MAGMA_GENE_LOCATION_REFERENCE_DATA_BUILD_37_EXTRACTED]
-        [MAGMA_EUR_BUILD_37_1k_GENOMES_REF]
+        # [MAGMA_EUR_BUILD_37_1K_GENOMES_REF]
+        [MAGMA_EUR_BUILD_37_1K_GENOMES_EXTRACTED]
         # [DECODE_ME_GWAS_1_MAGMA_ANNOTATIONS],
         # must_rebuild_transitive=[DECODE_ME_GWAS_1_MAGMA_ANNOTATIONS]
         # must_rebuild_transitive=[
