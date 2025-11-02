@@ -11,6 +11,7 @@ from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
 from src_new.build_system.meta.meta import Meta
 from src_new.build_system.meta.read_spec.dataframe_read_spec import (
+    DataFrameFormat,
     DataFrameParquetFormat,
     DataFrameReadSpec,
 )
@@ -130,31 +131,37 @@ class AssignRSIDSToSNPsViaSNP151Task(Task):
         chrom_replace_rules: Mapping[str, int],
     ):
         source_meta = raw_snp_data_task.meta
-        meta: Meta
-        if isinstance(source_meta, SimpleFileMeta):
-            meta = SimpleFileMeta(
-                short_id=AssetId(asset_id),
-                read_spec=DataFrameReadSpec(format=DataFrameParquetFormat()),
-            )
-            return cls(
-                meta=meta,
-                snp151_database_file_task=snp151_database_file_task,
-                raw_snp_data_task=raw_snp_data_task,
-                valid_chroms=valid_chroms,
-                chrom_replace_rules=chrom_replace_rules,
-            )
-        if isinstance(source_meta, FilteredGWASDataMeta):
-            meta = FilteredGWASDataMeta(
-                short_id=AssetId(asset_id),
-                project=source_meta.project,
-                trait=source_meta.trait,
-                sub_dir=source_meta.sub_dir,
-            )
-            return cls(
-                meta=meta,
-                snp151_database_file_task=snp151_database_file_task,
-                raw_snp_data_task=raw_snp_data_task,
-                valid_chroms=valid_chroms,
-                chrom_replace_rules=chrom_replace_rules,
-            )
+        meta = create_new_meta(source_meta, asset_id=asset_id)
+        return cls(
+            meta=meta,
+            snp151_database_file_task=snp151_database_file_task,
+            raw_snp_data_task=raw_snp_data_task,
+            valid_chroms=valid_chroms,
+            chrom_replace_rules=chrom_replace_rules,
+        )
+
+
+def create_new_meta(
+    source_meta: Meta,
+    asset_id: str,
+    format: DataFrameFormat = DataFrameParquetFormat(),
+    extension=".parquet",
+) -> Meta:
+    meta: Meta
+    if isinstance(source_meta, SimpleFileMeta):
+        meta = SimpleFileMeta(
+            short_id=AssetId(asset_id),
+            read_spec=DataFrameReadSpec(format=format),
+        )
+    elif isinstance(source_meta, FilteredGWASDataMeta):
+        meta = FilteredGWASDataMeta(
+            short_id=AssetId(asset_id),
+            project=source_meta.project,
+            trait=source_meta.trait,
+            sub_dir=source_meta.sub_dir,
+            read_spec=DataFrameReadSpec(format=format),
+            extension=extension,
+        )
+    else:
         raise ValueError("unknown source meta")
+    return meta
