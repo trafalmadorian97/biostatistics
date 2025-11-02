@@ -1,3 +1,5 @@
+from pathlib import PurePath
+
 from attrs import frozen
 
 from src_new.build_system.meta.asset_id import AssetId
@@ -14,7 +16,7 @@ class FilteredGWASDataMeta(FileMeta):
     short_id: AssetId
     trait: str
     project: str
-    sub_dir: str
+    sub_dir: str | PurePath
     _read_spec: ReadSpec | None = None
     extension: str = ".parquet"
 

@@ -13,6 +13,9 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_region_plots_meta import (
 from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
+from src_new.build_system.meta.procesed_gwas_data_directory_meta import (
+    ProcessedGwasDataDirectoryMeta,
+)
 from src_new.build_system.meta.reference_meta.reference_data_directory_meta import (
     ReferenceDataDirectoryMeta,
 )
@@ -38,4 +41,5 @@ Meta = (
     | GWASLabManhattanQQPlotMeta
     | ReferenceDataDirectoryMeta
     | ExecutableMeta
+    | ProcessedGwasDataDirectoryMeta
 )
