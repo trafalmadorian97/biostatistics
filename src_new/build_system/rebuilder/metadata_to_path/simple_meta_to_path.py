@@ -18,6 +18,9 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
 from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.procesed_gwas_data_directory_meta import (
+    ProcessedGwasDataDirectoryMeta,
+)
 from src_new.build_system.meta.reference_meta.reference_data_directory_meta import (
     ReferenceDataDirectoryMeta,
 )
@@ -57,6 +60,9 @@ class SimpleMetaToPath(MetaToPath):
                 / m.sub_dir
                 / str(m.short_id + m.extension)
             )
+            return pth
+        if isinstance(m, ProcessedGwasDataDirectoryMeta):
+            pth = self.root / "gwas" / m.trait / m.project / m.sub_dir / str(m.short_id)
             return pth
         if isinstance(m, GWASLabSumStatsMeta):
             pth = (

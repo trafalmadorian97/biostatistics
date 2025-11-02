@@ -1,5 +1,5 @@
 import subprocess
-from pathlib import Path
+from pathlib import Path, PurePath
 
 import structlog
 from attrs import frozen
@@ -92,7 +92,7 @@ class MagmaAnnotateTask(Task):
             short_id=AssetId(asset_id),
             trait=snp_loc_meta.trait,
             project=snp_loc_meta.project,
-            sub_dir=snp_loc_meta.sub_dir,
+            sub_dir=PurePath(snp_loc_meta.sub_dir) / "magma",
             extension=".genes.annot",
         )
         return cls(
