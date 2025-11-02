@@ -23,6 +23,7 @@ class MagmaAnnotateTask(Task):
     This step associates SNPs with genes.
     See page 5 of the MAGMA manual here: https://vu.data.surfsara.nl/s/MUiv3y1SFRePnyG?dir=/&editing=false&openfile=true
     """
+
     _meta: Meta
     magma_binary_task: Task
     snp_loc_file_task: Task
