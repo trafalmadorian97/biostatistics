@@ -12,6 +12,7 @@ MAGMA_GENE_LOCATION_REFERENCE_DATA_BUILD_38_RAW = DownloadFileTask(
         sub_folder=PurePath("raw"),
         asset_id="magma_gene_location_reference_data_build_38_raw",
         extension=".zip",
+        filename="NCBI38",
     ),
     url="https://vu.data.surf.nl/public.php/dav/files/yj952iHqy5anYhH/?accept=zip",
     md5_hash=None,

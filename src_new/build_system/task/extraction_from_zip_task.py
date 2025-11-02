@@ -5,8 +5,12 @@ from attrs import frozen
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.file_asset import FileAsset
+from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.executable.executable_meta import ExecutableMeta
 from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.reference_meta.reference_file_meta import (
+    ReferenceFileMeta,
+)
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.task.make_executable_wrapper_task import (
@@ -43,6 +47,25 @@ class ExtractFromZipTask(Task):
                 source_file_task=source_task,
                 file_to_extract=file_to_extract,
             )
+        )
+
+    @classmethod
+    def create_from_zipped_reference_file(
+        cls, source_task: Task, asset_id: str, file_to_extract: str
+    ) -> Task:
+        src_meta = source_task.meta
+        assert isinstance(src_meta, ReferenceFileMeta)
+        return cls(
+            meta=ReferenceFileMeta(
+                group=src_meta.group,
+                sub_folder=PurePath("extracted"),
+                asset_id=AssetId(asset_id),
+                filename=file_to_extract,
+                sub_group=src_meta.sub_group,
+                extension="",
+            ),
+            source_file_task=source_task,
+            file_to_extract=file_to_extract,
         )
 
     @property
