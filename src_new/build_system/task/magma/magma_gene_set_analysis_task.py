@@ -32,6 +32,11 @@ class DirectoryGeneSetSpec:
 
 @frozen
 class MagmaGeneSetAnalysisTask(Task):
+    """
+    The final step in the canonical MAGMA pipeline.
+    See page 18 of the manual here: https://vu.data.surfsara.nl/s/MUiv3y1SFRePnyG?dir=/&editing=false&openfile=true
+    """
+
     _meta: Meta
     magma_binary_task: Task
     magma_gene_analysis_task: Task
