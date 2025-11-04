@@ -20,7 +20,7 @@ from src_new.util.subproc.run_command import execute_command
 
 logger = structlog.get_logger()
 
-OUTPUT_STEM_NAME = "gene_analysis_output"
+GENE_ANALYSIS_OUTPUT_STEM_NAME = "gene_analysis_output"
 SynonymMode = Literal["skip", "drop", "drop-dup"]
 
 
@@ -83,7 +83,7 @@ class MagmaGeneAnalysisTask(Task):
         ld_ref_dir_path = ld_ref_asset.path
         out_dir = scratch_dir / "gene_analysis_dir"
         out_dir.mkdir(parents=True, exist_ok=True)
-        out_base_path = out_dir / OUTPUT_STEM_NAME
+        out_base_path = out_dir / GENE_ANALYSIS_OUTPUT_STEM_NAME
         cmd = [
             str(binary_path),
             "--bfile",

@@ -5,7 +5,7 @@ from src_new.build_system.meta.reference_meta.reference_file_meta import (
 )
 from src_new.build_system.task.reference.download_file_task import DownloadFileTask
 
-MAGMA_GENE_LOCATION_REFERENCE_DATA_BUILD_37_RAW = DownloadFileTask(
+MAGMA_ENTREZ_GENE_LOCATION_REFERENCE_DATA_BUILD_37_RAW = DownloadFileTask(
     meta=ReferenceFileMeta(
         group="magma_reference_data",
         sub_group="gene_locations",
