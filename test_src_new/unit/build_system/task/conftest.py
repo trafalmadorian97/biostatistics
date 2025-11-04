@@ -21,7 +21,7 @@ from src_new.build_system.task.assign_rsids_via_snp151_task import (
 )
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTask
-from src_new.build_system.task.magma_snp_location_task import MagmaSNPFileTask
+from src_new.build_system.task.magma.magma_snp_location_task import MagmaSNPFileTask
 
 
 @pytest.fixture(scope="package")
