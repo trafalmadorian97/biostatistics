@@ -35,7 +35,7 @@ dependencies = [
     "types-tqdm>=4.67.0.20250809",
     "universal-pathlib>=0.3.4",
     "xarray>=2025.9.1",
-    "xxhash>=3.6.0", "ibis-framework[duckdb,examples]>=11.0.0,<12",
+    "xxhash>=3.6.0", "ibis-framework[duckdb,examples]>=11.0.0,<12", "scikit-learn>=1.7.2,<2",
 ]
 
 [tool.pixi.workspace]

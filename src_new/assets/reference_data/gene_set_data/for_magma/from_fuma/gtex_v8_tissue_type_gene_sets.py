@@ -13,7 +13,7 @@ Labeled: GTEx v8 specific expression differentially expressed genes
 
 Official page does not provide a direct download link, so I hosted on Dropbox.
 """
-GTEx_V8_TISSUE_EXPRESSION_DATA = DownloadFileTask(
+GTEx_V8_TISSUE_EXPRESSION_BASED_GENE_SET_DATA = DownloadFileTask(
     meta=ReferenceFileMeta(
         group="gene_set_data",
         sub_group="fuma_gtex_human_data",
