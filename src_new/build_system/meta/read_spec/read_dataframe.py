@@ -36,6 +36,7 @@ def scan_dataframe(
                 schema_overrides=spec.format.schema_overrides,
                 with_column_names=col_func,
                 has_header=spec.format.has_header,
+                skip_rows=spec.format.skip_rows,
             )
             return nw.from_native(polars_scan)
         raise ValueError("Only polars backend can be used to read text files")

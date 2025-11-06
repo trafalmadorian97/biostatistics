@@ -13,6 +13,7 @@ class DataFrameTextFormat:
     schema_overrides: Mapping[str, pl.DataType] = field(factory=dict)
     column_names: list[str] | None = None
     has_header: bool = True
+    skip_rows: int = 0
 
 
 @frozen
