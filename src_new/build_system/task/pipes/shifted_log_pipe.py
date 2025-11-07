@@ -17,6 +17,9 @@ class ShiftedLogPipe(DataProcessingPipe):
         for col_name in schema.keys():
             if col_name not in self.cols_to_exclude:
                 x = x.with_columns(
-                    (narwhals.col(col_name) + self.pseudocount).log(base=self.base).alias(col_name)
+                    (narwhals.col(col_name) + self.pseudocount)
+                    .log(base=self.base)
+                    .alias(col_name)
                 )
+
         return x
