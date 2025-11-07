@@ -6,7 +6,10 @@ from src_new.build_system.task.pipe_dataframe_task import (
     PipeDataFrameTask,
 )
 from src_new.build_system.task.pipes.drop_col_pipe import DropColPipe
-from src_new.build_system.task.pipes.shifted_log_pip import ShiftedLogPipe
+from src_new.build_system.task.pipes.filter_rows_by_min import FilterRowsByMin
+from src_new.build_system.task.pipes.move_col_to_front_pipe import MoveColToFrontPipe
+from src_new.build_system.task.pipes.shifted_log_pipe import ShiftedLogPipe
+from src_new.build_system.task.pipes.split_col import SplitColPipe
 from src_new.build_system.task.pipes.winsorize_all import WinsorizeAllPipe
 
 GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA = PipeDataFrameTask.create(
@@ -15,7 +18,13 @@ GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA = PipeDataFrameTask.cre
     out_format=CSVOutFormat(sep="\t"),
     pipes=[
         DropColPipe(cols_to_drop=["Description"]),
-        WinsorizeAllPipe(max_value=50, cols_to_exclude="Name"),
-        ShiftedLogPipe(cols_to_exclude="Name", base=2),
+        FilterRowsByMin(min_value=1, exclude_columns=["Name"]),
+        WinsorizeAllPipe(max_value=50, cols_to_exclude=["Name"]),
+        SplitColPipe(
+            col_to_split="Name", split_by=".", new_col_names=("Gene", "Version")
+        ),
+        DropColPipe(cols_to_drop=["Version", "Name"]),
+        ShiftedLogPipe(cols_to_exclude=["Gene"], base=2, pseudocount=1),
+        MoveColToFrontPipe(target_col="Gene"),
     ],
 )
