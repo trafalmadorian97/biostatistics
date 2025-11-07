@@ -1,6 +1,6 @@
 from src_new.analysis.runner.default_runner import DEFAULT_RUNNER
-from src_new.assets.gwas.me_cfs.decode_me.analysis_results.magma.decode_me_gwas_1_build_37_entrez_gsea_hallmark_gene_sets import (
-    MAGMA_DECODE_ME_GSEA_HALLMARK_GENE_SET_ANALYSIS,
+from src_new.assets.reference_data.rna_seq_data.gtex_v10_median_tissue_expression_rna_seq_prep_for_magma import (
+    GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA,
 )
 
 
@@ -32,7 +32,13 @@ def run_initial_analysis():
             # DECODE_ME_GWAS_1_MAGMA_ENSEMBL_GENE_ANALYSIS
             # MAGMA_DECODE_ME_SPECIFIC_TISSUE_GENE_SET_ANALYSIS
             # GSEA_HUMAN_GENE_SET_2025_V1_EXTRACTED
-            MAGMA_DECODE_ME_GSEA_HALLMARK_GENE_SET_ANALYSIS
+            # MAGMA_DECODE_ME_GSEA_HALLMARK_GENE_SET_ANALYSIS
+            # GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ
+            # GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_EXTRACTED
+            GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA,
+        ],
+        must_rebuild_transitive=[
+            GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA
         ],
         # must_rebuild_transitive=[GTEx_V8_TISSUE_EXPRESSION_DATA]
         # [DECODE_ME_GWAS_1_MAGMA_ANNOTATIONS],

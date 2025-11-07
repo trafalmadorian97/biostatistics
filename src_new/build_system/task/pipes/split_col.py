@@ -1,5 +1,5 @@
-import polars as pl
 import narwhals
+import polars as pl
 from attrs import frozen
 
 from src_new.build_system.task.pipes.data_processing_pipe import DataProcessingPipe
