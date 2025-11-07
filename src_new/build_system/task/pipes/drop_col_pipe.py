@@ -9,4 +9,5 @@ class DropColPipe(DataProcessingPipe):
     cols_to_drop: list[str]
 
     def process(self, x: narwhals.LazyFrame) -> narwhals.LazyFrame:
-        return x.drop(*self.cols_to_drop)
+        y = x.drop(*self.cols_to_drop)
+        return y

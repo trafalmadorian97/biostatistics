@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Mapping, Union
 
 import matplotlib
+import matplotlib.figure
 from plotly.graph_objs import Figure
 
 
