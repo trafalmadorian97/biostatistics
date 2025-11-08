@@ -5,6 +5,7 @@ from src_new.build_system.task.pipe_dataframe_task import (
     CSVOutFormat,
     PipeDataFrameTask,
 )
+from src_new.build_system.task.pipes.add_average_pipe import AddAveragePipe
 from src_new.build_system.task.pipes.drop_col_pipe import DropColPipe
 from src_new.build_system.task.pipes.filter_rows_by_min import FilterRowsByMin
 from src_new.build_system.task.pipes.move_col_to_front_pipe import MoveColToFrontPipe
@@ -25,6 +26,7 @@ GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA = PipeDataFrameTask.cre
         ),
         DropColPipe(cols_to_drop=["Version", "Name"]),
         ShiftedLogPipe(cols_to_exclude=["Gene"], base=2, pseudocount=1),
+        AddAveragePipe(cols_to_exclude=["Gene"]),
         MoveColToFrontPipe(target_col="Gene"),
     ],
 )

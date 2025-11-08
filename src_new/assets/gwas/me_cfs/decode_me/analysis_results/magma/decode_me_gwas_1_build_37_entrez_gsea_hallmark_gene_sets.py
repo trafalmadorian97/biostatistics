@@ -24,4 +24,6 @@ MAGMA_DECODE_ME_GSEA_HALLMARK_GENE_SET_ANALYSIS = MagmaGeneSetAnalysisTask.creat
             "msigdb_v2025.1.Hs_files_to_download_locally/msigdb_v2025.1.Hs_GMTs/h.all.v2025.1.Hs.entrez.gmt"
         ),
     ),
+    set_or_covar="set",
+    model_params=None,
 )
