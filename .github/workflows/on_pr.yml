@@ -6,10 +6,15 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+    - 'docs/**' # Ignores changes within the 'docs' directory
+    - '**/*.md'  # Ignores changes to any markdown files
   pull_request:
     branches:
       - main
-
+    paths-ignore:
+      - 'docs/**' # Ignores changes within the 'docs' directory
+      - '**/*.md'  # Ignores changes to any markdown files
 jobs:
   run-linters:
     timeout-minutes: 5
