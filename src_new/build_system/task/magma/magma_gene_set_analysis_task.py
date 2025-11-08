@@ -1,4 +1,5 @@
 from pathlib import Path, PurePath
+from typing import Literal, Sequence
 
 import structlog
 from attrs import frozen
@@ -30,6 +31,26 @@ class DirectoryGeneSetSpec:
     path_in_dir: PurePath
 
 
+SetOrCovar = Literal["set", "covar"]
+
+
+@frozen()
+class ModelParams:
+    direction_covar: str | None
+    condition_hide: Sequence[str]
+
+    def __attrs_post_init__(self):
+        assert not isinstance(self.condition_hide, str)
+
+    def prep_command(self) -> list[str]:
+        result = ["--model"]
+        if self.direction_covar:
+            result += [f"direction-covar={self.direction_covar}"]
+        if len(self.condition_hide) > 0:
+            result += ["condition-hide=" + ",".join(self.condition_hide)]
+        return result
+
+
 @frozen
 class MagmaGeneSetAnalysisTask(Task):
     """
@@ -40,7 +61,9 @@ class MagmaGeneSetAnalysisTask(Task):
     _meta: Meta
     magma_binary_task: Task
     magma_gene_analysis_task: Task
-    gene_set: Task | DirectoryGeneSetSpec
+    gene_set_or_covar_task: Task | DirectoryGeneSetSpec
+    set_or_covar: SetOrCovar
+    model_params: ModelParams | None
 
     @property
     def _magma_binary_id(self) -> AssetId:
@@ -50,10 +73,10 @@ class MagmaGeneSetAnalysisTask(Task):
         return self.magma_gene_analysis_task.asset_id
 
     @property
-    def _gene_set_task_id(self) -> AssetId:
-        if isinstance(self.gene_set, Task):
-            return self.gene_set.asset_id
-        return self.gene_set.gene_set_task.asset_id
+    def _gene_set_or_covar_task_id(self) -> AssetId:
+        if isinstance(self.gene_set_or_covar_task, Task):
+            return self.gene_set_or_covar_task.asset_id
+        return self.gene_set_or_covar_task.gene_set_task.asset_id
 
     @property
     def meta(self) -> Meta:
@@ -62,25 +85,27 @@ class MagmaGeneSetAnalysisTask(Task):
     @property
     def deps(self) -> list["Task"]:
         deps = [self.magma_binary_task, self.magma_gene_analysis_task]
-        if isinstance(self.gene_set, Task):
-            deps.append(self.gene_set)
+        if isinstance(self.gene_set_or_covar_task, Task):
+            deps.append(self.gene_set_or_covar_task)
         else:
-            deps.append(self.gene_set.gene_set_task)
+            deps.append(self.gene_set_or_covar_task.gene_set_task)
         return deps
 
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> Asset:
         binary_asset = fetch(self._magma_binary_id)
         gene_analysis_asset = fetch(self._magma_gene_analysis_id())
-        gene_set_asset = fetch(self._gene_set_task_id)
+        gene_set_or_covar_asset = fetch(self._gene_set_or_covar_task_id)
         assert isinstance(binary_asset, FileAsset)
         assert isinstance(gene_analysis_asset, DirectoryAsset)
-        if isinstance(self.gene_set, Task):
-            assert isinstance(gene_set_asset, FileAsset)
-            gene_set_path = gene_set_asset.path
+        if isinstance(self.gene_set_or_covar_task, Task):
+            assert isinstance(gene_set_or_covar_asset, FileAsset)
+            gene_set_or_covar_path = gene_set_or_covar_asset.path
         else:
-            assert isinstance(self.gene_set, DirectoryGeneSetSpec)
-            assert isinstance(gene_set_asset, DirectoryAsset)
-            gene_set_path = gene_set_asset.path / self.gene_set.path_in_dir
+            assert isinstance(self.gene_set_or_covar_task, DirectoryGeneSetSpec)
+            assert isinstance(gene_set_or_covar_asset, DirectoryAsset)
+            gene_set_or_covar_path = (
+                gene_set_or_covar_asset.path / self.gene_set_or_covar_task.path_in_dir
+            )
 
         binary_path = binary_asset.path
         gene_analysis_path_root_path = gene_analysis_asset.path
@@ -90,12 +115,21 @@ class MagmaGeneSetAnalysisTask(Task):
         out_dir = scratch_dir / "gene_set_analysis_dir"
         out_dir.mkdir(parents=True, exist_ok=True)
         out_base_path = out_dir / GENE_SET_ANALYSIS_OUTPUT_STEM_NAME
+
+        set_or_covar_command = (
+            "--set-annot" if self.set_or_covar == "set" else "--gene-covar"
+        )
+
         cmd = [
             str(binary_path),
             "--gene-results",
             str(gene_analysis_full_path),
-            "--set-annot",
-            str(gene_set_path),
+            set_or_covar_command,  # "--set-annot"  or "--gene-covar"
+            str(gene_set_or_covar_path),
+        ]
+        if self.model_params is not None:
+            cmd.extend(self.model_params.prep_command())
+        cmd += [
             "--out",
             str(out_base_path),
         ]
@@ -110,6 +144,8 @@ class MagmaGeneSetAnalysisTask(Task):
         magma_gene_analysis_task: Task,
         magma_binary_task: Task,
         gene_set_task: Task | DirectoryGeneSetSpec,
+        set_or_covar: SetOrCovar,
+        model_params: ModelParams | None,
     ):
         gene_analysis_meta = magma_gene_analysis_task.meta
         assert isinstance(gene_analysis_meta, ProcessedGwasDataDirectoryMeta)
@@ -121,7 +157,9 @@ class MagmaGeneSetAnalysisTask(Task):
         )
         return cls(
             magma_binary_task=magma_binary_task,
-            gene_set=gene_set_task,
+            gene_set_or_covar_task=gene_set_task,
             magma_gene_analysis_task=magma_gene_analysis_task,
             meta=meta,
+            set_or_covar=set_or_covar,
+            model_params=model_params,
         )
