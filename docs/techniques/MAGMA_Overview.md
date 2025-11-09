@@ -61,10 +61,10 @@ The gene property analysis module requires:
 Magma fits the regression
 
 $$
-Z_i = \beta_0 + \beta_{i,j} E_{i,j} + (\beta^m_{i,j})^T m + \epsilon
+Z_i = \beta_0 + \beta_{i,j} E_{i,j} + (\beta^m_{i,j})^T m + \epsilon_{i,j}
 $$
 
-Where the $\beta$ are regression coefficients and $\epsilon$ is the regression error.
+Where the $\beta$ are regression coefficients and $\epsilon_{i,j}$ is the regression error.
 
 The null hypothesis $\beta_{i,j}= 0$ is then tested.
 
