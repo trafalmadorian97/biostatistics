@@ -1,0 +1,2 @@
+## MAGMA DecodeME Analysis
+As an initial step, I aimed to apply [MAGMA](/docs/Techniques/MAGMA_Overview.md) to [DecodeME](/docs/Data_Sources/MECFS/DecodeME.md), partially reproducing analysis from the DecodeME preprint.  
