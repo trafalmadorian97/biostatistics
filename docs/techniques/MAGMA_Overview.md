@@ -68,7 +68,7 @@ where the $\beta$ are regression coefficients and $\epsilon_{i,j}$ is the regres
 
 The null hypothesis $\beta_{i,j}= 0$ is then tested.
 
-Rejecting this null would indicate that the degree to which the gene $i$ participates in the biological system $j$ is predictive of the extent of association of the gene with the phenotype $Z_i$.  This might suggest that the system is related the phenotype.
+Rejecting this null would indicate that the degree to which the gene $i$ participates in the biological system $j$ is predictive of the extent of association of the gene with the phenotype, $Z_i$.  This might suggest that the system is related the phenotype.
 
 
 
