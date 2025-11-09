@@ -46,8 +46,8 @@ MAGMA converts the test-statistic to a p-value via a[ numerical-integration proc
 
 ## Gene Property Analysis
 ### Purpose
-While knowing which genes are associated with the phenotype is of independent interest, understanding a phenotype requires knowing the biological systems that underlie it. To accomplish this, MAGMA provides a gene property module, which aims to answer the question: are genes 
-associated with a phenotype also associated with particular biological system?
+While knowing which genes are associated with the phenotype is of independent interest, understanding a phenotype requires knowing the biological systems that underlie it. To aid in this, MAGMA provides a gene property module, which aims to answer the question: are genes 
+associated with a phenotype also associated with particular biological systems?
 ## Requirements
 The gene property analysis module requires:
 1. The output of the gene analysis step, associating p-values with genes.
