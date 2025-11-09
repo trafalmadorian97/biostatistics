@@ -6,7 +6,7 @@
 [MAGMA](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004219) performs two main steps:
 
 1. Gene analysis,
-2. Gene-set analysis.
+2. Gene property analysis.
 
 
 ## Gene Analysis
@@ -44,15 +44,41 @@ This test statistic has a [generalized chi-squared distribution](https://en.wiki
 
 MAGMA converts the test-statistic to a p-value via a[ numerical-integration procedure](https://vu.data.surfsara.nl/s/VeuWKUwd0rz6AZD?dir=/&editing=false&openfile=true). A small p value indicates strong evidence that the gene affects the phenotype.
 
+## Gene Property Analysis
+### Purpose
+While knowing which genes are associated with the phenotype is of independent interest, understanding a phenotype requires knowing the biological systems that underlie it. To accomplish this, MAGMA provides a gene property module, which aims to answer the question: are genes 
+associated with a phenotype also associated with particular biological system?
+## Requirements
+The gene property analysis module requires:
+1. The output of the gene analysis step, associating p-values with genes.
+2. A dataset of gene properties.  This dataset measures the extent to which different genes participate in various biological systems.  For example, a dataset of RNAseq data from different tissues could be used.  A high quantity of RNA transcripts of a gene in a given tissue shows that the gene plays a role in that tissue.
+
+## Mathematical Overview
+- Let $Z_i$ be the $z$-score of the association of the gene with the phenotype.
+- Let $E_{i,j}$ be the measure of the participation of gene $i$ in biological system $j$.
+- Let $m$ be a vector of control covariates. 
+
+Magma fits the regression
+$$
+Z_i = \beta_0 + \beta_{i,j} E_{i,j} + \beta^m_{i,j} m^T + \epsilon
+$$
+Where the $\beta$ are regression coefficients and $\epsilon$ is the regression error.
+
+The null hypothesis $\beta_{i,j}= 0$ is then tested.
+
+Rejecting this null would indicate that the degree to which the gene $i$ participates in the biological system $j$ is predictive of the extent of association of the gene with the phenotype $Z_i$.  This might suggest that the system is related the phenotype.
 
 
 
 ## References
+The above discussion is based on:
 
 [//]: # ( [Generalized chi-squared distribution]&#40;https://en.wikipedia.org/wiki/Generalized_chi-squared_distribution&#41;)
 
+[FUMA Tutorial](https://fuma.ctglab.nl/tutorial#snp2gene)
+
 [MAGMA Paper](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1004219) 
 
+[MAGMA Site](https://cncr.nl/research/magma/)
+
 [Note on Magma SNP-wise model](https://vu.data.surfsara.nl/s/VeuWKUwd0rz6AZD?dir=/&editing=false&openfile=true)
-
-
