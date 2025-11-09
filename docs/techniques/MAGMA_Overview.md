@@ -59,9 +59,11 @@ The gene property analysis module requires:
 - Let $m$ be a vector of control covariates. 
 
 Magma fits the regression
+
 $$
 Z_i = \beta_0 + \beta_{i,j} E_{i,j} + \beta^m_{i,j} m^T + \epsilon
 $$
+
 Where the $\beta$ are regression coefficients and $\epsilon$ is the regression error.
 
 The null hypothesis $\beta_{i,j}= 0$ is then tested.
