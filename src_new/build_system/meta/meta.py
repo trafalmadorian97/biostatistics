@@ -13,6 +13,7 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_region_plots_meta import (
 from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
+from src_new.build_system.meta.plot_meta import GWASPlotDirectoryMeta
 from src_new.build_system.meta.procesed_gwas_data_directory_meta import (
     ProcessedGwasDataDirectoryMeta,
 )
@@ -42,4 +43,5 @@ Meta = (
     | ReferenceDataDirectoryMeta
     | ExecutableMeta
     | ProcessedGwasDataDirectoryMeta
+    | GWASPlotDirectoryMeta
 )
