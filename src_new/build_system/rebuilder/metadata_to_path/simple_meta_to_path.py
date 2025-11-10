@@ -18,6 +18,7 @@ from src_new.build_system.meta.gwaslab_meta.gwaslab_sumstats_meta import (
     GWASLabSumStatsMeta,
 )
 from src_new.build_system.meta.meta import Meta
+from src_new.build_system.meta.plot_meta import GWASPlotDirectoryMeta
 from src_new.build_system.meta.procesed_gwas_data_directory_meta import (
     ProcessedGwasDataDirectoryMeta,
 )
@@ -126,5 +127,9 @@ class SimpleMetaToPath(MetaToPath):
                 pth = pth / fname
             else:
                 pth = pth / m.asset_id
+            return pth
+
+        if isinstance(m, GWASPlotDirectoryMeta):
+            pth = self.root / "gwas" / m.trait / m.project / m.sub_dir / m.asset_id
             return pth
         raise ValueError(f"Unknown meta {m} of type {type(m)}.")
