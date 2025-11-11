@@ -1,2 +1,34 @@
 ## MAGMA DecodeME Analysis
-As an initial step, I aimed to apply [MAGMA](/docs/Techniques/MAGMA_Overview.md) to [DecodeME](/docs/Data_Sources/MECFS/DecodeME.md), partially reproducing analysis from the DecodeME preprint.  
+As an initial step, I applied [MAGMA](../Techniques/MAGMA_Overview.md) to [DecodeME](../Data_Sources/MECFS/DecodeME.md), partially reproducing analysis from the DecodeME preprint.  
+
+
+## MAGMA Gene Analysis
+
+Using the LD-reference files from [MAGMA website](https://cncr.nl/research/magma/) I applied MAGMA's SNP-wise mean model to the summary statistics from DecodeME's GWAS 1.  I used MAGMA's default proximity-based rules for associating SNPs with genes.
+
+MAGMA produces a table of genes, effet sizes, and p values of the form:
+```
+GENE             CHR      START       STOP  NSNPS  NPARAM       N        ZSTAT            P
+ENSG00000269831    1     738532     739137      1       1  275488      0.53146      0.29755
+ENSG00000187634    1     860260     879955     63      15  275488      0.93486      0.17493
+ENSG00000268179    1     861264     866445     24       7  275488       1.5318     0.062784
+ENSG00000188976    1     879584     894689     44       7  275488      0.47458      0.31754
+ENSG00000187961    1     895967     901095     16       4  275488      0.13407      0.44667
+ENSG00000187583    1     901877     911245     33      14  275488       1.0717      0.14193
+ENSG00000187642    1     910579     917497     22       5  275488       1.1909      0.11685
+ENSG00000188290    1     934342     935552      5       2  275488        1.243      0.10693
+ENSG00000187608    1     948803     949920      5       1  275488    -0.057976      0.52312
+ENSG00000188157    1     955503     991496     94      12  275488      -2.1128      0.98269
+ENSG00000237330    1    1006346    1009687      6       2  275488     -0.77358      0.78041
+...
+```
+
+
+
+
+To reproduce this analysis use the build system to materialize [this asset](../../src_new/assets/gwas/me_cfs/decode_me/processed_gwas_data/magma/decode_me_gwas_1_build_37_magma_ensembl_gene_analysis.py).
+
+## MAGMA Gene Set Analysis
+
+I next applied [MAGMA's](../Techniques/MAGMA_Overview.md) to [DecodeME](../Data_Sources/MECFS/DecodeME.md) Ggne set analysis module to the gene analysis results above, together with tissue-specific RNA expression values from the [GTEx project](../Data_Sources/GTEx_project/rnaseq_pca_plot.json).  The aim was to identify tissues enriched for genes associated with ME/CFS.  The results are in the bar blow below:
+
