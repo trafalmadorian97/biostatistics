@@ -22,7 +22,6 @@ def plot_p_values():
     trunc_df["Significance"] = float("nan")
     trunc_df["Significance"] = "Significant"
     trunc_df["Significance"] = trunc_df["Significance"].where(trunc_df["P"]<=thresh, "Not Significant")
-    import pdb; pdb.set_trace()
     plot = px.bar(trunc_df, x="FULL_NAME", y=GWASLAB_MLOG10P_COL, color="Significance")
     plots ={"decode_me_gtex_tissue":plot}
     write_plots_to_dir(
