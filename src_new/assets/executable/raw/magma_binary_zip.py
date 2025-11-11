@@ -1,7 +1,7 @@
 from pathlib import PurePath
 
 from src_new.build_system.meta.executable.executable_meta import ExecutableMeta
-from src_new.build_system.task.reference.download_file_task import DownloadFileTask
+from src_new.build_system.task.download_file_task import DownloadFileTask
 
 MAGMA_1_1_BINARY_ZIPPED = DownloadFileTask(
     meta=ExecutableMeta.create(

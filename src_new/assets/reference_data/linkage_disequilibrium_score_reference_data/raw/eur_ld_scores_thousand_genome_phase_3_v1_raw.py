@@ -3,7 +3,7 @@ from pathlib import PurePath
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
-from src_new.build_system.task.reference.download_file_task import DownloadFileTask
+from src_new.build_system.task.download_file_task import DownloadFileTask
 
 """
 Note: reference LD scores derived from the 1000 genome project were formerly stored on the broad institute's website, but have since been move.

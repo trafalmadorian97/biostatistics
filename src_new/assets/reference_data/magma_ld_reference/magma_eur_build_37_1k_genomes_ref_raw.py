@@ -4,7 +4,7 @@ from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
-from src_new.build_system.task.reference.download_file_task import DownloadFileTask
+from src_new.build_system.task.download_file_task import DownloadFileTask
 
 MAGMA_EUR_BUILD_37_1K_GENOMES_REF = DownloadFileTask(
     meta=ReferenceFileMeta(

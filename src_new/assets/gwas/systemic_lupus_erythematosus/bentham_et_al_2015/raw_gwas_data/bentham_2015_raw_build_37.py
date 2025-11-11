@@ -6,7 +6,7 @@ from src_new.build_system.meta.read_spec.dataframe_read_spec import (
     DataFrameReadSpec,
     DataFrameTextFormat,
 )
-from src_new.build_system.task.reference.download_file_task import DownloadFileTask
+from src_new.build_system.task.download_file_task import DownloadFileTask
 
 """
 See: https://www.ebi.ac.uk/gwas/publications/26502338
