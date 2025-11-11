@@ -4,9 +4,16 @@ As an initial step, I applied [MAGMA](../Techniques/MAGMA_Overview.md) to [Decod
 
 ## MAGMA Gene Analysis
 
-Using the LD-reference files from [MAGMA website](https://cncr.nl/research/magma/) I applied MAGMA's SNP-wise mean model to the summary statistics from DecodeME's GWAS 1.  I used MAGMA's default proximity-based rules for associating SNPs with genes.
+I applied MAGMA's SNP-wise mean model to the summary statistics from DecodeME's GWAS 1. 
 
-MAGMA produces a table of genes, effet sizes, and p values of the form:
+
+In this step:
+- Data from the 1000 genomes projects from the [MAGMA website](https://cncr.nl/research/magma/) was used for a linkage disequilibrium reference.
+- Data from the [SNP151 database](https://hgw2.soe.ucsc.edu/cgi-bin/hgTables?hgsid=2912494930_cRufLdpdc1ynRc2sCM3g1WGAWAgH&hgta_doSchemaDb=hg19&hgta_doSchemaTable=snp151Flagged
+  ) was used to assign RSIDs to SNPs.
+- Magma's default proximity based rules were used to assign SNPs to Genes.
+
+MAGMA produces a table of genes, effect sizes, and p values of the form:
 ```
 GENE             CHR      START       STOP  NSNPS  NPARAM       N        ZSTAT            P
 ENSG00000269831    1     738532     739137      1       1  275488      0.53146      0.29755
