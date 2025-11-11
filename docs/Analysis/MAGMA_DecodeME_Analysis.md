@@ -37,5 +37,16 @@ To reproduce this analysis use the build system to materialize [this asset](../.
 
 ## MAGMA Gene Set Analysis
 
-I next applied [MAGMA's](../Techniques/MAGMA_Overview.md) to [DecodeME](../Data_Sources/MECFS/DecodeME.md) Ggne set analysis module to the gene analysis results above, together with tissue-specific RNA expression values from the [GTEx project](../Data_Sources/GTEx_project/rnaseq_pca_plot.json).  The aim was to identify tissues enriched for genes associated with ME/CFS.  The results are in the bar blow below:
+I next applied [MAGMA's](../Techniques/MAGMA_Overview.md) gene set analysis module to [DecodeME](../Data_Sources/MECFS/DecodeME.md).  This step combined  to the gene analysis results above, together with tissue-specific RNA expression values from the [GTEx project](../Data_Sources/GTEx_project/GTEx_RNAseq_Data.md).  The aim was to identify tissues enriched for genes associated with ME/CFS.  The results are shown in the bar plot below:
 
+![bar_plot_decodeme_tissues](https://github.com/user-attachments/assets/519629d4-c60a-434b-9ceb-809c2878cbe5)
+In this plot, the y axis corresponds to negative log p values, the x axis corresponds to tissue type (only tissues with the smallest p values are shown), and bars are colored according to whether their p-value meets Bonferroni-corrected significance threshold,
+
+
+
+These results unambiguously point to the brain as a major site of ME/CFS gene activity.
+
+
+## Follow-Up Questions
+1. Do other approaches to identify significant tissues from GWAS-summary statistics produce concordant or discordant results?
+2. How reliable is the MAGMA gene-set-analysis approach to identifying significant tissues?  In other words: for diseases with well-understood pathological processes, does it produce results consistent with these processes?
