@@ -7,7 +7,7 @@ from attrs import frozen
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.simple_file_meta import SimpleFileMeta
-from src_new.build_system.task.reference.download_file_task import (
+from src_new.build_system.task.download_file_task import (
     DownloadFileTask,
     calc_md5_checksum,
 )

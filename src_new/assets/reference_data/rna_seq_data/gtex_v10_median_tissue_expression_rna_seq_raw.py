@@ -8,7 +8,7 @@ from src_new.build_system.meta.read_spec.dataframe_read_spec import (
 from src_new.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
-from src_new.build_system.task.reference.download_file_task import DownloadFileTask
+from src_new.build_system.task.download_file_task import DownloadFileTask
 
 GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ = DownloadFileTask(
     meta=ReferenceFileMeta(
