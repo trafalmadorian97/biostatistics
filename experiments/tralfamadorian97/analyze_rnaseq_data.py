@@ -204,8 +204,14 @@ def try_pca_with_1_filter():
     # scaled_df = scale_frame(df)
     comp_df = get_pca_components_frame(df_pseudo)
     comp_df_t = comp_df.transpose().reset_index()
+    plot  =px.scatter(comp_df_t, x="comp1", y="comp2", text="tissue")
+    sel = comp_df_t.loc[:,["comp1", "comp2","tissue"]]
+    print(sel.to_json( index=False))
+    import pdb; pdb.set_trace()
     plots = {}
-    plots["tissue_pca_components_with_1_filter"]= px.scatter(comp_df_t, x="comp1", y="comp2", text="tissue")
+    plots["tissue_pca_components_with_1_filter"]=  plot
+    json_str = plot.to_json()
+    print(json_str)
     write_plots_to_dir(Path("output/rna_figs"), plots)
     import pdb; pdb.set_trace()
     print("yo")
