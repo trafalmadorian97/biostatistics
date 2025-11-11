@@ -33,7 +33,7 @@ ENSG00000237330    1    1006346    1009687      6       2  275488     -0.77358  
 
 
 
-To reproduce this analysis use the build system to materialize [this asset](../../src_new/assets/gwas/me_cfs/decode_me/processed_gwas_data/magma/decode_me_gwas_1_build_37_magma_ensembl_gene_analysis.py).
+To reproduce this analysis use the build system to materialize the asset declared in [this file](https://github.com/trafalmadorian97/mecfs_bioinformatics/blob/ba3ee982c59977358ee0d40708347d43a009f190/src_new/assets/gwas/me_cfs/decode_me/processed_gwas_data/magma/decode_me_gwas_1_build_37_magma_ensembl_gene_analysis.py).
 
 ## MAGMA Gene Set Analysis
 
@@ -45,6 +45,8 @@ In this plot, the y axis corresponds to negative log p values, the x axis corres
 
 
 These results unambiguously point to the brain as a major site of ME/CFS gene activity.
+
+To reproduce this analysis, use the build system to materialize the asset in [this file](https://github.com/trafalmadorian97/mecfs_bioinformatics/blob/ba3ee982c59977358ee0d40708347d43a009f190/src_new/assets/gwas/me_cfs/decode_me/analysis_results/magma/magma_specific_tissue_bar_plot.py).
 
 
 ## Follow-Up Questions
