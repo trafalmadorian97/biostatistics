@@ -6,6 +6,8 @@ from attrs import frozen
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.asset.file_asset import FileAsset
 from src_new.build_system.meta.asset_id import AssetId
+from src_new.build_system.meta.filtered_gwas_data_meta import FilteredGWASDataMeta
+from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
 from src_new.build_system.meta.meta import Meta
 from src_new.build_system.meta.read_spec.dataframe_read_spec import (
     DataFrameParquetFormat,
@@ -92,6 +94,7 @@ class PipeDataFrameTask(Task):
         elif isinstance(out_format, ParquetOutFormat):
             read_spec = DataFrameReadSpec(DataFrameParquetFormat())
             extension = ".parquet"
+        meta: Meta
         if isinstance(source_meta, ReferenceFileMeta):
             meta = ReferenceFileMeta(
                 group=source_meta.group,
@@ -99,6 +102,14 @@ class PipeDataFrameTask(Task):
                 sub_folder=PurePath("processed"),
                 asset_id=AssetId(asset_id),
                 extension=extension,
+                read_spec=read_spec,
+            )
+        elif isinstance(source_meta, GWASSummaryDataFileMeta):
+            meta = FilteredGWASDataMeta(
+                short_id=AssetId(asset_id),
+                trait=source_meta.trait,
+                project=source_meta.project,
+                sub_dir=PurePath("processed"),
                 read_spec=read_spec,
             )
         else:
