@@ -7,6 +7,10 @@ from src_new.build_system.asset.base_asset import Asset
 
 @frozen
 class DirectoryAsset(Asset):
+    """
+    A materialized directory output of a Task.
+    """
+
     path: Path
 
     def __attrs_post_init__(self):

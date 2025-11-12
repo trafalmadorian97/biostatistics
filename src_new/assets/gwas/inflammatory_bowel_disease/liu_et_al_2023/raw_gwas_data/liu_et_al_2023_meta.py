@@ -1,5 +1,3 @@
-import polars as pl
-
 """
 GWAS summary statistics from the 2023 meta-analysis of Liu et al.
 See: https://www.nature.com/articles/s41588-023-01384-0
@@ -7,6 +5,8 @@ Google Drive link to downloads: https://drive.google.com/drive/folders/1MbjKuYp7
 """
 
 from pathlib import PurePath
+
+import polars as pl
 
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta

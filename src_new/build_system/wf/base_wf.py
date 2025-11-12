@@ -7,6 +7,8 @@ import py3_wget
 class WF(ABC):
     """
     An interface to the external world.
+    Currently only used for downloading files.
+    May be extended in the future .
     """
 
     def download_from_url(self, url: str, local_path: Path) -> None:
