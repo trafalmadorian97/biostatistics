@@ -87,7 +87,9 @@ class MagmaSNPFileTask(Task):
 
     @classmethod
     def create_for_magma_snp_p_value_file(
-        cls, gwas_parquet_with_rsids_task: Task, asset_id: str
+        cls,
+        gwas_parquet_with_rsids_task: Task,
+        asset_id: str,
     ):
         extra_cols = [GWASLAB_P_COL]
         source_meta = gwas_parquet_with_rsids_task.meta
@@ -106,4 +108,32 @@ class MagmaSNPFileTask(Task):
             gwas_parquet_with_rsid_task=gwas_parquet_with_rsids_task,
             extra_columns_to_output=extra_cols,
             pipes=[ComputePPipe()],
+        )
+
+    @classmethod
+    def create_for_magma_snp_p_value_file_precomputed_p(
+        cls,
+        gwas_parquet_with_rsids_task: Task,
+        asset_id: str,
+    ):
+        """
+        As above, but assume the data already contains p values.
+        """
+        extra_cols = [GWASLAB_P_COL]
+        source_meta = gwas_parquet_with_rsids_task.meta
+        meta = create_new_meta(
+            source_meta,
+            asset_id=asset_id,
+            format=DataFrameTextFormat(
+                separator=" ",
+                has_header=False,
+                column_names=[GWASLAB_RSID_COL] + extra_cols,
+            ),
+            extension=".id.p.txt",
+        )
+        return cls(
+            meta=meta,
+            gwas_parquet_with_rsid_task=gwas_parquet_with_rsids_task,
+            extra_columns_to_output=extra_cols,
+            pipes=[],
         )
