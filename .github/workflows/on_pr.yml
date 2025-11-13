@@ -43,6 +43,7 @@ jobs:
           pixi-version: v0.55.0
           cache: true
       - name: Check that we can build docs
+        if: steps.changes.outputs.nonmark == 'true'
         run: pixi r mkdocs build --strict
       - name: Check formatting with ruff
         if: steps.changes.outputs.nonmark == 'true'
