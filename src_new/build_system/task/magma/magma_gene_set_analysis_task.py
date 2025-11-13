@@ -146,6 +146,7 @@ class MagmaGeneSetAnalysisTask(Task):
         gene_set_task: Task | DirectoryGeneSetSpec,
         set_or_covar: SetOrCovar,
         model_params: ModelParams | None,
+        sub_dir: PurePath = PurePath("analysis_results") / "magma",
     ):
         gene_analysis_meta = magma_gene_analysis_task.meta
         assert isinstance(gene_analysis_meta, ProcessedGwasDataDirectoryMeta)
@@ -153,7 +154,7 @@ class MagmaGeneSetAnalysisTask(Task):
             short_id=AssetId(asset_id),
             trait=gene_analysis_meta.trait,
             project=gene_analysis_meta.project,
-            sub_dir=PurePath("analysis_results") / "magma",
+            sub_dir=sub_dir,
         )
         return cls(
             magma_binary_task=magma_binary_task,

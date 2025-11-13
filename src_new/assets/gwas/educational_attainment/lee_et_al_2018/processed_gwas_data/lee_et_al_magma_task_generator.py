@@ -1,0 +1,46 @@
+from src_new.assets.executable.extracted.magma_binary_extracted import (
+    MAGMA_1_1_BINARY_EXTRACTED,
+)
+from src_new.assets.gwas.educational_attainment.lee_et_al_2018.raw_gwas_data.lee_et_al_catalog_harmonized import (
+    LEE_ET_AL_2018_CATALOG_HARMONIZED_RAW,
+)
+from src_new.assets.reference_data.magma_gene_locations.raw.magma_ensembl_gene_location_reference_data_build_37 import (
+    MAGMA_ENSEMBL_GENE_LOCATION_REFERENCE_DATA_BUILD_37_RAW,
+)
+from src_new.assets.reference_data.magma_ld_reference.magma_eur_build_37_1k_genomes_ref_extracted import (
+    MAGMA_EUR_BUILD_37_1K_GENOMES_EXTRACTED,
+)
+from src_new.assets.reference_data.rna_seq_data.gtex_v10_median_tissue_expression_rna_seq_prep_for_magma import (
+    GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA,
+)
+from src_new.build_system.task.gwaslab.gwaslab_create_sumstats_task import (
+    GWASLabColumnSpecifiers,
+)
+from src_new.build_system.task_generator.magma_task_generator import (
+    MagmaTaskGeneratorFromRaw,
+)
+
+LEE_ET_AL_2018_COMBINED_MAGMA_TASKS = MagmaTaskGeneratorFromRaw.create(
+    raw_gwas_data_task=LEE_ET_AL_2018_CATALOG_HARMONIZED_RAW,
+    # fmt="gwascatalog",
+    magma_binary_task=MAGMA_1_1_BINARY_EXTRACTED,
+    gene_loc_file_task=MAGMA_ENSEMBL_GENE_LOCATION_REFERENCE_DATA_BUILD_37_RAW,
+    magma_ld_ref_task=MAGMA_EUR_BUILD_37_1K_GENOMES_EXTRACTED,
+    tissue_expression_gene_set_task=GTEx_V10_MEDIAN_TISSUE_EXPRESSION_RNA_SEQ_PREP_FOR_MAGMA,
+    base_name="lee_et_al_2018",
+    sample_size=257841,  # source: 30038396-GCST006572-EFO_0008354.h.tsv.gz-meta.yaml
+    fmt=GWASLabColumnSpecifiers(
+        rsid="variant_id",
+        chrom="chromosome",
+        pos="base_pair_location",
+        ea="effect_allele",
+        nea="other_allele",
+        eaf="effect_allele_frequency",
+        beta="beta",
+        p="p_value",
+        snpid=None,
+        OR=None,
+        se="standard_error",
+        info=None,
+    ),
+)

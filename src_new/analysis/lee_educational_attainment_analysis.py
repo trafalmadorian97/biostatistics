@@ -1,11 +1,11 @@
 from src_new.analysis.runner.default_runner import DEFAULT_RUNNER
-from src_new.assets.gwas.educational_attainment.lee_et_al_2018.raw_gwas_data.lee_et_al_catalog_harmonized import (
-    LEE_ET_AL_2018_CATALOG_HARMONIZED_RAW,
+from src_new.assets.gwas.educational_attainment.lee_et_al_2018.processed_gwas_data.lee_et_al_magma_task_generator import (
+    LEE_ET_AL_2018_COMBINED_MAGMA_TASKS,
 )
 
 
 def run_initial_analysis():
-    DEFAULT_RUNNER.run([LEE_ET_AL_2018_CATALOG_HARMONIZED_RAW])
+    DEFAULT_RUNNER.run([LEE_ET_AL_2018_COMBINED_MAGMA_TASKS.inner.bar_plot_task])
 
 
 if __name__ == "__main__":
