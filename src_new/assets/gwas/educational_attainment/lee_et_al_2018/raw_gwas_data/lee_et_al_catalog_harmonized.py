@@ -1,8 +1,9 @@
 """
-GWAS summary statistics from
-Lee, James J., et al. "Gene discovery and polygenic prediction from a genome-wide association study of educational attainment in 1.1 million individuals." Nature genetics 50.8 (2018): 1112-1121.
+GWAS summary statistics from the paper: Lee, James J., et al. "Gene discovery and polygenic prediction from a genome-wide association study of educational attainment in 1.1 million individuals." Nature genetics 50.8 (2018): 1112-1121.
 
 Harmonized to fit the GWAS catalog format.
+
+GWAS catalog page is here: https://www.ebi.ac.uk/gwas/publications/30038396.
 """
 
 from pathlib import PurePath
