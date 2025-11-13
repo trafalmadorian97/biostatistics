@@ -1,3 +1,8 @@
+"""
+Task generator to apply the main steps of MAGMA analysis is LEE et al's
+educational attainment GWAS.
+"""
+
 from src_new.assets.executable.extracted.magma_binary_extracted import (
     MAGMA_1_1_BINARY_EXTRACTED,
 )
@@ -22,7 +27,6 @@ from src_new.build_system.task_generator.magma_task_generator import (
 
 LEE_ET_AL_2018_COMBINED_MAGMA_TASKS = MagmaTaskGeneratorFromRaw.create(
     raw_gwas_data_task=LEE_ET_AL_2018_CATALOG_HARMONIZED_RAW,
-    # fmt="gwascatalog",
     magma_binary_task=MAGMA_1_1_BINARY_EXTRACTED,
     gene_loc_file_task=MAGMA_ENSEMBL_GENE_LOCATION_REFERENCE_DATA_BUILD_37_RAW,
     magma_ld_ref_task=MAGMA_EUR_BUILD_37_1K_GENOMES_EXTRACTED,
