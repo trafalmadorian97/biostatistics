@@ -15,3 +15,11 @@ class ComputePPipe(DataProcessingPipe):
         return x.with_columns(
             (10 ** (-1 * narwhals.col(GWASLAB_MLOG10P_COL))).alias(GWASLAB_P_COL)
         )
+
+
+class ComputePIfNeededPipe(DataProcessingPipe):
+    def process(self, x: narwhals.LazyFrame) -> narwhals.LazyFrame:
+        schema = x.collect_schema()
+        if GWASLAB_P_COL in schema:
+            return x
+        return ComputePPipe().process(x)

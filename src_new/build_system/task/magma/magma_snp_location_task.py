@@ -18,7 +18,10 @@ from src_new.build_system.task.gwaslab.gwaslab_constants import (
     GWASLAB_POS_COL,
     GWASLAB_RSID_COL,
 )
-from src_new.build_system.task.pipes.compute_p_pipe import ComputePPipe
+from src_new.build_system.task.pipes.compute_p_pipe import (
+    ComputePIfNeededPipe,
+    ComputePPipe,
+)
 from src_new.build_system.task.pipes.data_processing_pipe import DataProcessingPipe
 from src_new.build_system.wf.base_wf import WF
 
@@ -136,4 +139,29 @@ class MagmaSNPFileTask(Task):
             gwas_parquet_with_rsid_task=gwas_parquet_with_rsids_task,
             extra_columns_to_output=extra_cols,
             pipes=[],
+        )
+
+    @classmethod
+    def create_for_magma_snp_p_value_file_compute_if_needed(
+        cls,
+        gwas_parquet_with_rsids_task: Task,
+        asset_id: str,
+    ):
+        extra_cols = [GWASLAB_P_COL]
+        source_meta = gwas_parquet_with_rsids_task.meta
+        meta = create_new_meta(
+            source_meta,
+            asset_id=asset_id,
+            format=DataFrameTextFormat(
+                separator=" ",
+                has_header=False,
+                column_names=[GWASLAB_RSID_COL] + extra_cols,
+            ),
+            extension=".id.p.txt",
+        )
+        return cls(
+            meta=meta,
+            gwas_parquet_with_rsid_task=gwas_parquet_with_rsids_task,
+            extra_columns_to_output=extra_cols,
+            pipes=[ComputePIfNeededPipe()],
         )
