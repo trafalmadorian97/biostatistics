@@ -240,8 +240,10 @@ def test_incremental_save_with_failing_task(tmp_path: Path) -> None:
     external_dir.mkdir(exist_ok=True, parents=True)
     external_file = external_dir / "external_file.txt"
     external_file.write_text("abc123")
-    task1 = ExternalFileCopyTask(
-        meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
+    task1 = CountingTask(
+        ExternalFileCopyTask(
+            meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
+        )
     )
 
     task2 = FailingTask(meta=SimpleFileMeta(AssetId("file_2")), deps=[task1])
@@ -271,3 +273,19 @@ def test_incremental_save_with_failing_task(tmp_path: Path) -> None:
             incremental_save_path=incremental_save_path,
         )
     assert incremental_save_path.exists()
+    assert task1.run_count == 1
+    info = VerifyingTraceInfo.deserialize(incremental_save_path)
+    with pytest.raises(ValueError):
+        topological(
+            rebuilder=rebuilder,
+            tasks=tasks,
+            targets=targets,
+            wf=wf,
+            info=info,
+            meta_to_path=meta_to_path,
+            incremental_save_path=incremental_save_path,
+        )
+    assert incremental_save_path.exists()
+    assert (
+        task1.run_count == 1
+    )  # we do not need to rerun task 1, even though task 2 crashed
