@@ -2,6 +2,8 @@ import structlog
 from loguru import logger
 
 from src_new.build_system.meta.meta import Meta
+from src_new.build_system.task.pipes.data_processing_pipe import DataProcessingPipe
+from src_new.build_system.task.pipes.identity_pipe import IdentityPipe
 
 logger = structlog.get_logger()
 from pathlib import Path
@@ -93,6 +95,8 @@ class GWASLabColumnSpecifiers:
     ncontrol: str | None = None
     neff: str | None = None
     n: str | None = None
+    or_95l: str| None = None
+    or_95u: str| None = None
 
 
 def _get_sumstats(
@@ -122,6 +126,8 @@ def _get_sumstats(
             ncontrol=fmt.ncontrol,
             neff=fmt.neff,
             n=fmt.n,
+            OR_95L=fmt.or_95l,
+            OR_95U=fmt.or_95u,
         )
 
     return gl.Sumstats(
@@ -151,6 +157,7 @@ class GWASLabCreateSumstatsTask(Task):
     liftover_to: GenomeBuild | None = None
     fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers = "regenie"
     drop_col_list: Sequence[str] = tuple()
+    pre_pipe: DataProcessingPipe= IdentityPipe()
 
     def __attrs_post_init__(self):
         assert self._source_meta is not None
@@ -180,6 +187,7 @@ class GWASLabCreateSumstatsTask(Task):
 
     def execute(self, scratch_dir: Path, fetch: Fetch, wf: WF) -> FileAsset:
         df = scan_dataframe_asset(asset=fetch(self._source_id), meta=self._source_meta)
+        df = self.pre_pipe.process(df)
         logger.debug("Fetching source dataframe asset...")
         sumstats = _get_sumstats(df, self.fmt, drop_cols=self.drop_col_list)
         transform_spec = GwasLabTransformSpec(
@@ -204,6 +212,8 @@ def _sumstats_raise_on_error(sumstats: gl.Sumstats):
     error_status = sumstats.data[GWASLAB_STATUS_COL] == "9999999"
     if error_status.any():
         raise ValueError("GWASLAB Error")
+    if len(sumstats.data) == 0:
+        raise ValueError("No rows survive GWASLAB quality contro!")
 
 
 @frozen
@@ -226,6 +236,8 @@ def transform_gwaslab_sumstats(
     fetch: Fetch | None = None,
 ) -> gl.Sumstats:
     logger.debug("Running gwas summary statistics through gwaslab pipelines...")
+    if spec.basic_check:
+        sumstats.basic_check()
     if spec.genome_build == "infer":
         sumstats.fix_chr()
         sumstats.infer_build()
@@ -235,8 +247,6 @@ def transform_gwaslab_sumstats(
     else:
         build = spec.genome_build
         forced_build = build
-    if spec.basic_check:
-        sumstats.basic_check()
 
     if spec.liftover_to is not None and (build != spec.liftover_to):
         sumstats.liftover(to_build=spec.liftover_to, from_build=forced_build)
