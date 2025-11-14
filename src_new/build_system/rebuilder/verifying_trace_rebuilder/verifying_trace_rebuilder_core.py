@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Callable
 
 import structlog
@@ -82,6 +83,10 @@ class VerifyingTraceRebuilder(Rebuilder[VerifyingTraceInfo]):
             deps_traced=deps_traced,
         )
         return new_value, info
+
+    @classmethod
+    def save_info(cls, info: VerifyingTraceInfo, path: Path):
+        info.serialize(path)
 
 
 def verify_trace(
