@@ -5,8 +5,8 @@ import math
 import plotly.express as px
 import pandas as pd
 
-from src_new.build_system.task.gwaslab.gwaslab_constants import GWASLAB_MLOG10P_COL
-from src_new.util.plotting.save_fig import write_plots_to_dir
+from mecfs_bio.build_system.task.gwaslab.gwaslab_constants import GWASLAB_MLOG10P_COL
+from mecfs_bio.util.plotting.save_fig import write_plots_to_dir
 
 
 def plot_p_values():

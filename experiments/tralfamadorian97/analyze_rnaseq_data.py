@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 #     pca = PCA(n_components=10)
 import pandas as pd
 
-from src_new.util.plotting.save_fig import write_plots_to_dir
+from mecfs_bio.util.plotting.save_fig import write_plots_to_dir
 
 
 def get_prep_for_magma_frame()-> pd.DataFrame:

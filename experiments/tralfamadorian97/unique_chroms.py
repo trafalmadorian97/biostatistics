@@ -3,7 +3,7 @@ from pprint import pprint
 
 import polars as pl
 
-from src_new.build_system.reference.schemas.hg19_snp151_schema_valid_choms import HG19_SNP151_VALID_CHROMS
+from mecfs_bio.build_system.reference.schemas.hg19_snp151_schema_valid_choms import HG19_SNP151_VALID_CHROMS
 
 
 def get_unique_chroms():
