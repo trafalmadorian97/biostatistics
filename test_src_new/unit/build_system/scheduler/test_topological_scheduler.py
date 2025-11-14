@@ -31,6 +31,7 @@ from src_new.build_system.scheduler.topological_scheduler import (
 from src_new.build_system.task.copy_task import CopyTask
 from src_new.build_system.task.counting_task import CountingTask
 from src_new.build_system.task.external_file_copy_task import ExternalFileCopyTask
+from src_new.build_system.task.failing_task import FailingTask
 from src_new.build_system.tasks.simple_tasks import find_tasks
 from src_new.build_system.wf.base_wf import SimpleWF
 
@@ -49,6 +50,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
     """
     Test a number of basic properties of the topological scheduler
     """
+    incremental_save_path = tmp_path / "incremental_save"
     external_dir = tmp_path / "external"
     external_dir.mkdir(exist_ok=True, parents=True)
     external_file = external_dir / "external_file.txt"
@@ -98,6 +100,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
         wf=wf,
         info=info,
         meta_to_path=meta_to_path,
+        incremental_save_path=incremental_save_path,
     )
 
     file_1_path = meta_to_path(task1.meta)
@@ -124,6 +127,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
         wf=wf,
         info=info,
         meta_to_path=meta_to_path,
+        incremental_save_path=incremental_save_path,
     )
 
     assert task1.run_count == 1
@@ -140,6 +144,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
         wf=wf,
         info=info,
         meta_to_path=meta_to_path,
+        incremental_save_path=incremental_save_path,
     )
 
     assert task1.run_count == 1
@@ -157,6 +162,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
         wf=wf,
         info=info,
         meta_to_path=meta_to_path,
+        incremental_save_path=incremental_save_path,
     )
 
     assert task1.run_count == 2
@@ -174,6 +180,7 @@ def test_file_copying_task(tmp_path: Path, tracer: Tracer) -> None:
         wf=wf,
         info=info_2,
         meta_to_path=meta_to_path,
+        incremental_save_path=incremental_save_path,
     )
 
     assert task1.run_count == 2
@@ -220,3 +227,65 @@ def test_graph_generation(tmp_path: Path):
     assert len(graph_a) == 3
     assert len(graph_b) == 2
     assert len(graph_c) == 1
+
+
+def test_incremental_save_with_failing_task(tmp_path: Path) -> None:
+    """
+    If the scheduler fails due to an error, the info store should still be saved
+    to the incremental save path
+    """
+    tracer = SimpleHasher.md5_hasher()
+    incremental_save_path = tmp_path / "incremental_save"
+    external_dir = tmp_path / "external"
+    external_dir.mkdir(exist_ok=True, parents=True)
+    external_file = external_dir / "external_file.txt"
+    external_file.write_text("abc123")
+    task1 = CountingTask(
+        ExternalFileCopyTask(
+            meta=SimpleFileMeta(AssetId("file_1")), external_path=external_file
+        )
+    )
+
+    task2 = FailingTask(meta=SimpleFileMeta(AssetId("file_2")), deps=[task1])
+
+    tasks = find_tasks([task2])
+
+    wf = SimpleWF()
+    info: VerifyingTraceInfo = VerifyingTraceInfo.empty()
+
+    asset_dir = tmp_path / "asset_dir"
+    asset_dir.mkdir(exist_ok=True, parents=True)
+    meta_to_path = SimpleMetaToPath(root=asset_dir)
+
+    rebuilder = VerifyingTraceRebuilder(tracer)
+
+    targets = [task2.meta.asset_id]
+
+    assert not incremental_save_path.exists()
+    with pytest.raises(ValueError):
+        topological(
+            rebuilder=rebuilder,
+            tasks=tasks,
+            targets=targets,
+            wf=wf,
+            info=info,
+            meta_to_path=meta_to_path,
+            incremental_save_path=incremental_save_path,
+        )
+    assert incremental_save_path.exists()
+    assert task1.run_count == 1
+    info = VerifyingTraceInfo.deserialize(incremental_save_path)
+    with pytest.raises(ValueError):
+        topological(
+            rebuilder=rebuilder,
+            tasks=tasks,
+            targets=targets,
+            wf=wf,
+            info=info,
+            meta_to_path=meta_to_path,
+            incremental_save_path=incremental_save_path,
+        )
+    assert incremental_save_path.exists()
+    assert (
+        task1.run_count == 1
+    )  # we do not need to rerun task 1, even though task 2 crashed

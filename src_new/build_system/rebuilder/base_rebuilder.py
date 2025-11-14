@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from pathlib import Path
 
 from src_new.build_system.asset.base_asset import Asset
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
@@ -25,4 +26,9 @@ class Rebuilder[Info](ABC):
         info: Info,
         meta_to_path: MetaToPath,
     ) -> tuple[Asset, Info]:
+        pass
+
+    @classmethod
+    @abstractmethod
+    def save_info(cls, info: Info, path: Path):
         pass

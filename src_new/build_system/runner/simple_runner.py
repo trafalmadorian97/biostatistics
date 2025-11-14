@@ -50,7 +50,10 @@ class SimpleRunner:
         return SimpleMetaToPath(root=self.asset_root)
 
     def run(
-        self, targets: list[Task], must_rebuild_transitive: Sequence[Task] = tuple()
+        self,
+        targets: list[Task],
+        must_rebuild_transitive: Sequence[Task] = tuple(),
+        incremental_save: bool = False,
     ) -> Mapping[AssetId, Asset]:
         """
         Targets: the ultimate targets we aim to produce.  All transitive dependencies of these targets will either be rebuilt, or fetched (determined according to that status of their trace)
@@ -72,6 +75,7 @@ class SimpleRunner:
             targets=[task.asset_id for task in must_rebuild_transitive],
         )
         info = attrs.evolve(info, must_rebuild=set(must_rebuild_graph.nodes))
+        incremental_save_path = self.info_store if incremental_save else None
         store, info = topological(
             rebuilder=rebuilder,
             tasks=tasks,
@@ -79,7 +83,7 @@ class SimpleRunner:
             wf=wf,
             meta_to_path=meta_to_path,
             targets=[target.asset_id for target in targets],
+            incremental_save_path=incremental_save_path,
         )
-        self.info_store.parent.mkdir(parents=True, exist_ok=True)
         info.serialize(self.info_store)
         return store

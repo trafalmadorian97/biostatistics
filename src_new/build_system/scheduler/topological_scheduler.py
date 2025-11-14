@@ -1,4 +1,5 @@
 from copy import deepcopy
+from pathlib import Path
 from typing import Mapping, Sequence
 
 import emoji
@@ -116,6 +117,7 @@ def topological[
     wf: WF,
     info: Info,
     meta_to_path: MetaToPath,
+    incremental_save_path: Path | None = None,
 ) -> tuple[Mapping[AssetId, Asset], Info]:
     """
     A scheduler that builds a dependency graph of tasks, and executes them in topological order.
@@ -149,6 +151,8 @@ def topological[
             info=info,
             meta_to_path=meta_to_path,
         )
+        if incremental_save_path is not None:
+            rebuilder.save_info(info, incremental_save_path)
         store[node] = new_asset
         frontier, G = _update_frontier_and_G(G=G, completed=node, frontier=frontier)
         done.add(node)
