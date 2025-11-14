@@ -1,5 +1,10 @@
 from pathlib import Path
 
+import structlog
+
+logger = structlog.get_logger()
+
+import narwhals
 import pandas as pd
 from attrs import frozen
 
@@ -18,6 +23,8 @@ from src_new.build_system.meta.read_spec.dataframe_read_spec import (
 from src_new.build_system.meta.read_spec.read_sumstats import read_sumstats
 from src_new.build_system.rebuilder.fetch.base_fetch import Fetch
 from src_new.build_system.task.base_task import Task
+from src_new.build_system.task.pipes.data_processing_pipe import DataProcessingPipe
+from src_new.build_system.task.pipes.identity_pipe import IdentityPipe
 from src_new.build_system.wf.base_wf import WF
 
 
@@ -29,6 +36,7 @@ class GwasLabSumstatsToTableTask(Task):
 
     _meta: Meta
     source_sumstats_task: Task
+    pipe: DataProcessingPipe = IdentityPipe()
 
     @property
     def meta(self) -> Meta:
@@ -50,12 +58,22 @@ class GwasLabSumstatsToTableTask(Task):
         asset = fetch(self.source_asset_id)
         sumstats = read_sumstats(asset)
         df: pd.DataFrame = sumstats.data
+        logger.debug(f"Post sumstats df has shape {df.shape}")
+        n_df = narwhals.from_native(df).lazy()
+        df = self.pipe.process(n_df).collect().to_pandas()
+        logger.debug(f"Post pipe df has shape {df.shape}")
         out_loc = scratch_dir / "data.parquet"
         df.to_parquet(out_loc)
         return FileAsset(path=out_loc)
 
     @classmethod
-    def create_from_source_task(cls, source_tsk: Task, asset_id: str, sub_dir: str):
+    def create_from_source_task(
+        cls,
+        source_tsk: Task,
+        asset_id: str,
+        sub_dir: str,
+        pipe: DataProcessingPipe = IdentityPipe(),
+    ):
         source_meta = source_tsk.meta
         assert isinstance(source_meta, GWASLabSumStatsMeta)
         meta = FilteredGWASDataMeta(
@@ -65,7 +83,4 @@ class GwasLabSumstatsToTableTask(Task):
             sub_dir=sub_dir,
             read_spec=DataFrameReadSpec(format=DataFrameParquetFormat()),
         )
-        return cls(
-            meta=meta,
-            source_sumstats_task=source_tsk,
-        )
+        return cls(meta=meta, source_sumstats_task=source_tsk, pipe=pipe)
