@@ -1,7 +1,7 @@
 import polars as pl
 import polars_streaming_csv_decompression
 
-from src_new.build_system.reference.schemas.hg19_sn151_schema import HG19_SNP151_SCHEMA
+from mecfs_bio.build_system.reference.schemas.hg19_sn151_schema import HG19_SNP151_SCHEMA
 
 
 def go():

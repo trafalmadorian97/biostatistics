@@ -28,8 +28,8 @@ plugins:
           show_symbol_type_toc: true
           summary: true
 - api-autonav:
-    modules: ['src_new']
-    exclude: ['src_new.assets','src_new.analysis','src_new.util']
+    modules: ['mecfs_bio']
+    exclude: ['mecfs_bio.assets','mecfs_bio.analysis','mecfs_bio.util']
 
 extra_javascript:
   - javascripts/mathjax.js
