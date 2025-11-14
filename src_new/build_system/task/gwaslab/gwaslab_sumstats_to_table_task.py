@@ -1,6 +1,8 @@
 from pathlib import Path
+
 import structlog
-logger= structlog.get_logger()
+
+logger = structlog.get_logger()
 
 import narwhals
 import pandas as pd
@@ -65,7 +67,13 @@ class GwasLabSumstatsToTableTask(Task):
         return FileAsset(path=out_loc)
 
     @classmethod
-    def create_from_source_task(cls, source_tsk: Task, asset_id: str, sub_dir: str, pipe: DataProcessingPipe=IdentityPipe()):
+    def create_from_source_task(
+        cls,
+        source_tsk: Task,
+        asset_id: str,
+        sub_dir: str,
+        pipe: DataProcessingPipe = IdentityPipe(),
+    ):
         source_meta = source_tsk.meta
         assert isinstance(source_meta, GWASLabSumStatsMeta)
         meta = FilteredGWASDataMeta(
@@ -75,8 +83,4 @@ class GwasLabSumstatsToTableTask(Task):
             sub_dir=sub_dir,
             read_spec=DataFrameReadSpec(format=DataFrameParquetFormat()),
         )
-        return cls(
-            meta=meta,
-            source_sumstats_task=source_tsk,
-            pipe=pipe
-        )
+        return cls(meta=meta, source_sumstats_task=source_tsk, pipe=pipe)

@@ -95,8 +95,8 @@ class GWASLabColumnSpecifiers:
     ncontrol: str | None = None
     neff: str | None = None
     n: str | None = None
-    or_95l: str| None = None
-    or_95u: str| None = None
+    or_95l: str | None = None
+    or_95u: str | None = None
 
 
 def _get_sumstats(
@@ -157,7 +157,7 @@ class GWASLabCreateSumstatsTask(Task):
     liftover_to: GenomeBuild | None = None
     fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers = "regenie"
     drop_col_list: Sequence[str] = tuple()
-    pre_pipe: DataProcessingPipe= IdentityPipe()
+    pre_pipe: DataProcessingPipe = IdentityPipe()
 
     def __attrs_post_init__(self):
         assert self._source_meta is not None

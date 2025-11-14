@@ -4,13 +4,18 @@ from attrs import frozen
 
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.reference.schemas.chrom_rename_rules import CHROM_RENAME_RULES
-from src_new.build_system.reference.schemas.hg19_snp151_schema_valid_choms import HG19_SNP151_VALID_CHROMS
-from src_new.build_system.task.assign_rsids_via_snp151_task import AssignRSIDSToSNPsViaSNP151Task
+from src_new.build_system.reference.schemas.hg19_snp151_schema_valid_choms import (
+    HG19_SNP151_VALID_CHROMS,
+)
+from src_new.build_system.task.assign_rsids_via_snp151_task import (
+    AssignRSIDSToSNPsViaSNP151Task,
+)
 from src_new.build_system.task.base_task import Task
 from src_new.build_system.task.gwaslab.gwaslab_constants import GwaslabKnownFormat
 from src_new.build_system.task.gwaslab.gwaslab_create_sumstats_task import (
+    GenomeBuildMode,
     GWASLabColumnSpecifiers,
-    GWASLabCreateSumstatsTask, GenomeBuildMode,
+    GWASLabCreateSumstatsTask,
 )
 from src_new.build_system.task.gwaslab.gwaslab_sumstats_to_table_task import (
     GwasLabSumstatsToTableTask,
@@ -129,9 +134,9 @@ class MagmaTaskGeneratorFromRaw:
         tissue_expression_gene_set_task: Task,
         base_name: str,
         sample_size: int,
-        pipe: DataProcessingPipe= IdentityPipe(),
+        pipe: DataProcessingPipe = IdentityPipe(),
         ld_ref_file_stem: str = "g1000_eur",
-        genome_build:GenomeBuildMode = "infer"
+        genome_build: GenomeBuildMode = "infer",
     ):
         sumstats_task = GWASLabCreateSumstatsTask(
             df_source_task=raw_gwas_data_task,
@@ -140,14 +145,12 @@ class MagmaTaskGeneratorFromRaw:
             genome_build=genome_build,
             liftover_to="19",
             fmt=fmt,
-
         )
         parquet_file_task = GwasLabSumstatsToTableTask.create_from_source_task(
             source_tsk=sumstats_task,
             asset_id=base_name + "_parquet_table_from_sumstats",
             sub_dir="processed",
-            pipe=pipe
-
+            pipe=pipe,
         )
         return cls(
             sumstats_task=sumstats_task,
@@ -179,20 +182,20 @@ class MagmaTaskGeneratorFromRawCompute37RSIDs:
 
     @classmethod
     def create(
-            cls,
-            raw_gwas_data_task: Task,
-            fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers,
-            magma_binary_task: Task,
-            gene_loc_file_task: Task,
-            magma_ld_ref_task: Task,
-            snp151_database_file_task: Task,
-            tissue_expression_gene_set_task: Task,
-            base_name: str,
-            sample_size: int,
-            pipe: DataProcessingPipe= IdentityPipe(),
-            pre_pipe: DataProcessingPipe= IdentityPipe(),
-            ld_ref_file_stem: str = "g1000_eur",
-            genome_build:GenomeBuildMode = "infer"
+        cls,
+        raw_gwas_data_task: Task,
+        fmt: GwaslabKnownFormat | GWASLabColumnSpecifiers,
+        magma_binary_task: Task,
+        gene_loc_file_task: Task,
+        magma_ld_ref_task: Task,
+        snp151_database_file_task: Task,
+        tissue_expression_gene_set_task: Task,
+        base_name: str,
+        sample_size: int,
+        pipe: DataProcessingPipe = IdentityPipe(),
+        pre_pipe: DataProcessingPipe = IdentityPipe(),
+        ld_ref_file_stem: str = "g1000_eur",
+        genome_build: GenomeBuildMode = "infer",
     ):
         sumstats_task = GWASLabCreateSumstatsTask(
             df_source_task=raw_gwas_data_task,
@@ -207,16 +210,15 @@ class MagmaTaskGeneratorFromRawCompute37RSIDs:
             source_tsk=sumstats_task,
             asset_id=base_name + "_parquet_table_from_sumstats",
             sub_dir="processed",
-            pipe=pipe
+            pipe=pipe,
         )
-        assign_rsids_37_task =AssignRSIDSToSNPsViaSNP151Task.create(
+        assign_rsids_37_task = AssignRSIDSToSNPsViaSNP151Task.create(
             snp151_database_file_task=snp151_database_file_task,
             raw_snp_data_task=parquet_file_task,
-            asset_id=base_name+ "_assign_rsids",
+            asset_id=base_name + "_assign_rsids",
             valid_chroms=HG19_SNP151_VALID_CHROMS,
-            chrom_replace_rules=CHROM_RENAME_RULES
+            chrom_replace_rules=CHROM_RENAME_RULES,
         )
-
 
         return cls(
             sumstats_task=sumstats_task,
@@ -231,5 +233,5 @@ class MagmaTaskGeneratorFromRawCompute37RSIDs:
                 sample_size=sample_size,
                 ld_ref_file_stem=ld_ref_file_stem,
             ),
-            assign_rsids_task=assign_rsids_37_task
+            assign_rsids_task=assign_rsids_37_task,
         )

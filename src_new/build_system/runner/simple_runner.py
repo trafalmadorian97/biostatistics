@@ -1,6 +1,9 @@
 from pathlib import Path
 from typing import Mapping, Sequence
 
+import structlog
+
+logger = structlog.get_logger()
 import attrs
 from attrs import frozen
 
@@ -66,6 +69,8 @@ class SimpleRunner:
             info = VerifyingTraceInfo.deserialize(self.info_store)
         else:
             info = VerifyingTraceInfo.empty()
+        if incremental_save:
+            logger.debug("incremental save is enabled")
         rebuilder = VerifyingTraceRebuilder(self.tracer)
         wf = SimpleWF()
         meta_to_path = self.meta_to_path

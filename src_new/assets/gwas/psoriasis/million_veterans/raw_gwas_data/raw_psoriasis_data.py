@@ -10,11 +10,15 @@ Note that this is a gwas of Psoriasis and related disorder (PheCode 696).
 
 
 """
+
 from pathlib import PurePath
 
 from src_new.build_system.meta.asset_id import AssetId
 from src_new.build_system.meta.gwas_summary_file_meta import GWASSummaryDataFileMeta
-from src_new.build_system.meta.read_spec.dataframe_read_spec import DataFrameReadSpec, DataFrameTextFormat
+from src_new.build_system.meta.read_spec.dataframe_read_spec import (
+    DataFrameReadSpec,
+    DataFrameTextFormat,
+)
 from src_new.build_system.task.download_file_task import DownloadFileTask
 
 MILLION_VETERAN_PSORIASIS_EUR_DATA_RAW = DownloadFileTask(
@@ -24,12 +28,8 @@ MILLION_VETERAN_PSORIASIS_EUR_DATA_RAW = DownloadFileTask(
         project="million_veterans",
         sub_dir="raw",
         project_path=PurePath("GCST90476186.tsv.gz"),
-        read_spec=DataFrameReadSpec(
-            format=DataFrameTextFormat(
-                separator="\t"
-            )
-        )
+        read_spec=DataFrameReadSpec(format=DataFrameTextFormat(separator="\t")),
     ),
     url="https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/GCST90476001-GCST90477000/GCST90476186/GCST90476186.tsv.gz",
-md5_hash="72c556837df9e1d3df092a484d3a4449",
+    md5_hash="72c556837df9e1d3df092a484d3a4449",
 )

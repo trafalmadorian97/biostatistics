@@ -9,7 +9,6 @@ from src_new.build_system.task.pipes.data_processing_pipe import DataProcessingP
 class FilterRowsByInfoScorePipe(DataProcessingPipe):
     min_score: float
     info_col: str = GWASLAB_INFO_SCORE_COL
+
     def process(self, x: narwhals.LazyFrame) -> narwhals.LazyFrame:
-        return x.filter(
-            narwhals.col(self.info_col)>=self.min_score
-        )
+        return x.filter(narwhals.col(self.info_col) >= self.min_score)
