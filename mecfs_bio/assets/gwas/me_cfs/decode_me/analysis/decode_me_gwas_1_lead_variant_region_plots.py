@@ -1,4 +1,4 @@
-from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_lead_variants import (
+from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.decode_me_gwas_1_lead_variants import (
     DECODE_ME_GWAS_1_LEAD_VARIANTS,
 )
 from mecfs_bio.assets.gwas.me_cfs.decode_me.processed_gwas_data.decode_me_gwas_1_sumstats_minimal_processing import (

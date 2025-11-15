@@ -1,8 +1,8 @@
 from mecfs_bio.analysis.runner.default_runner import DEFAULT_RUNNER
-from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan import (
+from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.decode_me_gwas_1_manhattan import (
     DECODE_ME_GWAS_1_MANHATTAN_PLOT,
 )
-from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis_results.decode_me_gwas_1_manhattan_and_qq import (
+from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.decode_me_gwas_1_manhattan_and_qq import (
     DECODE_ME_GWAS_1_MANHATTAN_AND_QQ_PLOT,
 )
 from mecfs_bio.assets.reference_data.linkage_disequilibrium_score_reference_data.extracted.eur_ld_scores_thousand_genome_phase_3_v1_extracted import (
