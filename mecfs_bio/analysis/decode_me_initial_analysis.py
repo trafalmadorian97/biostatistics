@@ -1,9 +1,11 @@
 """
 Script to run initial analysis on DecodeME data.
 """
+
 from mecfs_bio.analysis.runner.default_runner import DEFAULT_RUNNER
-from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.decode_me_gwas_1_lead_variants import \
-    DECODE_ME_GWAS_1_LEAD_VARIANTS
+from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.decode_me_gwas_1_lead_variants import (
+    DECODE_ME_GWAS_1_LEAD_VARIANTS,
+)
 from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.decode_me_gwas_1_manhattan import (
     DECODE_ME_GWAS_1_MANHATTAN_PLOT,
 )
@@ -24,7 +26,7 @@ def run_initial_analysis():
         [
             DECODE_ME_GWAS_1_MANHATTAN_AND_QQ_PLOT,
             DECODE_ME_GWAS_1_MANHATTAN_PLOT,
-            DECODE_ME_GWAS_1_LEAD_VARIANTS
+            DECODE_ME_GWAS_1_LEAD_VARIANTS,
         ]
     )
 
