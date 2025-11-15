@@ -30,7 +30,7 @@ plugins:
           summary: true
 - api-autonav:
     modules: ['mecfs_bio']
-    exclude: ['mecfs_bio.analysis','mecfs_bio.util']
+    exclude: ['mecfs_bio.util']
 
 extra_javascript:
   - javascripts/mathjax.js
