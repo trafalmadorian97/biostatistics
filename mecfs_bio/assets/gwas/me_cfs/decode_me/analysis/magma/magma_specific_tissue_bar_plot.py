@@ -1,4 +1,4 @@
-from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis_results.magma.decode_me_gwas_1_build_37_magma_ensembl_specific_tissue_gene_sets import (
+from mecfs_bio.assets.gwas.me_cfs.decode_me.analysis.magma.decode_me_gwas_1_build_37_magma_ensembl_specific_tissue_gene_sets import (
     MAGMA_DECODE_ME_SPECIFIC_TISSUE_GENE_SET_ANALYSIS,
 )
 from mecfs_bio.build_system.task.magma.magma_plot_gene_set_result import (
