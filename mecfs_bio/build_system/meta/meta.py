@@ -27,6 +27,7 @@ from mecfs_bio.build_system.meta.reference_meta.reference_data_directory_meta im
 from mecfs_bio.build_system.meta.reference_meta.reference_file_meta import (
     ReferenceFileMeta,
 )
+from mecfs_bio.build_system.meta.result_table_meta import ResultTableMeta
 from mecfs_bio.build_system.meta.simple_directory_meta import SimpleDirectoryMeta
 from mecfs_bio.build_system.meta.simple_file_meta import SimpleFileMeta
 
@@ -44,4 +45,5 @@ Meta = (
     | ExecutableMeta
     | ProcessedGwasDataDirectoryMeta
     | GWASPlotDirectoryMeta
+    | ResultTableMeta
 )
