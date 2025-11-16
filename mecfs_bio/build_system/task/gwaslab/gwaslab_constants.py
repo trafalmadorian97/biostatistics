@@ -13,6 +13,7 @@ GWASLAB_EFFECT_ALLELE_FREQ_COL = "EAF"
 GWASLAB_SAMPLE_SIZE_COLUMN = "N"
 GWASLAB_STATUS_COL = "STATUS"
 GWASLAB_RSID_COL = "rsID"
+GWASLAB_SNPID_COL = "SNPID"
 
 GwaslabKnownFormat = Literal["gwaslab", "regenie", "gwascatalog"]
 

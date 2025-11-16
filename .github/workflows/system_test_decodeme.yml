@@ -1,0 +1,25 @@
+name: system_test_decodeme
+on:
+  schedule:
+    - cron: "15 11 * * *"   #Run at 11:15 am daily
+  workflow_dispatch: {}
+
+jobs:
+  lead_variants:
+    timeout-minutes: 600
+    name: Compute Lead Variants
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Docs-only fast path
+        run: |
+          echo "Docs-only change; skipping tests/linters."
+      - uses: prefix-dev/setup-pixi@v0.9.2
+        name: Setup Pixi Environment
+        with:
+          pixi-version: v0.55.0
+          cache: true
+      - name: Run lead variants integration test
+        run: pixi r python test/system/test_decode_me_initial_analysis.py # run lead variants integration test
+
