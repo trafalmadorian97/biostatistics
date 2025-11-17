@@ -14,8 +14,10 @@ $$
 h^2:= \frac{\mathrm{Var}(G)}{\mathrm{Var}(Y)}.
 $$
 
+
 Note that in the uncorrelated-additive model above, $h^2$ is equal to:
 - The [coefficient of determination](https://en.wikipedia.org/wiki/Coefficient_of_determination) in the linear regression of $Y$ on $G$.
+
 
 
 $h^2$ thus expresses the proportion of phenotypic variation attributable to genetics.
