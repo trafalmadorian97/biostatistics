@@ -20,6 +20,7 @@ Chapter authors are S. Burgess, C.N. Foley and V. Zuber
 
 from pathlib import Path, PurePath
 
+import narwhals
 import pandas as pd
 import structlog
 from attrs import frozen
@@ -39,6 +40,8 @@ from mecfs_bio.build_system.task.base_task import Task
 from mecfs_bio.build_system.task.gwaslab.gwaslab_constants import (
     GWASLAB_SAMPLE_SIZE_COLUMN,
 )
+from mecfs_bio.build_system.task.pipes.data_processing_pipe import DataProcessingPipe
+from mecfs_bio.build_system.task.pipes.identity_pipe import IdentityPipe
 from mecfs_bio.build_system.wf.base_wf import WF
 
 logger = structlog.get_logger()
@@ -51,6 +54,7 @@ class SNPHeritabilityByLDSCTask(Task):
     ld_ref_task: Task
     ld_file_filename_pattern: str
     set_N: int | None
+    pipe: DataProcessingPipe = IdentityPipe()
 
     @property
     def _source_sumstats_id(self) -> AssetId:
@@ -75,6 +79,11 @@ class SNPHeritabilityByLDSCTask(Task):
         assert isinstance(ref_asset, DirectoryAsset)
         if self.set_N is not None:
             sumstats.data[GWASLAB_SAMPLE_SIZE_COLUMN] = self.set_N
+        sumstats.data = (
+            self.pipe.process(narwhals.from_native(sumstats.data).lazy())
+            .collect()
+            .to_pandas()
+        )
         sumstats.estimate_h2_by_ldsc(
             ref_ld_chr=str(ref_asset.path) + self.ld_file_filename_pattern,
             w_ld_chr=str(ref_asset.path) + self.ld_file_filename_pattern,
@@ -95,6 +104,7 @@ class SNPHeritabilityByLDSCTask(Task):
         ld_ref_task: Task,
         set_sample_size: int | None = None,
         ld_file_filename_pattern: str = "/LDscore.@",
+        pipe: DataProcessingPipe = IdentityPipe(),
     ):
         sumstats_meta = source_sumstats_task.meta
         assert isinstance(sumstats_meta, GWASLabSumStatsMeta)
@@ -111,4 +121,5 @@ class SNPHeritabilityByLDSCTask(Task):
             ld_ref_task=ld_ref_task,
             ld_file_filename_pattern=ld_file_filename_pattern,
             set_N=set_sample_size,
+            pipe=pipe,
         )
