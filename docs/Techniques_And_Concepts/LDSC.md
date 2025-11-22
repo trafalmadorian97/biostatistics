@@ -1,5 +1,5 @@
 # Linkage Disequilibrium Score Regression
-Linkage Disequilibrium Score Regression (LDSC) is a technique for estimating  [Heritability](Heritability.md) from GWAS summary statistics.  LDSC is ubiquitous, but its usefulness depends strongly on the validity certain modeling assumptions. To use LDSC correctly it is necessary to understand these assumptions.
+Linkage Disequilibrium Score Regression[@bulik2015ld] (LDSC)  is a technique for estimating  [Heritability](Heritability.md) from GWAS summary statistics.  LDSC is ubiquitous, but its usefulness depends strongly on the validity certain modeling assumptions. To use LDSC correctly it is necessary to understand these assumptions.
 
 ## Model
 
@@ -223,7 +223,7 @@ $$
 This is the main Linkage Disequilibrium Score Regression equation.
 
 ## Intuition about derivation
-The key steps in the LDSC derivation above are between equations ($\ref{varphi}$) and ($\ref{hstep}$) above.  These steps relate the GWAS regression coefficients to measures of linkage disequilibrium between SNPs.  These steps are only possible because of our distributional assumptions on $\beta$ and $\epsilon$.
+The key steps in the LDSC derivation above are between equations ($\ref{varphi}$) and ($\ref{hstep}$).  These steps relate the GWAS regression coefficients to measures of linkage disequilibrium between SNPs.  These steps are only possible because of our distributional assumptions on $\beta$ and $\epsilon$.
 
 
 
@@ -232,7 +232,7 @@ The key steps in the LDSC derivation above are between equations ($\ref{varphi}$
 Numerous authors have criticised the plausibility of the assumptions underlying LDSC.  For instance ...
 
 
-We saw above that the most important of LDSC's assumptions is that  $\mathbb{Var}\beta=h^2 I$.  This can be understood **uniform pleiotropy prior**.
+We saw above that the most important of LDSC's assumptions is that  $\mathbb{Var}\beta=h^2 I$.  This assumption can be understood as an **isotropic pleiotropy prior**.  It amounts to the assumption that the heritability of a trait is distributed evenly across the genome, without correlation between SNPs.
 
 [//]: # (To discuss: Plietotopy an important fact from GWAS.  But not all variants equally likely.  e.g. HLA-> autoimmune disease)
 
@@ -243,7 +243,8 @@ We saw above that the most important of LDSC's assumptions is that  $\mathbb{Var
 [//]: # ()
 [//]: # ([//]: # Notes: Pleiotropy is key assumption.  Basically heritability is distributed more-or-less evening across the genome.  Contrast: MHC for inflammatory diseases.  Monogenic diseases.)
 
-## References
+\bibliography
 
-Main Reference:
-Bulik-Sullivan, Brendan K., et al. "LD Score regression distinguishes confounding from polygenicity in genome-wide association studies." Nature genetics 47.3 (2015): 291-295.
+[//]: # (Main Reference:)
+
+[//]: # (Bulik-Sullivan, Brendan K., et al. "LD Score regression distinguishes confounding from polygenicity in genome-wide association studies." Nature genetics 47.3 &#40;2015&#41;: 291-295.)
